@@ -1,0 +1,533 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="malloc与free的行为模式...">
+  <meta name="author" content="Zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>malloc与free - rushCpp</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushCpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="malloc与free">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-08 10:00" pubdate>
+        2020年12月8日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      828 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      9
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">malloc与free</h1>
+            
+            <div class="markdown-body">
+              <h2 id="SBH（VC6）"><a href="#SBH（VC6）" class="headerlink" title="SBH（VC6）"></a>SBH（VC6）</h2><ul>
+<li><p><strong>SBH = Small Block Heap</strong></p>
+</li>
+<li><p><code>HeapAlloc()</code>：windows内存分配函数</p>
+</li>
+</ul>
+<p>在新版本如VC10，已经不做小块的内存管理了，统统将操作丢给<code>HeapAlloc()</code>，因为<code>HeapAlloc()</code>也开始做小块内存管理了。</p>
+<p>下图为C++程序的运行调用栈（VC6）：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/54dc87706cafbf193f1a014a2af24970-5ee36.png" srcset="/img/loading.gif" lazyload alt="C++程序的运行调用栈"  /></p>
+<p>上图中的常量<code>_sbh_threshold</code>的值为<strong>1016</strong>，和<strong>1024</strong>差了<strong>8</strong>个字节，这8个字节就是内存块上下的<strong>cookie</strong>。当我们需要的内存块加上<strong>cookie</strong>一共超过了<strong>1024</strong>，那么<strong>SBH</strong>将会把内存分配的操作<strong>转交给操作系统处理</strong>。由此可见小区块定义的大小就是1024。</p>
+<p>自下而上，首先进入操作系统内核部分，由操作调用<code>mainCRTStartup()</code>，即CRT的动作。</p>
+<h3 id="heap-init"><a href="#heap-init" class="headerlink" title="_heap_init()"></a>_heap_init()</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ae13a524af0ecd498241c14b290e7d4-c5fe0.png" srcset="/img/loading.gif" lazyload alt=" _heap_init()"  /></p>
+<ul>
+<li><code>_heap_init()</code>从操作系统的<strong>CRT Heap</strong>申请空间，来应付CRT的需求，<code>_sbh_pHeaderList</code>指向这个空间。</li>
+<li><code>bitvEntryHi</code>和<code>bitvEntryLo</code>实际上会组合起来，即一共64bit。</li>
+<li><code>_heap_init()</code>做的事实际上就是分配了16个<strong>Header</strong>。</li>
+<li>一个<strong>Header</strong>管理<strong>1MB</strong>。</li>
+</ul>
+<p><strong>Header</strong>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> BITVEC;<br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tagHeader</span></span><br><span class="hljs-class">&#123;</span><br>	BITVEC bitvEntryHi;<br>	BITVEC bitvEntryLo;<br>	BITVEC bitvCommit;<br>	<span class="hljs-keyword">void</span>* pHeapData;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tagRegion</span>* <span class="hljs-title">pRegion</span>;</span><br>&#125;<br>HEADER,*PHEADER;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/d58d5e1aad1b8db3e051fdad0f205cf7-6b918.png" srcset="/img/loading.gif" lazyload alt="**Header**："></p>
+<h3 id="ioinit-（SBH运行例子：malloc与free）"><a href="#ioinit-（SBH运行例子：malloc与free）" class="headerlink" title="_ioinit()（SBH运行例子：malloc与free）"></a>_ioinit()（SBH运行例子：malloc与free）</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0f99d7cce6fa99cafeb92ce68548dc1e-99459.png" srcset="/img/loading.gif" lazyload alt="_ioinit()"  /></p>
+<p><code>_ioinit()</code>是跟io相关的初始化，也是<strong>第一次</strong>内存分配。</p>
+<h4 id="添加DebugHeader"><a href="#添加DebugHeader" class="headerlink" title="添加DebugHeader"></a>添加DebugHeader</h4><p>假设在<strong>DEBUG</strong>模式下，首先要给<strong>IO所需的空间</strong>附着<strong>DebugHeader</strong>：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/b79b80c6866320719070b90bfe43ff9f-bab51.png" srcset="/img/loading.gif" lazyload  /></p>
+<ul>
+<li><code>nSize</code>就是IO需要的空间大小，对于IO来说就是256字节。</li>
+<li><code>_CrtMemBlockHeader</code>为<strong>debug</strong>模式下，附着在我们申请的内存之上的东西，即<strong>DebugHeader</strong>。</li>
+<li><code>szFileName</code>是指针，存放文件名；再结合<code>nLine</code>存放的行数，调试器可以知道这块内存是从哪一个文件的哪一行分配出来的。</li>
+<li><code>nDataSize</code>记录着原本所需分配的内存大小，即<code>nSize</code>。</li>
+<li><code>nBlockUse</code>记录该内存块的用途。<img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/7e3c56f6d983475ba91219ef3806bf6b-93c18.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></li>
+<li><code>IRequest</code>为流水号，因为图中的内存块是第一块分配的内存，所以<code>IRequest</code>的内容为1。</li>
+<li><code>gap[nNoMansLandSize]</code>的作用就是，万一我们使用的时候超过<code>nSize</code>的边界，到达<code>nNoMansLandSize</code>区域，调试器就可以检查出来。</li>
+<li>在调试模式下，经过malloc分配的所有内存块，都会被登记起来。即使被我们使用了，也会被登记。所以调试器可以进行追踪内存等动作。</li>
+</ul>
+<p>至此，<code>blockSize</code>的大小已经计算出来了，然后根据计算的大小从<code>malloc</code>获得了内存。接着需要往内存里面写内容：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/b4dcea961f8a609d602b7d31d5068c7b-fefe5.png" srcset="/img/loading.gif" lazyload alt="填充"  /></p>
+<p>可以看到，<code>nNoMansLandSize</code>区域被填充了<code>0xFD</code>，IO真正的区域（大小为<code>nSize</code>）被填充了<code>0xCD</code>。这也就是为什么在调试的时候看内存会出现很多“<strong>烫烫烫….</strong>”。</p>
+<h4 id="添加cookie及RoundUp"><a href="#添加cookie及RoundUp" class="headerlink" title="添加cookie及RoundUp"></a>添加cookie及RoundUp</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/9e5757177cd3b04692df36a354577d6f-95be9.png" srcset="/img/loading.gif" lazyload  /></p>
+<p>有了blockSize以及相应大小的内存区域，接下来：</p>
+<ul>
+<li>在内存块上下添加<strong>cookie</strong>，这个<strong>cookie</strong>的值需要变成<strong>16的倍数</strong>，所以在上图根据计算变成了<code>0x130</code>。</li>
+<li>因为这块内存是正在使用的，所以将<code>0x130</code>变成<code>0x131</code>。</li>
+</ul>
+<h4 id="管理模式"><a href="#管理模式" class="headerlink" title="管理模式"></a>管理模式</h4><ul>
+<li>SBH为了管理1MB，成本是16K。</li>
+<li>SBH通过控制中心分配内存块的行为与STL：allocator的行为几乎相似。</li>
+<li>SBH对区域的粒度划分如此细致，是为了更好的将内存归还给OS。</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/64e245b7a20655a9367ed949b23d8149-9775f.png" srcset="/img/loading.gif" lazyload alt="管理模式"  /></p>
+<h5 id="全回收"><a href="#全回收" class="headerlink" title="全回收"></a>全回收</h5><ul>
+<li>如果没有下cookie的设计，就没办法往上合并。</li>
+<li>SBH手上有两个全回收才会将其中一个Group还给OS。</li>
+<li>每次回收只会往上和往下查看上下区块的cookie<strong>一次</strong>。</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/78d00a624e830a518a6e9d2a845063b6-7e63b.png" srcset="/img/loading.gif" lazyload alt="全回收"  /></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/C/">C++</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/13/C++/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E5%B0%8F%E5%9E%8B%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E5%99%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">小型内存分配器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/01/C++/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E5%86%85%E5%AD%98%E5%8E%9F%E8%AF%AD/">
+                        <span class="hidden-mobile">内存原语</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

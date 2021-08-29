@@ -1,0 +1,610 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="一些设计模式应该遵循的原则，以及设计模式发展过程中和使用中的经验">
+  <meta name="author" content="Zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>面向对象设计原则 - rushCpp</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushCpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="面向对象设计原则">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-06-12 10:00" pubdate>
+        2019年6月12日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      32
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">面向对象设计原则</h1>
+            
+            <div class="markdown-body">
+              <h2 id="依赖倒置（DIP）"><a href="#依赖倒置（DIP）" class="headerlink" title="依赖倒置（DIP）"></a>依赖倒置（DIP）</h2><ul>
+<li>高层模块(稳定)不应该依赖于低层模块（变化），二者应依赖于抽象（稳定）</li>
+<li>抽象（稳定）不应该依赖于实现细节（变化），实现细节应该依赖于抽象（稳定）</li>
+</ul>
+<p><strong>注：这里所说的依赖是编译式依赖</strong></p>
+<p>现在需要我们写一个能画指定图形的方法，我们通常在脑海里会有如下思路：<br><figure class="highlight cpp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">line</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">line</span>();<br>	~<span class="hljs-built_in">line</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> </span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">rect</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">rect</span>();<br>	~<span class="hljs-built_in">rect</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">drawShape</span><span class="hljs-params">(<span class="hljs-keyword">const</span> string type)</span> </span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;line&quot;</span>)<br>	&#123;<br>		line l;<br>		l.<span class="hljs-built_in">draw</span>();<br>	&#125;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;rect&quot;</span>)<br>	&#123;<br>		rect r;<br>		r.<span class="hljs-built_in">draw</span>();<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-built_in">drawShape</span>(<span class="hljs-string">&quot;line&quot;</span>);<span class="hljs-comment">/*画直线*/</span><br>	<span class="hljs-built_in">drawShape</span>(<span class="hljs-string">&quot;rect&quot;</span>);<span class="hljs-comment">/*画矩形*/</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure><br>这时候，需求变了，需要再添加一个画圆形的方法，那么上面的代码需要改成：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">line</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">line</span>();<br>	~<span class="hljs-built_in">line</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> </span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">rect</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">rect</span>();<br>	~<span class="hljs-built_in">rect</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">circle</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">circle</span>();<br>	~<span class="hljs-built_in">circle</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">drawShape</span><span class="hljs-params">(<span class="hljs-keyword">const</span> string type)</span> </span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;line&quot;</span>)<br>	&#123;<br>		line l;<br>		l.<span class="hljs-built_in">draw</span>();<br>	&#125;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;rect&quot;</span>)<br>	&#123;<br>		rect r;<br>		r.<span class="hljs-built_in">draw</span>();<br>	&#125;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;circle&quot;</span>)<span class="hljs-comment">/*此处改动*/</span><br>	&#123;<br>		circle c;<br>		c.<span class="hljs-built_in">draw</span>();<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-built_in">drawShape</span>(<span class="hljs-string">&quot;line&quot;</span>);<span class="hljs-comment">/*画直线*/</span><br>	<span class="hljs-built_in">drawShape</span>(<span class="hljs-string">&quot;rect&quot;</span>);<span class="hljs-comment">/*画矩形*/</span><br>	<span class="hljs-built_in">drawShape</span>(<span class="hljs-string">&quot;circle&quot;</span>);<span class="hljs-comment">/*画圆形*/</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>​        看起来没毛病，逻辑上符合我们的需求。在实际应用场景中，高层模块通常调用低层模块。在上述代码里，我们可以把main函数看成高层模块，line，rect，circle等具体实现类看成低层模块。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们知道在开发中，需求是不断在变化的。今天让你添加一个画圆形的需求，明天又让你添加一个画梯形的需求。从需求的角度看，低层模块不断在变化，这是其一。其二，代码修改的原因不仅限于需求变更。从低层模块的内部出发，不同的平台，不同的硬件，不同的API或者调用方法，都会导致低层模块的实现随时更改。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据这两点，我们可以得出低层模块是不稳定的，是随时会更改的。此时我们再来看上面的代码，会发现高层模块直接依赖于低层模块，这将导致高层模块也变得不稳定，不符合依赖倒置原则。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210415173908.png" srcset="/img/loading.gif" lazyload alt="不符合依赖倒置原则"><br>        为了满足依赖倒置原则，我们从面向对象设计的一个核心出发：抽象。我们把低层模块抽象成一个基类，即shape，并让所有需求实现接口draw()。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">shape</span></span><br><span class="hljs-class">&#123;</span><br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">shape</span>();<br>	~<span class="hljs-built_in">shape</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">line</span>:</span><span class="hljs-keyword">public</span> shape<br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">line</span>();<br>	~<span class="hljs-built_in">line</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> </span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">rect</span> :</span><span class="hljs-keyword">public</span> shape<br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">rect</span>();<br>	~<span class="hljs-built_in">rect</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span><br><span class="hljs-function"></span>&#123;<br>	shape* s = <span class="hljs-keyword">new</span> <span class="hljs-built_in">rect</span>();<br>	s-&gt;<span class="hljs-built_in">draw</span>();<span class="hljs-comment">/*画矩形*/</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>​        如果再添加一个画圆形的需求，和line、rect这两个类一样，我们只要负责实现circle这个类就行，而我们抽象出来的shape这个类是不需要改变的，也就是说这个抽象类是稳定的，通过接口隔离了高低两个模块。此时高层模块依赖于抽象，低层模块也依赖于抽象。</p>
+<p>​        若此时我们需要修改画直线的方法，只要修改line类中的draw方法即可，抽象出来的shape我们无需改动。也就是说，抽象不关心你是如何实现的（抽象不依赖于实现细节），但是你要实现什么，由抽象来决定（实现细节应该依赖于抽象）。<br><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210415180439.png" srcset="/img/loading.gif" lazyload alt="图2"></p>
+<h2 id="开放封闭原则（OCP）"><a href="#开放封闭原则（OCP）" class="headerlink" title="开放封闭原则（OCP）"></a>开放封闭原则（OCP）</h2><ul>
+<li>对扩展开放，对更改封闭</li>
+<li>类模块应该是可扩展的，但是不可修改</li>
+</ul>
+<p>依旧是这段代码，只是稍加修改：<br><figure class="highlight cpp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">line</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">line</span>();<br>	~<span class="hljs-built_in">line</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">rect</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">rect</span>();<br>	~<span class="hljs-built_in">rect</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">drawShape</span></span><br><span class="hljs-class">&#123;</span><br><span class="hljs-keyword">public</span>:<br><br>	<span class="hljs-built_in">drawShape</span>();<br>	~<span class="hljs-built_in">drawShape</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">(<span class="hljs-keyword">const</span> string type)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;line&quot;</span>)<br>		&#123;<br>			line l;<br>			l.<span class="hljs-built_in">draw</span>();<br>		&#125;<br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;rect&quot;</span>)<br>		&#123;<br>			rect r;<br>			r.<span class="hljs-built_in">draw</span>();<br>		&#125;<br>	&#125;<br><br>&#125;;<br><br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	drawShape d;<br>	d.<span class="hljs-built_in">draw</span>(<span class="hljs-string">&quot;line&quot;</span>);<span class="hljs-comment">/*画直线*/</span><br>	d.<span class="hljs-built_in">draw</span>(<span class="hljs-string">&quot;rect&quot;</span>);<span class="hljs-comment">/*画矩形*/</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure><br>此时同样新增了一个画圆形的需求：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">line</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">line</span>();<br>	~<span class="hljs-built_in">line</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">rect</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">rect</span>();<br>	~<span class="hljs-built_in">rect</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">circle</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-built_in">circle</span>();<br>	~<span class="hljs-built_in">circle</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">drawShape</span></span><br><span class="hljs-class">&#123;</span><br><span class="hljs-keyword">public</span>:<br><br>	<span class="hljs-built_in">drawShape</span>();<br>	~<span class="hljs-built_in">drawShape</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">(<span class="hljs-keyword">const</span> string type)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;line&quot;</span>)<br>		&#123;<br>			line l;<br>			l.<span class="hljs-built_in">draw</span>();<br>		&#125;<br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;rect&quot;</span>)<br>		&#123;<br>			rect r;<br>			r.<span class="hljs-built_in">draw</span>();<br>		&#125;<br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;circle&quot;</span>)<span class="hljs-comment">/*此处更改*/</span><br>		&#123;<br>			circle c;<br>			c.<span class="hljs-built_in">draw</span>();<br>		&#125;<br>	&#125;<br><br>&#125;;<br><br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	drawShape ds;<br>	ds.<span class="hljs-built_in">draw</span>(<span class="hljs-string">&quot;line&quot;</span>);<span class="hljs-comment">/*画直线*/</span><br>	ds.<span class="hljs-built_in">draw</span>(<span class="hljs-string">&quot;rect&quot;</span>);<span class="hljs-comment">/*画矩形*/</span><br>	ds.<span class="hljs-built_in">draw</span>(<span class="hljs-string">&quot;circle&quot;</span>);<span class="hljs-comment">/*画圆形*/</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>​        这样的写法在逻辑上没有任何问题，也符合我们的需求。但是当有新的需求不断出现，drawShape类中的draw方法就得不停的修改。这种做法不仅会让开发效率低下，而且还违反了开放封闭原则（对更改封闭）。<br>​        为了满足开放封闭原则，我们同样采取抽象的办法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">shape</span></span><br><span class="hljs-class">&#123;</span><br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">shape</span>();<br>	~<span class="hljs-built_in">shape</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">line</span> :</span><span class="hljs-keyword">public</span> shape<br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">line</span>();<br>	~<span class="hljs-built_in">line</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">rect</span> :</span><span class="hljs-keyword">public</span> shape<br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">rect</span>();<br>	~<span class="hljs-built_in">rect</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">circle</span>:</span><span class="hljs-keyword">public</span> shape<br>&#123;<br>	<span class="hljs-built_in">circle</span>();<br>	~<span class="hljs-built_in">circle</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">/*具体实现*/</span><br>	&#125;;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">drawShape</span></span><br><span class="hljs-class">&#123;</span><br><span class="hljs-keyword">public</span>:<br><br>	<span class="hljs-built_in">drawShape</span>();<br>	~<span class="hljs-built_in">drawShape</span>();<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">(shape* s)</span></span><br><span class="hljs-function">	</span>&#123;<br>		s-&gt;<span class="hljs-built_in">draw</span>();<br>	&#125;<br><br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	drawShape ds;<br>	ds.<span class="hljs-built_in">draw</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">rect</span>());<span class="hljs-comment">/*画矩形*/</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>​        我们添加了一个shape抽象类，原有的drawShape中的draw方法重写，修改成依赖于shape提供的接口draw。这时你的需求无论怎么添加（对扩展开放），drawShape这个类始终不用修改（对更改封闭）。<br>​        开放封闭原则和依赖倒置原则，在抽象这个角度上都有一定的相似性。借用另外一位博主的话：“开放封闭原则通过抽象来避免代码发生更改，而依赖倒置原则更偏向于层和层之间的解耦”。</p>
+<h2 id="单一职责原则（SRP）"><a href="#单一职责原则（SRP）" class="headerlink" title="单一职责原则（SRP）"></a>单一职责原则（SRP）</h2><ul>
+<li>一个类应该仅有一个引起它变化的原因</li>
+<li>变化的方向隐含着类的责任</li>
+</ul>
+<p>字面意思，说白了就是一个类应该只有一种职责，避免责任太多导致的代码臃肿（比如上帝类）。</p>
+<h2 id="Liskov替换原则（LSP）"><a href="#Liskov替换原则（LSP）" class="headerlink" title="Liskov替换原则（LSP）"></a>Liskov替换原则（LSP）</h2><ul>
+<li>子类必须能够替换它们的基类（IS-A）</li>
+<li>继承表达类型抽象<br>所有需要父类的地方，子类都可以传过去。</li>
+</ul>
+<h2 id="GOF模式分类"><a href="#GOF模式分类" class="headerlink" title="GOF模式分类"></a>GOF模式分类</h2><p>从目的来看：</p>
+<ol>
+<li>创建型</li>
+<li>结构型</li>
+<li>行为型</li>
+</ol>
+<p>从范围来看：</p>
+<ol>
+<li>类模式处理类与子类的静态关系</li>
+<li>对象模式处理对象间的动态关系</li>
+</ol>
+<hr>
+<h3 id="从封装变化角度对模式分类"><a href="#从封装变化角度对模式分类" class="headerlink" title="从封装变化角度对模式分类"></a>从封装变化角度对模式分类</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类别</th>
+<th>模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">组件协作</td>
+<td>Template Method,Strategy,Observer/Event</td>
+</tr>
+<tr>
+<td style="text-align:left">单一职责</td>
+<td>Decoraror,Bridge</td>
+</tr>
+<tr>
+<td style="text-align:left">对象创建</td>
+<td>Factory Method,Abstract Factory,Prototype,Builder</td>
+</tr>
+<tr>
+<td style="text-align:left">对象性能</td>
+<td>Singleton,Flyweight</td>
+</tr>
+<tr>
+<td style="text-align:left">接口隔离</td>
+<td>Facade,Proxy,Mediator, Adapter</td>
+</tr>
+<tr>
+<td style="text-align:left">状态变化</td>
+<td>Memento,State</td>
+</tr>
+<tr>
+<td style="text-align:left">数据结构</td>
+<td>Composite,Iterator,Chain of Resposibility</td>
+</tr>
+<tr>
+<td style="text-align:left">行为变化</td>
+<td>Command,Visitor</td>
+</tr>
+<tr>
+<td style="text-align:left">领域问题</td>
+<td>Interpreter</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>组件协作：现代软件专业分工之后的第一个结果是“框架与应用程序的划分”，“组件协作”模式通过晚期绑定，来实现框架与应用程序之 间的松耦合，是二者之间协作时常用的模式。</li>
+<li>单一职责：在软件组件的设计中，如果责任划分的不清晰，使用继承得到的 结果往往是随着需求的变化，子类急剧膨胀，同时充斥着重复代码，这时候的关键是划清责任。</li>
+<li>对象创建：通过“对象创建” 模式绕开new，来避免对象创建（new）过程中所导致的紧耦合（依赖具体类），从而支持对象创建的稳定。它是接口抽象之后的第一步工作。</li>
+<li>对象性能：面向对象很好地解决了”抽象“的问题，但是必不可免地要付出一定的代价。对于通常情况来讲，面对对象的成本大都可以忽略不计。但是某些情况，面向对象所带来的成本必须谨慎处理。</li>
+<li>接口隔离：在组件构建过程中，某些接口之间直接的依赖常常会带来很多问题、甚至根本无法实现。采用添加一层间接（稳定）接口，来隔离本来互相紧密关联的接口是一种常见的解决方案。</li>
+<li>状态变化：在组件构建过程中，某些对象的状态经常面临变化，如何对这些变化进行有效的管理？同时又维持高层模块的稳定？”状态变化“模式为这一问题提供了一种解决方案。</li>
+<li>数据结构：常常有一些组件在内部具有特定的数据结构，如果让客户程序依赖这些特定的数据结构，将极大地破坏组件的复用。这时候，将这些特定数据结构封装在内部，在外部提供统一的接口，来实现与特定数据结构无关的访问，是一种行之有效的解决方案。</li>
+<li>行为变化：在组件的构建过程中，组件行为的变化经常导致组件本身剧烈的变化。”行为变化“模式将组件的行为和组件本身进行解耦，从而支持组件行为的变化，实现两者之间的松耦合。</li>
+<li>领域规则：在特定领域中，某些变化虽然频繁，但可以抽象为某种规则。这时候，结合特定领域，将问题抽象为语法规则，将问题抽象为语法规则，从而给出在该领域下的一般性解决方案。</li>
+</ul>
+<h2 id="重构获得模式"><a href="#重构获得模式" class="headerlink" title="重构获得模式"></a>重构获得模式</h2><p>即通过修正来得到一种良好的解决方案</p>
+<p>重构技巧：（以下五点实际上是同一回事）</p>
+<ul>
+<li>静态-&gt;动态</li>
+<li>早绑定-&gt;晚绑定</li>
+<li>继承-&gt;组合</li>
+<li>编译时依赖-&gt;运行时依赖</li>
+<li>紧耦合-&gt;松耦合</li>
+</ul>
+<p>重构要点：</p>
+<ol>
+<li>寻找变化点，在变化点处应用设计模式。将变化和稳定分离开</li>
+</ol>
+<h2 id="经验之谈"><a href="#经验之谈" class="headerlink" title="经验之谈"></a>经验之谈</h2><ul>
+<li>不要为了模式而模式</li>
+<li>关注抽象类&amp;接口</li>
+<li>理清变化点和稳定点</li>
+<li>审视依赖关系</li>
+<li>要有Framework和Application的区隔思维</li>
+<li>良好的设计是演化的结果</li>
+</ul>
+<h2 id="什么时候不用模式"><a href="#什么时候不用模式" class="headerlink" title="什么时候不用模式"></a>什么时候不用模式</h2><ul>
+<li>代码可读性很差时</li>
+<li>需求理解还很浅时</li>
+<li>变化没有显现时</li>
+<li>不是系统的关键依赖点</li>
+<li>项目没有复用价值时</li>
+<li>项目将要发布时</li>
+</ul>
+<blockquote>
+<p>参考：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/tjiyu/article/details/76551307">面向对象设计原则（三）：里氏替换原则（LSP）</a></p>
+</blockquote>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">设计原则</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/06/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A1%8C%E4%B8%BA%E5%8F%98%E5%8C%96%EF%BC%9A%E8%AE%BF%E9%97%AE%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">访问器模式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/06/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%A2%86%E5%9F%9F%E8%A7%84%E5%88%99%EF%BC%9A%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+                        <span class="hidden-mobile">解释器模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

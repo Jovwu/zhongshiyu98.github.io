@@ -1,0 +1,728 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="STL容器分析...">
+  <meta name="author" content="Zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>STL：容器 - rushCpp</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushCpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="STL：容器">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-13 10:00" pubdate>
+        2020年11月13日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      31
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">STL：容器</h1>
+            
+            <div class="markdown-body">
+              <h2 id="STL六大部件"><a href="#STL六大部件" class="headerlink" title="STL六大部件"></a>STL六大部件</h2><h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8fc0bded58b81b6d96a516528d6f8c41-af505.png" srcset="/img/loading.gif" lazyload alt="关系"></p>
+<h3 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h3><ul>
+<li>$O(1)或O(c)$：常数时间</li>
+<li>$O(n)$：线性时间</li>
+<li>$O(log_2{n})$：次线性时间</li>
+<li>$O(n^2)$：平方时间</li>
+<li>$O(n^3)$：立方时间</li>
+<li>$O(2^n)$：指数时间</li>
+<li>$O(nlog_2{n})$：介于线性及二次方成长的中间之行为模式</li>
+</ul>
+<h3 id="前闭后开区间"><a href="#前闭后开区间" class="headerlink" title="前闭后开区间"></a>前闭后开区间</h3><ul>
+<li><p><code>begin</code>：指向第一个元素</p>
+</li>
+<li><p><code>end</code>：指向最后一个元素的下一个元素</p>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8a140f7be2e3e0c027357761ef6dd359-02bfc.png" srcset="/img/loading.gif" lazyload alt="前闭后开区间"></p>
+<h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><h4 id="结构与分类"><a href="#结构与分类" class="headerlink" title="结构与分类"></a>结构与分类</h4><ul>
+<li>Sequence Containers：循序式容器<ul>
+<li>Array：数组</li>
+<li>Vector：向量</li>
+<li>Deque：双向队列</li>
+<li>List：链表（双向环状链表）</li>
+<li>Forward-List：单向链表</li>
+</ul>
+</li>
+<li>Associative Containers：关联式容器<ul>
+<li>Set/Multiset（底层是红黑树）</li>
+<li>Map/Multimap（底层是红黑树）</li>
+</ul>
+</li>
+<li>Unordered Containers：不定序容器<ul>
+<li>Unordered  Set/Multiset</li>
+<li>Unordered  Map/Multimap</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6cfe93a4229328bde82237f6743d260a-a9f92.png" srcset="/img/loading.gif" lazyload alt="结构与分类"></p>
+<h4 id="使用经验"><a href="#使用经验" class="headerlink" title="使用经验"></a>使用经验</h4><ul>
+<li>array：使用二分查找<code>bsearch()</code>之前需要用<code>qsort()</code>进行排序。</li>
+<li>vector：使用二分查找<code>bsearch()</code>之前需要用<code>sort()</code>进行排序。</li>
+<li>获取容器起始地址用<code>Container.data()</code>。</li>
+<li>所有的算法都是全局的模板函数</li>
+<li>标准库提供的算法如果在容器里也有提供，那么就用容器里的，会更快</li>
+</ul>
+<h3 id="分配器"><a href="#分配器" class="headerlink" title="分配器"></a>分配器</h3><p>普通使用不建议用分配器，对于分配和释放内存使用new、delete、malloc、free即可。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/3581061f0c009b1c3a4c3c6b0e58bde5-3c6c8.png" srcset="/img/loading.gif" lazyload alt="分配器"></p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><h3 id="OOP-vs-GP"><a href="#OOP-vs-GP" class="headerlink" title="OOP vs. GP"></a>OOP vs. GP</h3><ul>
+<li><p>OOP：企图将datas和methods关联在一起</p>
+</li>
+<li><p>GP：是将datas和methods分开来</p>
+<ul>
+<li>Containers和Algorithms团队可各自闭门造车，其间以Iterator沟通即可。</li>
+<li>Algorithms通过Iterator确定操作范围，并通过Iterator取用Containers元素。</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/015e3b07b02f49daaa00064df2cfea0e-2ace9.png" srcset="/img/loading.gif" lazyload alt="GP"></p>
+</li>
+<li><p>所有Algorithms，其内最终涉及元素本身的操作，无非就是比大小。</p>
+</li>
+<li><p>新版本的STL都遵循了Handle-Body的设计原则。</p>
+</li>
+</ul>
+<h3 id="操作符重载"><a href="#操作符重载" class="headerlink" title="操作符重载"></a>操作符重载</h3><h4 id="须知"><a href="#须知" class="headerlink" title="须知"></a>须知</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a260b867c46971748bffeffdc042c0f8-dc287.png" srcset="/img/loading.gif" lazyload alt="须知"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/f674b93cc84802c5a067657e0ed40dc3-7b5dd.png" srcset="/img/loading.gif" lazyload alt="须知"></p>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/c11eea35e05921569966c536db823441-a2260.png" srcset="/img/loading.gif" lazyload alt="例子"></p>
+<h3 id="分配器-1"><a href="#分配器-1" class="headerlink" title="分配器"></a>分配器</h3><ul>
+<li>无论怎样的内存分配操作，最后都是malloc。malloc视环境而定，比如windows\linux。</li>
+<li>调用malloc分配的内存会比我们原本意图中所需要的内存会大。我们要的内存越小，这些额外的内存占比越大。</li>
+<li>VC6+、BC++、GCC2.9的<code>allocator</code>只是以<code>::operator new</code>和<code>::operator delete</code>完成<code>allocate()</code>和<code>deallocate()</code>，没有任何特殊设计。</li>
+</ul>
+<h3 id="容器，结构与分类"><a href="#容器，结构与分类" class="headerlink" title="容器，结构与分类"></a>容器，结构与分类</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8021b54cb711137f50fcf6b5a1a2664c-a318b.png" srcset="/img/loading.gif" lazyload alt="容器，结构与分类"></p>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><h4 id="成员结构"><a href="#成员结构" class="headerlink" title="成员结构"></a>成员结构</h4><p><strong>G2.9版本：</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/b715fde3789a0501fdb5d3c9ae46944c-69fb2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>结构体<code>_list_node</code>的<code>void_pointer</code>实际上指的就是自己这个类型。</li>
+</ul>
+<p><strong>G4.9版本：</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/c934a9c4da75f69acb4d7ba487d83d4e-25388.png" srcset="/img/loading.gif" lazyload alt="G4.9版本"></p>
+<ul>
+<li>List实际上没有大小，因为它继承的父类大小为8，所以List的大小才为8。</li>
+<li><code>end()</code>指向的是<code>_List_impl</code>中的<code>_M_node</code>，<code>begin()</code>指向的是<code>_M_node</code>中的<code>_M_next</code>。</li>
+</ul>
+<h4 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h4><p><strong>G2.9版本：</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/73e37be9941993b4030ca243f7274845-a87d0.png" srcset="/img/loading.gif" lazyload alt="迭代器"></p>
+<ul>
+<li>除了Array和Vector的迭代器，其他容器的迭代器必须是class类型。只有class类型才能设计出”聪明“的动作。</li>
+</ul>
+<p><strong>G4.9版本：</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5f7c225801940e0704568741c2a875fa-be049.png" srcset="/img/loading.gif" lazyload alt="G4.9版本："></p>
+<h4 id="前自增与后自增"><a href="#前自增与后自增" class="headerlink" title="前自增与后自增"></a>前自增与后自增</h4><p><strong>G2.9版本：</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/150855421610ef9fbb5b5d7fbe6e1f35-97b34.png" srcset="/img/loading.gif" lazyload alt="迭代器"></p>
+<ul>
+<li><p><code>*this</code>中的<strong>*</strong>作用的是指针，而迭代器中重载的<code>operator*</code>作用的是迭代器对象。</p>
+</li>
+<li><p>后自增<code>self operator++(int)</code>中的<code>int</code>的作用就是为了给编译器看，符合编译器的语法而已。</p>
+</li>
+<li>后自增一共调用了两次拷贝构造。</li>
+<li>至于后自增返回值、前自增返回引用，是因为参照<code>int</code>类型而设计的规范。（图左下角）</li>
+</ul>
+<h4 id="迭代器的设计原则"><a href="#迭代器的设计原则" class="headerlink" title="迭代器的设计原则"></a>迭代器的设计原则</h4><p><strong>迭代器是容器和算法的桥梁。</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/4d92bd2d2d7a87367f42df3a009d0941-1439b.png" srcset="/img/loading.gif" lazyload alt="**迭代器是容器和算法的桥梁。**"></p>
+<p>在算法执行的时候，它需要知道迭代器中的：</p>
+<ul>
+<li><strong>分类</strong>（<code>iterator_category()</code>）。它想要知道迭代器的移动性质，比如有些迭代器只能往前走，有些迭代器能往后走。这样它才能采取最佳的移动方式。（图中序号1）</li>
+<li><strong>距离</strong>（<code>difference_type</code>）。就是两个迭代器指针间的距离，应该用什么<strong>type</strong>来表现。（图中序号2）</li>
+<li><strong>类型</strong>（<code>value_type</code>）。即迭代器指向的容器的类型。（图中序号3）</li>
+<li><strong>指针</strong>。从未在C++标准库中被使用。</li>
+<li><strong>引用</strong>。从未在C++标准库中被使用。</li>
+</ul>
+<p>关于这五种的<strong>迭代器关联类型</strong>，具体看下图：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/04d6adf9cc6b1a8ab5807b0356085659-656e3.png" srcset="/img/loading.gif" lazyload alt="迭代器关联类型"></p>
+<p>以上的方式只有迭代器为class类型时，算法才能获取<strong>迭代器关联类型</strong>。因为标准库的算法是个函数模板，传迭代器和指针都可以，所以当迭代器是指针类型时，以上的处理方式是错误的。为了能应对不同类型的迭代器，算法可以使用萃取机制（<code>iterator_traits</code>），来获取所需信息。</p>
+<h5 id="萃取机制"><a href="#萃取机制" class="headerlink" title="萃取机制"></a>萃取机制</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5255bf7b118a98cb8fbc6e777ffe8c3f-8ffdd.png" srcset="/img/loading.gif" lazyload alt="萃取机制"></p>
+<p>萃取机中使用了模板偏特化统一了接口：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/fa0e9abfd730734cd7ed183ac9aa76ae-15879.png" srcset="/img/loading.gif" lazyload alt="萃取机中使用了模板偏特化"></p>
+<p>注意<strong>const指针</strong>的传入，具体看上图右下角。</p>
+<h6 id="萃取机例子"><a href="#萃取机例子" class="headerlink" title="萃取机例子"></a>萃取机例子</h6><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/299e805e56c24b3f39926f39d1fa84a8-1aa6f.png" srcset="/img/loading.gif" lazyload alt="萃取机例子"></p>
+<h3 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h3><ul>
+<li><p>TR1是C++过渡版本</p>
+</li>
+<li><p>创建Array时必须指定Array大小 </p>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0d80554f3f92f6215d591158ced0157b-a0c91.png" srcset="/img/loading.gif" lazyload alt="必须指定大小"></p>
+<p>和Vector一样，Array的指针也是<code>native pointer</code>。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/43a93960338ab9efbfe3c104646baf22-14cd4.png" srcset="/img/loading.gif" lazyload alt="Array"></p>
+<h3 id="Forward-List"><a href="#Forward-List" class="headerlink" title="Forward-List"></a>Forward-List</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/cf072de20e41d9542dbd366698ea944e-0bdc6.png" srcset="/img/loading.gif" lazyload alt="Forward-List"></p>
+<h3 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h3><h4 id="向量结构"><a href="#向量结构" class="headerlink" title="向量结构"></a>向量结构</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/f2f9fb58f888ffc9ab8f7f330a6b5bef-40eb7.png" srcset="/img/loading.gif" lazyload alt="容器"></p>
+<ul>
+<li>向量为倍增式扩容。mscv下是1.5倍扩容,gnu c上是2倍扩容</li>
+<li>向量用三个指针（迭代器）控制整个容器，其中<ul>
+<li><code>start</code>：指向向量起始位置</li>
+<li><code>finish</code>：元素最后一个元素的下一个地址</li>
+<li><code>end_of_storage</code>：指向向量的最后一个位置</li>
+</ul>
+</li>
+<li>向量的一些量化指标：<ul>
+<li><code>size</code>：向量中的元素个数</li>
+<li><code>capacity</code>：向量的最大容量</li>
+</ul>
+</li>
+<li><code>vector</code>需要注意迭代器失效，失效的时机出现在<code>vector</code>在<code>push_back</code>一个新元素后，可能发生的倍增扩容。所以当扩容发生时，由于<code>vector</code>更换了存放位置，指向原来位置的迭代器会失效。比如在更换位置之前，使用某个变量存储了迭代器。</li>
+</ul>
+<p>G4.9版本：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/7900b61baeb08459c96f5ec131302b85-85010.png" srcset="/img/loading.gif" lazyload alt="G4.9版本："></p>
+<h4 id="向量扩容示范"><a href="#向量扩容示范" class="headerlink" title="向量扩容示范"></a>向量扩容示范</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/c0640655601dcb97f9b843aa79b75bfd-a5b6d.png" srcset="/img/loading.gif" lazyload alt="向量扩容示范"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/fa25a0efee12df1a7217ba4c3dc8fc3e-b3b72.png" srcset="/img/loading.gif" lazyload alt="向量扩容示范"></p>
+<h4 id="向量的迭代器"><a href="#向量的迭代器" class="headerlink" title="向量的迭代器"></a>向量的迭代器</h4><p>向量的迭代器实际上就是个指针，因为向量在物理空间上连续，可以随机访问，指针完全能应付。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/4357a1735241c0f4cf7b3337675d956f-6790e.png" srcset="/img/loading.gif" lazyload alt="向量的迭代器"></p>
+<p><strong>向量迭代器实质：使用适配器模式包装了<code>_Tp*</code>。</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/9c0c3d525067662be0409430e3292dc5-320b0.png" srcset="/img/loading.gif" lazyload alt="向量的迭代器"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/bc3b907f33ed8b45e0e48b829e291481-a2259.png" srcset="/img/loading.gif" lazyload alt="向量迭代器"></p>
+<h3 id="deque"><a href="#deque" class="headerlink" title="deque"></a>deque</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/9de2d27b24e5bb52cd08544ed87c55cf-1f51e.png" srcset="/img/loading.gif" lazyload alt="deque"></p>
+<p>注意：控制中心的map是指向vector的，以后也是2倍增长。（map左右两边一般留有剩余空间，用于前后插入元素）。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/JMW1407/article/details/106930972">C++ 标准模板库（STL）_序列式容器—— deque(模拟连续空间)（侯捷老师）</a></p>
+<ol>
+<li><p>map在初始化时会预留前后两个节点，并将start和finish迭代器指向map的存放数据的头尾区域。</p>
+</li>
+<li><p>在元素插入/删除时如果越过缓冲区，那么下一个/该缓冲区将会被申请/释放。</p>
+</li>
+<li>deque主要使用迭代器来模拟连续空间，迭代器的主要参数为：</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">// 保持与容器的联结</span><br>  T* cur;       <span class="hljs-comment">// 此迭代器所指之缓冲区中的现行元素</span><br>  T* first;     <span class="hljs-comment">// 此迭代器所指之缓冲区的头</span><br>  T* last;      <span class="hljs-comment">// 此迭代器所指之缓冲区的尾（含备用空间）</span><br>  map_pointer node; <span class="hljs-comment">//指向管控中心</span><br></code></pre></div></td></tr></table></figure>
+<ol>
+<li>保持连续性的关键在于源代码中的迭代器做了大量的操作符重载。</li>
+<li>插入操作若不在两端，那么将会计算插入点离前后的距离谁比较短，取短的区域进行位移。</li>
+</ol>
+<h4 id="stack和queue"><a href="#stack和queue" class="headerlink" title="stack和queue"></a>stack和queue</h4><ul>
+<li><p>stack内含了一个deque底层容器，所有事情交由deque去做：</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++">tmpplate&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span>,<span class="hljs-keyword">class</span> <span class="hljs-title">Sequence</span> =</span> deque&lt;T&gt;&gt;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">stack</span>&#123;</span><br><span class="hljs-comment">//...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+</li>
+<li><p>stack和queue都可以选择list或deque作为底层容器，但是默认的deque速度会比较快。原因是list需要执行new操作，这种操作是普通语句的两百倍左右的时间，所以用deque。</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++">stack&lt;string,list&lt;string&gt;&gt; c;<br>queue&lt;string,list&lt;string&gt;&gt; c;<br></code></pre></div></td></tr></table></figure>
+</li>
+<li><p>stack和queue都不允许遍历，也不提供iterator。</p>
+</li>
+<li><p>stack可选择vector作为底层结构，但是queue不可选择vector作为底层结构（虽然编译器会通过，但是当queue使用pop行为时，编译器会报错，因为编译器只会做局部检查，就是你用了什么编译器就会检查什么）。</p>
+</li>
+<li><p>stack和queue都不可以选择set或map做底层结构（编译器也会通过，但是不能用，原因同上）。</p>
+</li>
+</ul>
+<h3 id="RB-TREE"><a href="#RB-TREE" class="headerlink" title="RB-TREE"></a>RB-TREE</h3><ul>
+<li>我们不应使用红黑树的迭代器改变元素值（因为元素有严谨的排列规则）。编程层面并未阻止此事。如此设计是正确的，因为红黑树即将为set和map服务（作为其底部支持），而map允许元素的data被改变，只有元素的key才是不可以被改变的。</li>
+<li>红黑树提供遍历操作以及迭代器，按正常规则++遍历，便能获得排序状态。</li>
+<li>红黑树提供两种插入操作：<code>insert_unique()</code>和<code>insert_equal()</code>。<ul>
+<li>insert_unique()：key一定在树中独一无二。</li>
+<li>insert_equal()：key一定在树中可以重复。</li>
+</ul>
+</li>
+<li>节点value包含了key和data。key为标识，data是数据的组合。</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/98f547d907431f6fe65ca78692299d05-f4830.png" srcset="/img/loading.gif" lazyload  /></p>
+<ul>
+<li><p>红黑树的初始化所需要的参数中：</p>
+<ul>
+<li><p>keyofvalue：告诉红黑树，key要怎么拿。</p>
+</li>
+<li><p>compare：两个元素怎么比大小。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/7dc9204bb800fef539f165e869569856-1059b.png" srcset="/img/loading.gif" lazyload alt="红黑树的结构中"></p>
+<ul>
+<li><p>红黑树的结构中：</p>
+<ul>
+<li><p>node_count：节点数量</p>
+</li>
+<li><p>header：红黑树的头节点</p>
+</li>
+<li><p>key_compare：key的大小比较规则，应该是各function object。注意：仿函数的理论大小为0，因为它没有任何的数据。但是编译器会把它的大小变为1。因为编译器对于大小为0的class，编译出来的大小永远为1。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="set和multiset"><a href="#set和multiset" class="headerlink" title="set和multiset"></a>set和multiset</h4><ul>
+<li>set和multiset都以红黑树作为底层结构，因此有元素自动排序的特性。排序的依据是key，而set和multiset的value和key二合一，也就是说value就是key。</li>
+<li>set和multiset提供遍历操作以及迭代器，按照正常规则++遍历，便能获得排序状态。</li>
+<li>我们无法使用set和multiset的迭代器改变元素值（因为key有严谨的排序规则）。set和multiset的迭代器是const类型的迭代器，所以无法改变元素内容。</li>
+<li>set元素的key必须独一无二，因此它的<code>insert()</code>是红黑树的<code>insert_unique()</code>。</li>
+<li>multiset的key可以重复，因此它的<code>insert()</code>是红黑树的<code>insert_equal()</code>。</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/226616eb2ac701fa588539126010962a-e27d3.png" srcset="/img/loading.gif" lazyload alt="set和multiset"></p>
+<h4 id="map和multimap"><a href="#map和multimap" class="headerlink" title="map和multimap"></a>map和multimap</h4><ul>
+<li>map/multimap以红黑树为底层结构。因此有元素自动排序特性。排序的依据是key。</li>
+<li>map/multimap提供遍历操作及迭代器。按照正常规则++遍历，就能获得排序状态。</li>
+<li>我们无法使用map/multimap的迭代器改变元素的key，但可以用它来改变元素的data。因此map/multimap内部自动将user指定的key type设为const，如此便能禁止user对元素的key赋值。即map构造RB-Tree的过程中，将<code>Key</code>和<code>T</code>组成了<code>pair&lt;const Key,T&gt;</code>传入了RB-Tree。</li>
+<li>set元素的key必须独一无二，因此它的<code>insert()</code>是红黑树的<code>insert_unique()</code>。</li>
+<li>multimap的key可以重复，因此它的<code>insert()</code>是红黑树的<code>insert_equal()</code>。</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/09daead3d61f70f9e1c77fffde7773dc-57418.png" srcset="/img/loading.gif" lazyload alt="map和multimap"></p>
+<ul>
+<li>multimap无法使用<code>[]</code>做插入，但是map可以。map的<code>operator[]</code>的操作是：如果找到该元素，便返回。若没有找到，就在map中合适的地方创建一个。<img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/2ef03b91b6d7aa257b7b8e3b027eefb8-7dd08.png" srcset="/img/loading.gif" lazyload alt="map"></li>
+</ul>
+<h3 id="hashtable"><a href="#hashtable" class="headerlink" title="hashtable"></a>hashtable</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/76b4b14163eb272f541bfe777f2532f8-c19db.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<ul>
+<li>如果挂的链表太长的话，就要把它们打散，变成散列表。</li>
+<li>如果元素个数比桶的个数还要多，就很危险。这种情况下就把桶增加两倍。然后重新将元素放进桶里。 <strong>所以桶的数量永远大于元素个数。</strong></li>
+<li>翻倍(<strong>rehash</strong>)的原则是：原来的桶数量为53，那么就先翻倍成106，再找到离106最近最小的质数97。</li>
+<li>桶中元素越少，查找和插入速度越快。所以有时候需要翻倍处理。</li>
+<li>桶的数量已经写死了。<img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/269af63212907508fb2d06d575a17b06-ffe8e.png" srcset="/img/loading.gif" lazyload style="zoom: 50%;" /></li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/c3f6b7978fec1d67994c72d1affb0968-13938.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<ul>
+<li><code>ExtractKey</code>：如何获取存储数据的Key，即仿函数</li>
+<li><code>EqualKey</code>：如何比较两个Key相等，即仿函数</li>
+<li><p>标准库提供了针对基本类型的hash函数，实质上就是把传入的东西再返回。而<code>char*</code>和<code>string</code>会通过一些换算形成哈希值。</p>
+</li>
+<li><p><strong>unordered</strong>容器的底层就是<strong>hashtable</strong></p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/C/">C++</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/STL/">STL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/18/C++/STL/STL%EF%BC%9A%E8%BF%AD%E4%BB%A3%E5%99%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">STL：迭代器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/11/C++/%E9%97%AE%E9%A2%98%E5%BD%92%E7%BA%B3/">
+                        <span class="hidden-mobile">问题归纳</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

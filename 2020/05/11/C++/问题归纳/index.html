@@ -1,0 +1,508 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="一些常见问题...">
+  <meta name="author" content="Zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>问题归纳 - rushCpp</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushCpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="问题归纳">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-11 10:00" pubdate>
+        2020年5月11日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">问题归纳</h1>
+            
+            <div class="markdown-body">
+              <h2 id="引用的生命周期？"><a href="#引用的生命周期？" class="headerlink" title="引用的生命周期？"></a>引用的生命周期？</h2><h2 id="友元函数是类成员函数吗？"><a href="#友元函数是类成员函数吗？" class="headerlink" title="友元函数是类成员函数吗？"></a>友元函数是类成员函数吗？</h2><p>不是，友元函数的原型有在类的定义中出现过，但是友元函数并不是成员函数。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-friend-functions.html">C++ 友元函数</a></p>
+<h2 id="如何判断操作符重载放在类里还是类外？"><a href="#如何判断操作符重载放在类里还是类外？" class="headerlink" title="如何判断操作符重载放在类里还是类外？"></a>如何判断操作符重载放在类里还是类外？</h2><p>赋值（=）、下标（[]）、调用（()）和成员访问箭头（-&gt;）运算符必须是成员（函数）。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29344757/article/details/78820189">为什么有的操作符重载函数只能是成员函数?</a></p>
+<h2 id="初始化列表的优势体现在哪里？"><a href="#初始化列表的优势体现在哪里？" class="headerlink" title="初始化列表的优势体现在哪里？"></a>初始化列表的优势体现在哪里？</h2><ol>
+<li>类成员中存在常量，如<code>const int a</code>,只能用初始化不能复制</li>
+<li>类成员中存在引用，同样只能使用初始化不能赋值</li>
+<li>提高效率</li>
+</ol>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wuyepeng/p/9863763.html">使用初始化列表的好处</a></p>
+<h2 id="为什么要虚的析构函数？"><a href="#为什么要虚的析构函数？" class="headerlink" title="为什么要虚的析构函数？"></a>为什么要虚的析构函数？</h2><p>这样做是为了当<strong>用一个基类的指针删除一个派生类的对象时，派生类的析构函数会被调用</strong>。当然，<strong>并不是要把所有类的析构函数都写成虚函数</strong>。因为当类里面有虚函数的时候，编译器会给类添加一个虚函数表，里面来存放虚函数指针，这样就会增加类的存储空间。所以，只有<strong>当一个类被用来作为基类的时候，才把析构函数写成虚函数</strong>。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangjingyangguang/article/details/21549991">为什么要用虚析构函数</a></p>
+<h2 id="什么叫做对象切割？"><a href="#什么叫做对象切割？" class="headerlink" title="什么叫做对象切割？"></a>什么叫做对象切割？</h2><h2 id="什么叫做编译转换？"><a href="#什么叫做编译转换？" class="headerlink" title="什么叫做编译转换？"></a>什么叫做编译转换？</h2><h2 id="返回值的生命周期"><a href="#返回值的生命周期" class="headerlink" title="返回值的生命周期"></a>返回值的生命周期</h2><h2 id="操作符重载作为成员函数和非成员函数时的优缺点"><a href="#操作符重载作为成员函数和非成员函数时的优缺点" class="headerlink" title="操作符重载作为成员函数和非成员函数时的优缺点"></a>操作符重载作为成员函数和非成员函数时的优缺点</h2><h2 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h2><h2 id="为什么要用基类指针指向派生类？"><a href="#为什么要用基类指针指向派生类？" class="headerlink" title="为什么要用基类指针指向派生类？"></a>为什么要用基类指针指向派生类？</h2><p>在基类与派生类之间，有一个<strong>规定</strong>：派生类对象的地址可以赋给指向基类对象的指针变量（简称<strong>基类指针</strong>），即基类指针也可以指向派生类对象。为什么有这一规定呢？因为它可以实现<strong>多态性</strong>，即向不同的对象发送同一个消息，不同的对象在接受时会产生不同的行为。</p>
+<p>基类指针可以指向基类对象；派生类指针可以指向派生类对象；基类指针可以指向派生类对象（无需强制转换），但只能引用基类中有的成员； 派生类指针指向基类对象，会引发语法错误。但派生类指针通过强制转换可指向基类对象。可是该动作很危险：若引用对象中不村在的派生类成员，会得到错误的结果。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hk121/article/details/81165391">为什么要用基类指针指向派生类对象？</a></p>
+<h2 id="动态联编和静态联编"><a href="#动态联编和静态联编" class="headerlink" title="动态联编和静态联编"></a>动态联编和静态联编</h2><h2 id="向上转型和向下转型"><a href="#向上转型和向下转型" class="headerlink" title="向上转型和向下转型"></a>向上转型和向下转型</h2><h2 id="释放一个空指针会有什么问题"><a href="#释放一个空指针会有什么问题" class="headerlink" title="释放一个空指针会有什么问题"></a>释放一个空指针会有什么问题</h2><h2 id="c-类的内存模型"><a href="#c-类的内存模型" class="headerlink" title="c++类的内存模型"></a>c++类的内存模型</h2><h2 id="内存分配中的cookie"><a href="#内存分配中的cookie" class="headerlink" title="内存分配中的cookie"></a>内存分配中的cookie</h2><p>在malloc为用户分配内存的时候，除了分配用户本身的内存，还会在内存前后加上两个cookie，来记录分配了多少内存，这样在调用free函数的时候才能准确的回收内存。因此每次调用malloc函数都会产生cookie消耗。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/338043328">C++内存管理（malloc和free中的cookie）</a></p>
+<h2 id="Debug模式下多出来的内存空间干嘛用？Debugger-Header、no-man-land？"><a href="#Debug模式下多出来的内存空间干嘛用？Debugger-Header、no-man-land？" class="headerlink" title="Debug模式下多出来的内存空间干嘛用？Debugger Header、no man land？"></a>Debug模式下多出来的内存空间干嘛用？Debugger Header、no man land？</h2><h2 id="静态数据什么时候会被创建"><a href="#静态数据什么时候会被创建" class="headerlink" title="静态数据什么时候会被创建"></a>静态数据什么时候会被创建</h2><h2 id="纯虚函数的定义"><a href="#纯虚函数的定义" class="headerlink" title="纯虚函数的定义"></a>纯虚函数的定义</h2><h2 id="C-子类拥有和父类的同名非虚函数会发生什么情况？"><a href="#C-子类拥有和父类的同名非虚函数会发生什么情况？" class="headerlink" title="C++子类拥有和父类的同名非虚函数会发生什么情况？"></a>C++子类拥有和父类的同名非虚函数会发生什么情况？</h2><h2 id="C-函数签名"><a href="#C-函数签名" class="headerlink" title="C++函数签名"></a>C++函数签名</h2><h2 id="栈对象如何向上转型"><a href="#栈对象如何向上转型" class="headerlink" title="栈对象如何向上转型"></a>栈对象如何向上转型</h2><h2 id="C-中的原子对象"><a href="#C-中的原子对象" class="headerlink" title="C++中的原子对象"></a>C++中的原子对象</h2><h2 id="C-中的reorder"><a href="#C-中的reorder" class="headerlink" title="C++中的reorder"></a>C++中的reorder</h2><h2 id="C-的异常和底层机制"><a href="#C-的异常和底层机制" class="headerlink" title="C++的异常和底层机制"></a>C++的异常和底层机制</h2><h2 id="C-abort"><a href="#C-abort" class="headerlink" title="C++abort()"></a>C++abort()</h2><h2 id="C-List为什么会有maxsize"><a href="#C-List为什么会有maxsize" class="headerlink" title="C++List为什么会有maxsize?"></a>C++List为什么会有maxsize?</h2><h2 id="C-泛化指针"><a href="#C-泛化指针" class="headerlink" title="C++泛化指针"></a>C++泛化指针</h2><h2 id="C-的malloc详解"><a href="#C-的malloc详解" class="headerlink" title="C++的malloc详解"></a>C++的malloc详解</h2><h2 id="C-序列化"><a href="#C-序列化" class="headerlink" title="C++序列化"></a>C++序列化</h2><h2 id="C-访问级别底层原理？"><a href="#C-访问级别底层原理？" class="headerlink" title="C++访问级别底层原理？"></a>C++访问级别底层原理？</h2><h2 id="C-override"><a href="#C-override" class="headerlink" title="C++override?"></a>C++override?</h2><h2 id="C-如何充分利用CPU时间片？"><a href="#C-如何充分利用CPU时间片？" class="headerlink" title="C++如何充分利用CPU时间片？"></a>C++如何充分利用CPU时间片？</h2><h2 id="C-类中的typedef以及它的空间占用和底层实现？"><a href="#C-类中的typedef以及它的空间占用和底层实现？" class="headerlink" title="C++类中的typedef以及它的空间占用和底层实现？"></a>C++类中的typedef以及它的空间占用和底层实现？</h2><h2 id="C-引用折叠？"><a href="#C-引用折叠？" class="headerlink" title="C++引用折叠？"></a>C++引用折叠？</h2><h2 id="C-嵌入式指针？"><a href="#C-嵌入式指针？" class="headerlink" title="C++嵌入式指针？"></a>C++嵌入式指针？</h2><h2 id="C-类的静态函数能直接被调用吗？"><a href="#C-类的静态函数能直接被调用吗？" class="headerlink" title="C++类的静态函数能直接被调用吗？"></a>C++类的静态函数能直接被调用吗？</h2><p>答：可以。静态成员函数即使在类对象不存在的情况下也能被调用，静态函数只要使用类名加范围解析运算符:: 就可以访问。 静态成员函数只能访问静态成员数据、其他静态成员函数和类外部的其他函数。 静态成员函数有一个类范围，他们不能访问类的this 指针。</p>
+<h2 id="C-typename"><a href="#C-typename" class="headerlink" title="C++typename"></a>C++typename</h2><ul>
+<li>typename在下面情况下禁止使用：<ul>
+<li>模板定义之外，即typename只能用于模板的定义中</li>
+<li>非限定类型，比如前面介绍过的<code>int</code>，<code>vector&lt;int&gt;</code>之类</li>
+<li>基类列表中，比如<code>template &lt;class T&gt; class C1 : T::InnerType</code>不能在<code>T::InnerType</code>前面加typename</li>
+<li>构造函数的初始化列表中</li>
+</ul>
+</li>
+<li>如果类型是依赖于模板参数的限定名，那么在它之前<strong>必须</strong>加typename(除非是基类列表，或者在类的初始化成员列表中)</li>
+<li>其它情况下typename是<strong>可选</strong>的，也就是说对于一个不是依赖名的限定名，该名称是可选的，例如<code>vector&lt;int&gt; vi;</code></li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://feihu.me/blog/2014/the-origin-and-usage-of-typename/">知无涯之C++ typename的起源与用法</a></p>
+<h2 id="C-volatile"><a href="#C-volatile" class="headerlink" title="C++volatile?"></a>C++volatile?</h2><p>一般说来，volatile用在如下的几个地方：</p>
+<ul>
+<li>中断服务程序中修改的供其它程序检测的变量需要加 volatile；</li>
+<li>多任务环境下各任务间共享的标志应该加 volatile；</li>
+<li>存储器映射的硬件寄存器通常也要加 volatile 说明，因为每次对它的读写都可能由不同意义；</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yc_sunniwell/archive/2010/07/14/1777432.html">C/C++中volatile关键字详解</a></p>
+<h2 id="C-创建对象用中括号"><a href="#C-创建对象用中括号" class="headerlink" title="C++创建对象用中括号{}"></a>C++创建对象用中括号{}</h2><h2 id="C-如何刷新缓冲区及其原理"><a href="#C-如何刷新缓冲区及其原理" class="headerlink" title="C++如何刷新缓冲区及其原理"></a>C++如何刷新缓冲区及其原理</h2><h2 id="在C-拷贝构造函数中使用初始化列表"><a href="#在C-拷贝构造函数中使用初始化列表" class="headerlink" title="在C++拷贝构造函数中使用初始化列表"></a>在C++拷贝构造函数中使用初始化列表</h2><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/justin12zhu/article/details/9174491">在C++拷贝构造函数中使用初始化列表</a></p>
+<h2 id="C-释放一个空指针？"><a href="#C-释放一个空指针？" class="headerlink" title="C++释放一个空指针？"></a>C++释放一个空指针？</h2><h2 id="C-中进程的栈空间为多少？"><a href="#C-中进程的栈空间为多少？" class="headerlink" title="C++中进程的栈空间为多少？"></a>C++中进程的栈空间为多少？</h2><h2 id="C-中被调用函数如何被释放？返回值在什么时候被获取？"><a href="#C-中被调用函数如何被释放？返回值在什么时候被获取？" class="headerlink" title="C++中被调用函数如何被释放？返回值在什么时候被获取？"></a>C++中被调用函数如何被释放？返回值在什么时候被获取？</h2><h2 id="断言和异常的区别和使用场景"><a href="#断言和异常的区别和使用场景" class="headerlink" title="断言和异常的区别和使用场景?"></a>断言和异常的区别和使用场景?</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/C/">C++</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/13/C++/STL/STL%EF%BC%9A%E5%AE%B9%E5%99%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">STL：容器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/01/27/C++/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/">
+                        <span class="hidden-mobile">内存对齐</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
