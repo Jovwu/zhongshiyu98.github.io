@@ -1,0 +1,562 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="使用域名访问自己的VPS...">
+  <meta name="author" content="Zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>域名解析教程 - rushCpp</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushCpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="域名解析教程">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-04-10 10:00" pubdate>
+        2021年4月10日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">域名解析教程</h1>
+            
+            <div class="markdown-body">
+              <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h2><p>在开始之前，需要一个域名和VPS。一开始我选择的是狗爹域名和腾讯云VPS。结果到后面网站需要备案的时候麻烦来了：国外域名注册商提供的域名无法在国内进行备案(将域名从狗爹转入到国内的域名注册商后就可以备案了)…一开始我买狗爹的域名是想绑定在搬瓦工VPS上，后面感觉在大多数的使用情况下使用国内的VPS，响应会比较快，就用了腾讯云。然后配置的时候一路通行，到备案的时候给卡住了…所以个人建议：</p>
+<ol>
+<li>如果你是做类似于外贸的网站，或是用的国外VPS，建议在国外域名注册商那儿注册域名。而且听说国外建站无需备案</li>
+<li>如果只是做个人网站，而且在国内访问比较频繁的话，直接选择国内VPS+国内域名注册商，方便省心。</li>
+</ol>
+<p>本文也是写到备案这块发现了这个问题，所以后面干脆在腾讯云又买了个域名。感觉腾讯云会比狗爹便宜许多，墙裂推荐</p>
+<p>虽然本文具体写的是<strong>Godaddy域名绑定到腾讯云服务器</strong>，但是除了Godaddy官网操作的那部分不一样之外，其他注册商购买的域名(比如腾讯云、阿里云)绑定到腾讯云的操作其实是一样的，直接看”<strong>2.2 添加解析</strong>“就好</p>
+<hr>
+<hr>
+<h2 id="2-Godaddy域名绑定到腾讯云服务器"><a href="#2-Godaddy域名绑定到腾讯云服务器" class="headerlink" title="2. Godaddy域名绑定到腾讯云服务器"></a>2. Godaddy域名绑定到腾讯云服务器</h2><h3 id="2-1-DNS地址设置"><a href="#2-1-DNS地址设置" class="headerlink" title="2.1 DNS地址设置"></a>2.1 DNS地址设置</h3><p>进入腾讯云的DNS解析页面</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410170812.png" srcset="/img/loading.gif" lazyload alt="进入设置页面"></p>
+<p>进入DNSPod控制台</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410171019.png" srcset="/img/loading.gif" lazyload alt="进入DNSPod控制台"></p>
+<p>添加域名</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410171154.png" srcset="/img/loading.gif" lazyload alt="添加域名"></p>
+<p>此时会显示DNS不正确</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410171303.png" srcset="/img/loading.gif" lazyload alt="DNS不正确"></p>
+<p>鼠标移动到状态上面，此时会显示</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410171449.png" srcset="/img/loading.gif" lazyload alt="查看详情1"></p>
+<p>点击查看详情</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410171616.png" srcset="/img/loading.gif" lazyload alt="查看详情2"></p>
+<p>记住腾讯云提供的两个DNS服务器地址，然后打开<a target="_blank" rel="noopener" href="https://dcc.godaddy.com/">Godaddy</a>，登录后点击需要修改DNS的域名，进入该域名的管理界面</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410171918.png" srcset="/img/loading.gif" lazyload alt="点击域名"></p>
+<p>进入页面后，拉至网页的最下方，找到<strong>Manage DNS</strong>，并点击进入下一个界面</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410172049.png" srcset="/img/loading.gif" lazyload alt="点击Manage DNS"></p>
+<p>进入页面后，找到<strong>Nameservers</strong>的<em>*Changes</em>，并点击进入下一个界面</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410172522.png" srcset="/img/loading.gif" lazyload alt="Change"></p>
+<p>接着点击<strong>Enter my own nameservers (advanced)</strong>进入下一个界面</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410172707.png" srcset="/img/loading.gif" lazyload alt="Enter my own nameservers (advanced)"></p>
+<p>在输入框输入刚才腾讯云提供的两个DNS地址，然后点击Save</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410173004.png" srcset="/img/loading.gif" lazyload alt="输入地址并保存"></p>
+<p>此时会跳出一个提示框，要是没什么问题直接勾选并继续即可</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410173117.png" srcset="/img/loading.gif" lazyload alt="勾选并继续"></p>
+<p>此时会发一个密码到你注册狗爹时使用的邮箱，点击发送密码</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410173326.png" srcset="/img/loading.gif" lazyload alt="发送密码"></p>
+<p>输入邮箱收到的密码，点击验证</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410173439.png" srcset="/img/loading.gif" lazyload alt="输入密码并验证"></p>
+<p>等待一会，在出现的页面中找到Nmaeservers，看看两个Nameserver是不是我们刚才更改的地址，如果是的话就可以</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410173614.png" srcset="/img/loading.gif" lazyload alt="修改成功"></p>
+<p>返回腾讯云，等待一段时间后点击重新验证。我这里是修改完DNS地址后直接重新验证就可以了</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410173839.png" srcset="/img/loading.gif" lazyload alt="重新验证"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410173932.png" srcset="/img/loading.gif" lazyload alt="验证结果"></p>
+<hr>
+<h3 id="2-2-添加解析"><a href="#2-2-添加解析" class="headerlink" title="2.2 添加解析"></a>2.2 添加解析</h3><p>在<strong>DNSPOD</strong>点击待解析的域名</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410194832.png" srcset="/img/loading.gif" lazyload alt="待解析域名"></p>
+<p>点击<strong>添加第一条记录</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410200036.png" srcset="/img/loading.gif" lazyload alt="添加第一条记录"></p>
+<p>根据自己的需要，按照提示填写，然后点击<strong>确认</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410200129.png" srcset="/img/loading.gif" lazyload alt="按照提示填写"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410200321.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>至此已经完成了，在浏览器中输入域名也可顺利的访问。但是由于我们的网站还未备案，所以没过一会就会出现让你备案的网页。想要好好的用，就老老实实的备案吧(备案之前需要先将域名从狗爹转入国内域名注册商)</p>
+<hr>
+<hr>
+<h2 id="错误及问题记录"><a href="#错误及问题记录" class="headerlink" title="错误及问题记录"></a>错误及问题记录</h2><h3 id="1-DNS-PROBE-FINISHED-NXDOMAIN"><a href="#1-DNS-PROBE-FINISHED-NXDOMAIN" class="headerlink" title="1. DNS_PROBE_FINISHED_NXDOMAIN"></a>1. DNS_PROBE_FINISHED_NXDOMAIN</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410200903.png" srcset="/img/loading.gif" lazyload alt="DNS_PROBE_FINISHED_NXDOMAIN"></p>
+<p>这个问题是在我刚在宝塔面板给网站添加域名后访问出现的，然后等了大概两三分钟再打开就没问题了。</p>
+<h3 id="2-This-Web-page-is-parked-FREE-courtesy-of-GoDaddy-未解决"><a href="#2-This-Web-page-is-parked-FREE-courtesy-of-GoDaddy-未解决" class="headerlink" title="2. This Web page is parked FREE, courtesy of GoDaddy.(未解决)"></a>2. This Web page is parked FREE, courtesy of GoDaddy.(未解决)</h3><p>当我满怀期待地在地址栏输入我的域名并回车后，结果眼前出现了一个神秘男子</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410201653.png" srcset="/img/loading.gif" lazyload alt="神秘男子"></p>
+<p>但是我从宝塔面板点击我的域名，网页却正常的显示</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410210330.png" srcset="/img/loading.gif" lazyload alt="正常显示"></p>
+<p>而我用另一台设备打开这个网页的时候，也是能正常的显示原本的内容。</p>
+<p>后面猜想了一下，应该跟DNS服务器有关</p>
+<p>这个是没法正常打开网页的设备的DNS服务器地址</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410210543.png" srcset="/img/loading.gif" lazyload alt="DNS服务器"></p>
+<p>这个是能够正常打开的设备的DNS服务器地址</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410210833.png" srcset="/img/loading.gif" lazyload alt="另一台设备"></p>
+<p>个人认为，可能因为是我刚在腾讯云添加了DNS解析，而一些DNS服务器的解析记录还没有更新，所以才会导致出现这种情况。</p>
+<p>至于为什么在同一台机子上，直接用浏览器打开和用宝塔面板进入会出现两种情况，我想了一下，应该是因为宝塔面板是安装在我域名解析的那台服务器上。也就是说当我从宝塔面板进入时，宝塔面板把”<strong>自己</strong>“返回给了我让我进入，而没有经过域名解析…怪我才疏学浅，目前能想到的原因只有这个</p>
+<hr>
+<h3 id="3-该网站未根据工信部相关法律规则进行备案"><a href="#3-该网站未根据工信部相关法律规则进行备案" class="headerlink" title="3. 该网站未根据工信部相关法律规则进行备案"></a>3. 该网站未根据工信部相关法律规则进行备案</h3><p>网站多访问几次以后，出现了以下页面</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410202119.png" srcset="/img/loading.gif" lazyload alt="网站未备案"></p>
+<p>没有解决方法，在国内还是老老实实备案吧</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210410202344.png" srcset="/img/loading.gif" lazyload alt="开始备案"></p>
+<p>注意，Godaddy购买的域名在国内是无法进行备案的。如果一定要备案，需要把域名从狗爹转到国内的域名注册商。</p>
+<hr>
+<hr>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000002309400#">一个注册域名能分配多少子域名?</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%BB%BA%E7%AB%99/">建站</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%85%BE%E8%AE%AF%E4%BA%91/">腾讯云</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Godaddy/">Godaddy</a>
+                    
+                      <a class="hover-with-bg" href="/tags/VPS/">VPS</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/05/11/C++/%E9%AB%98%E7%BA%A7%E5%BC%80%E5%8F%91/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">高级开发</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/26/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E6%90%AD%E5%BB%BAWordPress/">
+                        <span class="hidden-mobile">搭建wordpress</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,687 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="git常见用法...">
+  <meta name="author" content="Zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>git常见用法 - rushCpp</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushCpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="git常见用法">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-09 10:00" pubdate>
+        2021年3月9日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      55
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">git常见用法</h1>
+            
+            <div class="markdown-body">
+              <h2 id="1-Git在本地环境的使用"><a href="#1-Git在本地环境的使用" class="headerlink" title="1. Git在本地环境的使用"></a>1. Git在本地环境的使用</h2><h3 id="1-1-在本地初始化一个Git仓库"><a href="#1-1-在本地初始化一个Git仓库" class="headerlink" title="1.1 在本地初始化一个Git仓库"></a>1.1 在本地初始化一个Git仓库</h3><p>在本地新建一个文件夹，用于做Git的仓库。并在该目录下创建新文件</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304170419.png" srcset="/img/loading.gif" lazyload alt="新建文件夹"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304170551.png" srcset="/img/loading.gif" lazyload alt="新建文件"></p>
+<p>接着<strong>初始化</strong>这个新建的目录。在该目录下打开命令行，键入</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git init<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304170804.png" srcset="/img/loading.gif" lazyload alt="初始化新建文件夹"></p>
+<hr>
+<h3 id="1-2-查看本地仓库的状态"><a href="#1-2-查看本地仓库的状态" class="headerlink" title="1.2 查看本地仓库的状态"></a>1.2 查看本地仓库的状态</h3><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git status<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304174055.png" srcset="/img/loading.gif" lazyload alt="查看状态"></p>
+<p>其中，”<strong>On branch master</strong>“表示本地仓库默认在<strong>master</strong>分支，”<strong>Untracked files</strong>“表示”<strong>test.markdown</strong>“这个文件还没有被跟踪，还没有提交在git仓库里。并且下面会提示你可以使用”<strong>git add</strong>“去操作你想要提交的文件。</p>
+<p>如果该目录没有被初始化，将会出现以下结果</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304200343.png" srcset="/img/loading.gif" lazyload alt="没有初始化"></p>
+<hr>
+<h3 id="1-3-添加文件到Git暂存区"><a href="#1-3-添加文件到Git暂存区" class="headerlink" title="1.3 添加文件到Git暂存区"></a>1.3 添加文件到Git暂存区</h3><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git add 文件名<br></code></pre></div></td></tr></table></figure>
+<p>添加文件后可以查看一下仓库此时的状态</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304174623.png" srcset="/img/loading.gif" lazyload alt="提交Git到暂存区"></p>
+<p>“<strong>Changes to be committed</strong>“表示”<strong>test.markdown</strong>“这个文件等待被提交，当然你可以使用</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git <span class="hljs-built_in">rm</span> -<span class="hljs-literal">-cached</span><br></code></pre></div></td></tr></table></figure>
+<p>这个命令去移除这个缓存</p>
+<hr>
+<h3 id="1-4-提交暂存区里的文件"><a href="#1-4-提交暂存区里的文件" class="headerlink" title="1.4 提交暂存区里的文件"></a>1.4 提交暂存区里的文件</h3><p>在我们提交之前，需要先设置自己的用户名和邮箱。这些信息会出现在所有的commit记录里。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git config -<span class="hljs-literal">-global</span> user.name <span class="hljs-string">&quot;你的名字&quot;</span><br>git config -<span class="hljs-literal">-global</span> user.email <span class="hljs-string">&quot;你的邮箱&quot;</span><br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309213610.png" srcset="/img/loading.gif" lazyload alt="设置信息"></p>
+<p>设置完后，就可以进行提交了</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git commit <span class="hljs-literal">-m</span> <span class="hljs-string">&#x27;first commit&#x27;</span><br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304204937.png" srcset="/img/loading.gif" lazyload alt="提交"></p>
+<p>其中，” <strong>-m ‘first commit’ </strong> “表示提交的时候附加信息，跟备注类似。此时再查看一下Git的状态</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304205137.png" srcset="/img/loading.gif" lazyload alt="查看状态"></p>
+<p>为什么要先”<strong>add</strong>“再”<strong>commit</strong>“呢？首先，”<strong>git add</strong>“是先把改动添加到一个”暂存区“，可以理解为是一个缓存区域，临时保存你的改动，而”<strong>git commit</strong>“才是最后真正的提交。这样做的好处就是防止误提交。</p>
+<hr>
+<h3 id="1-5-查看log"><a href="#1-5-查看log" class="headerlink" title="1.5 查看log"></a>1.5 查看log</h3><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git log<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304205500.png" srcset="/img/loading.gif" lazyload alt="查看log"></p>
+<p>“<strong>git log</strong>“命令可以查看所有产生的commit记录，其中，”<strong>first commit</strong>“为1.4步骤中我们提交时添加的附加信息，我们1.4节添加的用户名和邮箱也出现在里面</p>
+<hr>
+<h3 id="1-6-分支的查看、添加与切换"><a href="#1-6-分支的查看、添加与切换" class="headerlink" title="1.6 分支的查看、添加与切换"></a>1.6 分支的查看、添加与切换</h3><p>branch即分支的意思。在一个项目里，两个人负责不同的模块，就创建两个分支。两个人分别在各自的分支里对代码进行的改动，互相独立，互不影响。等到最后两个人的模块都完成了，再统一把分支合并起来。</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">git branch</span><br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304205806.png" srcset="/img/loading.gif" lazyload alt="查看分支"></p>
+<p>我们有一个默认的master分支，前面的”*”号表示master是我们当前使用的分支。注意，当我们的Git仓库没有任何提交的话，直接查看分支情况会出现什么都没有的情况。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304210053.png" srcset="/img/loading.gif" lazyload alt="空branch"></p>
+<p>添加一个分支也很简单，只需要</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git branch 分支名<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304210244.png" srcset="/img/loading.gif" lazyload alt="添加分支"></p>
+<p>新建分支的命令是基于当前所在分支的基础上进行的，即以上是基于<strong>master</strong>分支新建了一个叫做<strong>_zhong</strong>的分支，此时<strong>_zhong</strong>分支跟<strong>master</strong>分支的内容完全一 样。如果你有 A、B、C三个分支，三个分支是三位同学的，各分支内容不一样，如果你当前 是在 B 分支，如果执行新建分支命令，则新建的分支内容跟 B 分支是一样的，同理如果当前 所在是 C 分支，那就是基于 C 分支基础上新建的分支。</p>
+<p>但是当前分支并不是新建的”_zhong”分支，所以还需要通过一条命令切换当前分支</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git checkout 分支名<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304210451.png" srcset="/img/loading.gif" lazyload alt="切换分支"></p>
+<p>还有一条命令更方便，可以直接新建分支并直接切换</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git checkout <span class="hljs-literal">-b</span> 分支名<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304210652.png" srcset="/img/loading.gif" lazyload alt="直接切换"></p>
+<hr>
+<h3 id="1-7-分支合并与删除"><a href="#1-7-分支合并与删除" class="headerlink" title="1.7 分支合并与删除"></a>1.7 分支合并与删除</h3><p>分支合并就是字面意思，当项目需要模块集成时就需要把各个分支合并到<strong>master</strong>这个主分支里面来。</p>
+<p>合并分支前，要确保当前的分支是<strong>master</strong>，所以第一步就是切换到<strong>master</strong>这个主分支</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git checkout master<br>git merge 分支名<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304224904.png" srcset="/img/loading.gif" lazyload alt="分支合并"></p>
+<p>既然”<strong>_zhong</strong>“这个分支已经被我们合并到主分支里面去了，此时他已经没用了，就可以把他删除掉</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git branch <span class="hljs-literal">-d</span> 分支名<br>git branch <span class="hljs-literal">-D</span> 分支名<br></code></pre></div></td></tr></table></figure>
+<p>上面两个命令选一个就可以，区别在于”<strong>-D</strong>“为强制删除。有些时候会删除失败，因为”<strong>_zhong</strong>“分支里面的代码可能还没有合并到master，使用”<strong>-d</strong>“是删除不了的，Git会提示你”<strong>_zhong</strong>“分支里还有未合并的代码，此时使用”<strong>-D</strong>“就可以强制删除</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210304230029.png" srcset="/img/loading.gif" lazyload alt="删除与强制删除"></p>
+<hr>
+<h3 id="1-8-添加版本"><a href="#1-8-添加版本" class="headerlink" title="1.8 添加版本"></a>1.8 添加版本</h3><p>我们在客户端开发的时候经常有版本的概念，比如v1.0、v1.1之类的，不同的版本肯定对应不 同的代码，所以我一般要给我们的代码加上标签，这样假设v1.1版本出了一个新bug，但是又 不晓得v1.0是不是有这个bug，有了标签就可以顺利切换到v1.0的代码，重新打个包测试了。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210313175008.png" srcset="/img/loading.gif" lazyload alt="添加版本"></p>
+<hr>
+<hr>
+<h2 id="2-向Github提交代码"><a href="#2-向Github提交代码" class="headerlink" title="2. 向Github提交代码"></a>2. 向Github提交代码</h2><h3 id="2-1-基本条件"><a href="#2-1-基本条件" class="headerlink" title="2.1 基本条件"></a>2.1 基本条件</h3><ol>
+<li>Github账号</li>
+<li>SSH及使用SSH连接到Github</li>
+</ol>
+<p>这些都是最基础的东西，就不再赘述</p>
+<hr>
+<h3 id="2-2-关联Github仓库"><a href="#2-2-关联Github仓库" class="headerlink" title="2.2 关联Github仓库"></a>2.2 关联Github仓库</h3><p>现在的情景是，你已经在本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步，这样，GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作。</p>
+<p>在Github创建完仓库后，记住这个仓库名。然后进入你要关联的本地仓库，打开powershell</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git remote add origin git@github.com:你的Github名称/仓库名.git<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309171818.png" srcset="/img/loading.gif" lazyload alt="关联"></p>
+<p>也可以使用以下命令，查看我们当前项目有哪些远程仓库</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git remote <span class="hljs-literal">-v</span><br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309213054.png" srcset="/img/loading.gif" lazyload alt="查看仓库"></p>
+<hr>
+<h3 id="2-3-将本地资源更新到Github"><a href="#2-3-将本地资源更新到Github" class="headerlink" title="2.3 将本地资源更新到Github"></a>2.3 将本地资源更新到Github</h3><p>现在我要将我本地仓库的文件更新到Github上的<strong>HelloWorld</strong>这个仓库</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git push origin master<br></code></pre></div></td></tr></table></figure>
+<p>其中，远程库的名字就是<strong>origin</strong>，这是Git默认的也是大家公认的叫法，当然你也可以自己取个名字。<strong>master</strong>指的是在本地的master分支。</p>
+<p>所以这条命令的意思就是把<strong>本地Git仓库</strong>的<strong>master</strong>分支，推送到<strong>Github</strong>中与本地<strong>Git仓库</strong>关联的<strong>Github仓库</strong>中。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309180525.png" srcset="/img/loading.gif" lazyload alt="仓库"></p>
+<p>推送完成，这时候可以打开Github仓库查看我们推送的内容。注意，需要选择<strong>master分支</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309182850.png" srcset="/img/loading.gif" lazyload alt="查看推送情况"></p>
+<hr>
+<h3 id="2-4-从Github更新资源到本地"><a href="#2-4-从Github更新资源到本地" class="headerlink" title="2.4 从Github更新资源到本地"></a>2.4 从Github更新资源到本地</h3><p>如果别人提交代码到远程仓库，这个时候你需要把远程仓库的最新代码拉下来，然后保证两端代码的同步</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git pull origin master<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309205925.png" srcset="/img/loading.gif" lazyload alt="pull"></p>
+<p>一般我们在<strong>push</strong>之前都会先<strong>pull</strong> ，这样不容易冲突。</p>
+<hr>
+<h3 id="2-5-克隆"><a href="#2-5-克隆" class="headerlink" title="2.5 克隆"></a>2.5 克隆</h3><p>克隆可以理解为高级点的复制。将一个项目从Github克隆到本地，那么该项目在本地就已经是一个Git仓库了，不需要使用<code>git init</code>进行初始化，而且都已经关联好了远程仓库，我们只需要在本地的项目目录下任意修改或者添加文件，然后进行commit，之后就可以执行<code>git pull origin master</code>等相关操作。</p>
+<p>在克隆之前，需要获取仓库地址</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309214931.png" srcset="/img/loading.gif" lazyload alt="获取仓库地址"></p>
+<p>然后打开本地项目所在的父目录，执行</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git clone git@github.com:你的Github/仓库名.git<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309215251.png" srcset="/img/loading.gif" lazyload alt="仓库克隆"></p>
+<p>进入本地项目，我们会发现目录中有个”<strong>.git</strong>“文件，有这个文件就说明这已经是个本地的Git仓库了。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309215354.png" srcset="/img/loading.gif" lazyload alt="本地项目"></p>
+<hr>
+<hr>
+<h2 id="3-Git进阶与技巧"><a href="#3-Git进阶与技巧" class="headerlink" title="3. Git进阶与技巧"></a>3. Git进阶与技巧</h2><h3 id="3-1-给命令起别名"><a href="#3-1-给命令起别名" class="headerlink" title="3.1 给命令起别名"></a>3.1 给命令起别名</h3><p>“<strong>alias</strong>“这个命令类似于Python里面的<code>import tensorflow as tf</code>，作用是给命令起个别名。我们每次都输入<code>git push origin master</code>就很繁琐，要是我们给这条命令起个别名，比如<code>git psm</code>，那我们就可以直接使用<code>git psm</code>来代替<code>git push origin master</code>。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git config -<span class="hljs-literal">-global</span> alias.别名 <span class="hljs-string">&#x27;命令&#x27;</span><br></code></pre></div></td></tr></table></figure>
+<p>当然，别名可以根据自己的习惯来取</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210310162622.png" srcset="/img/loading.gif" lazyload alt="别名"></p>
+<p>下面是一些比较好用的命令：</p>
+<h4 id="3-1-1-高级日志"><a href="#3-1-1-高级日志" class="headerlink" title="3.1.1 高级日志"></a>3.1.1 高级日志</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git config -<span class="hljs-literal">-global</span> alias.lg <span class="hljs-string">&quot;log --graph --pretty=format:&#x27;%Cred%h%Creset -%C(yellow)%</span><br><span class="hljs-string">d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27; --abbrev-commit --date=relative&quot;</span><br></code></pre></div></td></tr></table></figure>
+<hr>
+<h3 id="3-2-给终端设置颜色"><a href="#3-2-给终端设置颜色" class="headerlink" title="3.2 给终端设置颜色"></a>3.2 给终端设置颜色</h3><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git config -<span class="hljs-literal">-global</span> color.ui true<br></code></pre></div></td></tr></table></figure>
+<hr>
+<h3 id="3-3-设置Git编辑器"><a href="#3-3-设置Git编辑器" class="headerlink" title="3.3 设置Git编辑器"></a>3.3 设置Git编辑器</h3><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git config -<span class="hljs-literal">-global</span> core.editor <span class="hljs-string">&quot;vim&quot;</span> <br></code></pre></div></td></tr></table></figure>
+<p>将编辑器设置为<strong>vim</strong>，当然也可以设置为其他的，但是前提是本机有安装。</p>
+<hr>
+<h3 id="3-4-对比文件差异"><a href="#3-4-对比文件差异" class="headerlink" title="3.4 对比文件差异"></a>3.4 对比文件差异</h3><p>我们经常在做代码改动，但是有的时候2天前的代码了，做了哪些改动都忘记了，在提交之前需要确认下，这个时候就可以用diff来查看你到底做了哪些改动。直接输入<code>git diff</code>只能比较当前文件和暂存区文件差异。</p>
+<p>此时往<strong>test.markdown</strong>这个文件添加一行字”<strong>fefe</strong>“，然后执行<code>git diff</code>。我们会发现终端给出的信息是<strong>绿色</strong>的”<strong>+</strong>“号，然后后面跟着”<strong>fefe</strong>“，由此我们可知绿色加号表示的是增加的内容。</p>
+<p>接着我们继续修改这个文件。我们先删除第一次添加的”<strong>fefe</strong>“，然后敲入”<strong>新增加的行</strong>“，并再次执行<code>git diff</code>。我们会发现增加的”<strong>新增加的行</strong>“显示出来了，但是我们删除的”<strong>fefe</strong>“并没有显示。这是因为我们并没有执行<code>git add</code>将文件放入暂存区。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210313171234.png" srcset="/img/loading.gif" lazyload alt="还未进入暂存区"></p>
+<p>我们先将文件加入暂存区，然后将里面的”<strong>新增加的行</strong>“删除，接着添加”<strong>第二次新增加的行</strong>“。这次我们再<code>git diff</code>就会发现，添加和删除的改动同时给了我们提示。没错，相对应地，绿色”<strong>+</strong>“号为增加，红色”<strong>-</strong>“号为删除。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210313172009.png" srcset="/img/loading.gif" lazyload alt="放入暂存区"></p>
+<h4 id="3-4-1-比较两次提交之间的差异"><a href="#3-4-1-比较两次提交之间的差异" class="headerlink" title="3.4.1 比较两次提交之间的差异"></a>3.4.1 比较两次提交之间的差异</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git <span class="hljs-built_in">diff</span> &lt;<span class="hljs-variable">$id1</span>&gt; &lt;<span class="hljs-variable">$id2</span>&gt;<br></code></pre></div></td></tr></table></figure>
+<h4 id="3-4-2-在两个分支之间比较"><a href="#3-4-2-在两个分支之间比较" class="headerlink" title="3.4.2 在两个分支之间比较"></a>3.4.2 在两个分支之间比较</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git <span class="hljs-built_in">diff</span> &lt;branch1&gt;..&lt;branch2&gt;<br></code></pre></div></td></tr></table></figure>
+<h4 id="3-4-3-比较暂存区和版本库差异"><a href="#3-4-3-比较暂存区和版本库差异" class="headerlink" title="3.4.3 比较暂存区和版本库差异"></a>3.4.3 比较暂存区和版本库差异</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git <span class="hljs-built_in">diff</span> -<span class="hljs-literal">-staged</span><br></code></pre></div></td></tr></table></figure>
+<hr>
+<h3 id="3-5-checkout命令的拓展"><a href="#3-5-checkout命令的拓展" class="headerlink" title="3.5 checkout命令的拓展"></a>3.5 checkout命令的拓展</h3><p>“<strong>checkout</strong>“一般用作切换分支使用，比如切换到develop分支，可以执行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git checkout develop<br></code></pre></div></td></tr></table></figure>
+<h4 id="3-5-1-切换tag"><a href="#3-5-1-切换tag" class="headerlink" title="3.5.1 切换tag"></a>3.5.1 切换tag</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git checkout v1.<span class="hljs-number">0</span><br></code></pre></div></td></tr></table></figure>
+<h4 id="3-5-2-切换到某次commit"><a href="#3-5-2-切换到某次commit" class="headerlink" title="3.5.2 切换到某次commit"></a>3.5.2 切换到某次commit</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git checkout  ffd9f2dd68f1eb21d36cee50dbdd504e95d9c8f7<br></code></pre></div></td></tr></table></figure>
+<p>后面的一长串是<strong>commit_id</strong>，是每次<strong>commit</strong>的SHA1值，可以根据<code>git log</code>看到。</p>
+<h4 id="3-5-3-撤销文件"><a href="#3-5-3-撤销文件" class="headerlink" title="3.5.3 撤销文件"></a>3.5.3 撤销文件</h4><p>假设我们在一个分支开发 一个小功能，刚写完一半，这时候需求变了，而且是大变化，之前写的代码完全用不了了，好在你刚写，甚至都没有 git add 进暂存区，这个时候很简单的一个操作就直接把原文件还原</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git checkout a.md<br></code></pre></div></td></tr></table></figure>
+<p>注意：只能撤销还没有<strong>add</strong>进暂存区的文件。</p>
+<hr>
+<h3 id="3-6-代码的临时保存"><a href="#3-6-代码的临时保存" class="headerlink" title="3.6 代码的临时保存"></a>3.6 代码的临时保存</h3><p>设想一个场景，假设我们正在一个新的分支做新的功能，这个时候突然有一个紧急的bug需要 修复，而且修复完之后需要立即发布。当然你说我先把刚写的一点代码进行提交不就行了 么？这样理论上当然是ok的，但是这会产品垃圾<strong>commit</strong>，原则上我们每次的<strong>commit</strong>都要有<strong>实际的意义</strong>，你的代码只是刚写了一半，还没有什么实际的意义是不建议就这样commit的，那 么有没有一种比较好的办法，可以让我暂时切到别的分支，修复完bug再切回来，而且代码也 能保留的呢？</p>
+<p>这个时候 stash 命令就大有用处了，前提是我们的代码<strong>没有</strong>进行<strong>commit</strong> ，哪怕你执行了<strong>add</strong>也没关系</p>
+<h4 id="3-6-1-保存代码"><a href="#3-6-1-保存代码" class="headerlink" title="3.6.1 保存代码"></a>3.6.1 保存代码</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git stash<br></code></pre></div></td></tr></table></figure>
+<p>意思就是把当前分支所有没有<strong>commit</strong>的代码先暂存起来，这个时候你再执行<code>git status</code>你会发现当前分支很干净，几乎看不到任何改动，你的代码改动也看不见了，但其实是暂存起来了。</p>
+<h4 id="3-6-3-查询保存记录"><a href="#3-6-3-查询保存记录" class="headerlink" title="3.6.3 查询保存记录"></a>3.6.3 查询保存记录</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git stash list<br></code></pre></div></td></tr></table></figure>
+<h4 id="3-6-4-还原代码"><a href="#3-6-4-还原代码" class="headerlink" title="3.6.4 还原代码"></a>3.6.4 还原代码</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git stash apply<br></code></pre></div></td></tr></table></figure>
+<p>之前的代码全部又回来了，就好像一切都没发生过一样</p>
+<h4 id="3-6-5-删除记录"><a href="#3-6-5-删除记录" class="headerlink" title="3.6.5 删除记录"></a>3.6.5 删除记录</h4><p>紧接着你最好需要把暂存区的这次<strong>stash</strong>记录删除</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git stash drop<br></code></pre></div></td></tr></table></figure>
+<p>当然后面可以跟<strong>stash_id</strong>参数来删除指定的某条记录，不跟参数就是删除最近的</p>
+<h4 id="3-6-6-还原并删除记录"><a href="#3-6-6-还原并删除记录" class="headerlink" title="3.6.6 还原并删除记录"></a>3.6.6 还原并删除记录</h4><p>其实还有更方便的指令</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git stash pop<br></code></pre></div></td></tr></table></figure>
+<p>来代替<strong>apply</strong>命令，<strong>pop</strong>跟<strong>apply</strong>的唯一区别就是<strong>pop</strong>不但会帮你把代码还原，还自动帮你把这条<strong>stash</strong>记录删除，省的自己再<strong>drop</strong>一次了</p>
+<h4 id="3-6-7-清空记录"><a href="#3-6-7-清空记录" class="headerlink" title="3.6.7 清空记录"></a>3.6.7 清空记录</h4><figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git stash <span class="hljs-built_in">clear</span><br></code></pre></div></td></tr></table></figure>
+<hr>
+<h3 id="3-7-另一种合并"><a href="#3-7-另一种合并" class="headerlink" title="3.7 另一种合并"></a>3.7 另一种合并</h3><p>我们知道<strong>merge</strong>是用来合并分支的命令，同时，<strong>rebase</strong>命令也是合并的意思，操作起来也和<strong>merge</strong>命令一样</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git checkout master <br>git rebase featureA<br></code></pre></div></td></tr></table></figure>
+<p><strong>rebase</strong>跟<strong>merge</strong>的区别可以理解成有两个书架，你需要把两个书架的书整理到一起 去，第一种做法是<strong>merge</strong> ，比较粗鲁暴力，就直接腾出一块地方把另一个书架的书全部放进去，虽然暴力，但是这种做法你可以知道哪些书是来自另一个书架的；第二种做法就是<strong>rebase</strong> ，他会把两个书架的书先进行比较，按照购书的时间来给他重新排序，然后重新放置好，这样做的好处就是合并之后的书架看起来很有逻辑，但是你很难清晰的知道哪些书来自哪个书架的。 </p>
+<p>只能说各有好处的，不同的团队根据不同的需要以及不同的习惯来选择就好。</p>
+<hr>
+<h3 id="3-8-解决冲突"><a href="#3-8-解决冲突" class="headerlink" title="3.8 解决冲突"></a>3.8 解决冲突</h3><p>假设这样一个场景，A和B两位同学各自开了两个分支来开发不同的功能，大部分情况下都会 尽量互不干扰的，但是有一个需求A需要改动一个基础库中的一个类的方法，不巧B这个时候 由于业务需要也改动了基础库的这个方法，因为这种情况比较特殊，A和B都认为不会对地方 造成影响，等两人各自把功能做完了，需要合并的到主分支<strong>master</strong>的时候，我们假设先合并A的分支，这个时候没问题的，之后再继续合并B的分支，这个时候想想也知道就有冲突了， 因为A和B两个人同时更改了同一个地方，Git 本身他没法判断你们两个谁更改的对，但是这个时候他会智能的提示有<strong>conflicts</strong> ，需要手动解决这个冲突之后再重新进行一次<strong>commit</strong>提交。以下是一个例子：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210313183311.png" srcset="/img/loading.gif" lazyload alt="冲突例子"></p>
+<p>以上截图里就是冲突的示例，冲突的地方由 == == 分出了上下两个部分，上部分一个叫<strong>HEAD</strong>的字样代表是我当前所在分支的代码，下半部分是一个叫<strong>baidu_activity</strong>分支的代 码，可以看到HEAD对gradle插件进行了升级，同时新增了一个插件，所以我们很容易判断哪些代码该保留，哪些代码该删除，我们只需要移除掉那些老旧代码，而且同也要把那些 &lt;&lt;&lt; HEAD、==== 以及 &gt;&gt;&gt;&gt;&gt;&gt;baidu_activity 这些标记符号也一并删除，最后进行一次 commit 就ok了。</p>
+<p>我们在开发的过程中一般都会约定尽量大家写的代码不要彼此影响，以减少出现冲突的可 能，但是冲突总归无法避免的，我们需要了解并掌握解决冲突的方法。</p>
+<hr>
+<hr>
+<h2 id="4-Git-Flow"><a href="#4-Git-Flow" class="headerlink" title="4.Git Flow"></a>4.Git Flow</h2><p><strong>Git Flow</strong>是一种比较成熟的分支管理流程，我们先看一张能清晰的描述他整个工作流程的图</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210316151643.png" srcset="/img/loading.gif" lazyload alt="Git Flow"></p>
+<p>一般开发来说，大部分情况下都会拥有两个分支<strong>master</strong>和<strong>develop</strong>，他们的职责分别是：</p>
+<ul>
+<li>master：永远处在即将发布(production-ready)状态</li>
+<li>develop：最新的开发状态</li>
+</ul>
+<p>确切的说<strong>master</strong>、<strong>develop</strong>分支大部分情况下都会保持一致，只有在上线前的测试阶段<strong>develop</strong>比<strong>master</strong>的代码要多，一旦测试没问题，准备发布了，这时候会将<strong>develop</strong>合并到<strong>master</strong>上。 但是我们发布之后又会进行下一版本的功能开发，开发中间可能又会遇到需要紧急修复 bug ，一个功能开发完成之后突然需求变动了等情况，所以<strong>Git Flow</strong>除了以上<strong>master</strong>和<strong>develop</strong>两个主要分支以外，还提出了以下三个辅助分支：</p>
+<ul>
+<li>feature: 开发新功能的分支, 基于develop, 完成后merge回develop</li>
+<li>release: 准备要发布版本的分支, 用来修复bug，基于develop，完成后merge回develop和master</li>
+<li>hotfix: 修复master上的问题, 等不及 release 版本就必须马上上线. 基于 master, 完成后 merge 回 master 和 develop</li>
+</ul>
+<p>举个例子，假设我们已经有 master 和 develop 两个分支了，这个时候我们准备做一个功能 A，第一步我们要做的，就是基于 develop 分支新建个分支：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git branch feature/A<br></code></pre></div></td></tr></table></figure>
+<p>看到了吧，其实就是一个规范，规定了所有开发的功能分支都以 feature 为前缀。 但是这个时候做着做着发现线上有一个紧急的 bug 需要修复，那赶紧停下手头的工作，立刻切换master 分支，然后再此基础上新建一个分支：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git branch hotfix/B<br></code></pre></div></td></tr></table></figure>
+<p>代表新建了一个紧急修复分支，修复完成之后直接合并到develop和master ，然后发布。</p>
+<p>然后再切回我们的 feature/A 分支继续着我们的开发，如果开发完了，那么合并回develop分 支，然后在develop分支属于测试环境，跟后端对接并且测试的差不多了，感觉可以发布到正式环境了，这个时候再新建一个 release 分支：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">git branch release/<span class="hljs-number">1.0</span><br></code></pre></div></td></tr></table></figure>
+<p>这个时候所有的 api、数据等都是正式环境，然后在这个分支上进行最后的测试，发现 bug 直 接进行修改，直到测试 ok 达到了发布的标准，最后把该分支合并到 develop 和 master 然后 进行发布。</p>
+<hr>
+<hr>
+<h2 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h2><h3 id="1-Enter-passphrase-for-key"><a href="#1-Enter-passphrase-for-key" class="headerlink" title="1. Enter passphrase for key"></a>1. Enter passphrase for key</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309182939.png" srcset="/img/loading.gif" lazyload alt="需要密码"></p>
+<p>这个问题出现在每次使用ssh连接Github都需要输入密码，所以删除掉之前的密码即可</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">ssh-keygen -p<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309183534.png" srcset="/img/loading.gif" lazyload alt="删除密码"></p>
+<p>注意，”<strong>Enter file in which the key is (C:\Users\15606/.ssh/id_rsa):</strong>“这条语句后面只需按回车键。</p>
+<p>这时候再push一下就不需要再次输入密码了</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309183847.png" srcset="/img/loading.gif" lazyload alt="再次push"></p>
+<hr>
+<h3 id="2-“仓库名”-does-not-appear-to-be-a-git-repository"><a href="#2-“仓库名”-does-not-appear-to-be-a-git-repository" class="headerlink" title="2. “仓库名” does not appear to be a git repository"></a>2. “仓库名” does not appear to be a git repository</h3><p>这个问题是由于本地仓库和远程仓库没有进行关联，只需按照本文的2.2节进行处理。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309171953.png" srcset="/img/loading.gif" lazyload alt="失败"></p>
+<hr>
+<h3 id="3-Access-has-been-restricted"><a href="#3-Access-has-been-restricted" class="headerlink" title="3. Access has been restricted"></a>3. Access has been restricted</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309172509.png" srcset="/img/loading.gif" lazyload alt="滥用检测机制"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210309172547.png" srcset="/img/loading.gif" lazyload alt="滥用2"></p>
+<p>这个问题….不知道怎么解决</p>
+<hr>
+<h3 id="4-不同目录下的同名文件的提交（未解决）"><a href="#4-不同目录下的同名文件的提交（未解决）" class="headerlink" title="4.不同目录下的同名文件的提交（未解决）"></a>4.不同目录下的同名文件的提交（未解决）</h3><p>在使用CLion的Git模块时发生的错误，父目录为Learn，而子目录分别是A和B，A和B中分别有main.c这个文件。我先提交的A，后面再提交B，结果B的提交说明会覆盖掉A中main.c的提交说明。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/kevingrace/p/5690241.html">[Git忽略提交规则 - .gitignore配置运维总结]</a></p>
+<hr>
+<hr>
+<h2 id="心得或经验"><a href="#心得或经验" class="headerlink" title="心得或经验"></a>心得或经验</h2><ol>
+<li>每次的commit必须要有实际的意义</li>
+</ol>
+<h2 id="参考及引用说明"><a href="#参考及引用说明" class="headerlink" title="参考及引用说明"></a>参考及引用说明</h2><ol>
+<li>《learn-github-from-zero》-作者：stormzhang，个人网站：<a target="_blank" rel="noopener" href="http://stormzhang.com/">http://stormzhang.com/</a></li>
+<li>“廖雪峰的官方网站”-作者：廖雪峰，个人网站：<a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/sha">https://www.liaoxuefeng.com/sha</a></li>
+<li>“菜鸟教程”：网站：<a target="_blank" rel="noopener" href="https://www.runoob.com/git/git-tutorial.html">https://www.runoob.com/git/git-tutorial.html</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/git/">git</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/github/">github</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/03/23/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/web%E7%89%88SSH%E6%90%AD%E5%BB%BA/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">web版SSH搭建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/03/C++/%E6%96%B0%E6%A0%87%E5%87%86%E5%BD%92%E7%BA%B3/">
+                        <span class="hidden-mobile">新标准归纳</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
