@@ -15,10 +15,10 @@
   
   <meta name="theme-color" content="#2f4154">
   <meta name="description" content="代码及思路...">
-  <meta name="author" content="Zhong shiyu">
+  <meta name="author" content="zhong shiyu">
   <meta name="keywords" content="">
   
-  <title>53. 最大子序和 - rushCpp</title>
+  <title>53. 最大子序和 - rushcpp的笔记博客</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -56,7 +56,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -71,7 +71,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>rushCpp</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -246,28 +246,10 @@ dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/LeetCode/">LeetCode</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/%E6%9A%B4%E5%8A%9B/">暴力</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/">前缀和</a>
-                    
-                  </div>
                 
               </div>
               
-                <p class="note note-warning">
+                <p class="note note-info">
                   
                     本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
                   
@@ -278,9 +260,9 @@ dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/12/09/LeetCode/524.%20%E9%80%9A%E8%BF%87%E5%88%A0%E9%99%A4%E5%AD%97%E6%AF%8D%E5%8C%B9%E9%85%8D%E5%88%B0%E5%AD%97%E5%85%B8%E9%87%8C%E6%9C%80%E9%95%BF%E5%8D%95%E8%AF%8D/">
+                      <a href="/2021/12/09/LeetCode/51.%20N%20%E7%9A%87%E5%90%8E/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">524. 通过删除字母匹配到字典里最长单词</span>
+                        <span class="hidden-mobile">51. N 皇后</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -288,8 +270,8 @@ dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/12/09/LeetCode/540.%20%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%8D%95%E4%B8%80%E5%85%83%E7%B4%A0/">
-                        <span class="hidden-mobile">540. 有序数组中的单一元素</span>
+                      <a href="/2021/12/09/LeetCode/524.%20%E9%80%9A%E8%BF%87%E5%88%A0%E9%99%A4%E5%AD%97%E6%AF%8D%E5%8C%B9%E9%85%8D%E5%88%B0%E5%AD%97%E5%85%B8%E9%87%8C%E6%9C%80%E9%95%BF%E5%8D%95%E8%AF%8D/">
+                        <span class="hidden-mobile">524. 通过删除字母匹配到字典里最长单词</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -299,6 +281,41 @@ dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己
               
             </div>
 
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
             
           </article>
         </div>
@@ -317,6 +334,12 @@ dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己
 </div>
 
 <!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -361,9 +384,56 @@ dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己
   
 
   
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
 
   
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
 </footer>
+
+
 
 
   <!-- SCRIPTS -->
@@ -372,7 +442,7 @@ dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
 
   <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
     NProgress.start()
     window.addEventListener('load', function() {
       NProgress.done();
@@ -489,5 +559,5 @@ dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己
 <script  src="/js/boot.js" ></script>
 
 
-</body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>
