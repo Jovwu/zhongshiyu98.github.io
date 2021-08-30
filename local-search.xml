@@ -547,35 +547,6 @@
   
   
   <entry>
-    <title>130. 被围绕的区域</title>
-    <link href="/2021/12/09/LeetCode/130.%20%E8%A2%AB%E5%9B%B4%E7%BB%95%E7%9A%84%E5%8C%BA%E5%9F%9F/"/>
-    <url>/2021/12/09/LeetCode/130.%20%E8%A2%AB%E5%9B%B4%E7%BB%95%E7%9A%84%E5%8C%BA%E5%9F%9F/</url>
-    
-    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/surrounded-regions/">本题链接</a></p><h2 id="BFS-递归"><a href="#BFS-递归" class="headerlink" title="BFS+递归"></a>BFS+递归</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br>    <br>    <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">short</span> <span class="hljs-keyword">int</span> sint;<br>    <span class="hljs-keyword">typedef</span> pair&lt;sint,sint&gt; point;<br>    sint row,col,head,tail,last;<br>    sint dirc[<span class="hljs-number">5</span>] = &#123;<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>&#125;;<span class="hljs-comment">//上 右 下 左</span><br>    vector&lt;point&gt; state_vec;<br>    point new_p;<br>    <span class="hljs-keyword">bool</span> is_touch_J = <span class="hljs-literal">false</span>;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">solve</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span> </span>&#123;<br><br>        row = board.<span class="hljs-built_in">size</span>();<br>        col = board[<span class="hljs-number">0</span>].<span class="hljs-built_in">size</span>(); <br>        <br>        <span class="hljs-comment">//异常情况</span><br>        <span class="hljs-keyword">if</span>(row &lt;= <span class="hljs-number">2</span> || col &lt;= <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span>;<br><br>        <span class="hljs-built_in">init</span>(board);<span class="hljs-comment">//O状态:O:空闲 B:待办 J:倒霉</span><br>     <br>        <span class="hljs-keyword">for</span>(sint r = <span class="hljs-number">1</span>;r &lt; row;++r)<br>            <span class="hljs-keyword">for</span>(sint c = <span class="hljs-number">1</span>;c &lt; col;++c)<br>                <span class="hljs-keyword">if</span>(board[r][c] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<span class="hljs-built_in">setB</span>(&#123;r,c&#125;,board);<span class="hljs-built_in">bfs</span>(&#123;r,c&#125;,board);<span class="hljs-built_in">isTouchJ</span>(board);<span class="hljs-built_in">setStateVec</span>();&#125;<br>            <br>        <span class="hljs-built_in">draw</span>(board);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setStateVec</span><span class="hljs-params">()</span></span>&#123;<br>        last = head = tail = state_vec.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> ;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">isTouchJ</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<br><br>         <span class="hljs-keyword">if</span>(is_touch_J)&#123;<br>            <span class="hljs-keyword">for</span>(sint i = state_vec.<span class="hljs-built_in">size</span>()<span class="hljs-number">-1</span>;i &gt; last;--i)<br>                board[state_vec[i].first][state_vec[i].second] = <span class="hljs-string">&#x27;J&#x27;</span>; <br>            is_touch_J = <span class="hljs-literal">false</span>;<br>         &#125;<br>                 <br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<span class="hljs-comment">//重新还原</span><br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = state_vec.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">0</span> ;--i)&#123;<br>            board[state_vec[i].first][state_vec[i].second] = board[state_vec[i].first][state_vec[i].second] == <span class="hljs-string">&#x27;J&#x27;</span>?<span class="hljs-string">&#x27;O&#x27;</span>:<span class="hljs-string">&#x27;X&#x27;</span>;<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setB</span><span class="hljs-params">(<span class="hljs-keyword">const</span> point&amp; p,vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<br>        board[p.first][p.second] = <span class="hljs-string">&#x27;B&#x27;</span>;<span class="hljs-comment">//设置该点状态</span><br>        state_vec.<span class="hljs-built_in">push_back</span>(p);<span class="hljs-comment">//保存该点状态</span><br>        ++tail;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-keyword">const</span> point&amp; p,vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<br><br>        <span class="hljs-comment">//对四个方向遍历</span><br>        <span class="hljs-keyword">for</span>(sint d = <span class="hljs-number">0</span>;d &lt; <span class="hljs-number">4</span>;++d)&#123;<br><br>            new_p.first = p.first + dirc[d];<br>            new_p.second = p.second + dirc[d+<span class="hljs-number">1</span>];<br><br>            <span class="hljs-keyword">if</span>(board[new_p.first][new_p.second] != <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                <span class="hljs-keyword">if</span>(board[new_p.first][new_p.second] == <span class="hljs-string">&#x27;J&#x27;</span>) is_touch_J = <span class="hljs-literal">true</span>;<span class="hljs-comment">//如果碰到倒霉蛋</span><br>            &#125;<span class="hljs-keyword">else</span> <span class="hljs-built_in">setB</span>(new_p,board);<br><br>        &#125;<br><br>        <span class="hljs-comment">//广度优先搜索完之后</span><br>        <span class="hljs-keyword">while</span>(++head &lt; state_vec.<span class="hljs-built_in">size</span>())&#123;<br>            <span class="hljs-built_in">bfs</span>(&#123;state_vec[head].first,state_vec[head].second&#125;,board);<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<br><br>        <span class="hljs-comment">//预处理:设置所有边界的O为&quot;倒霉&quot;</span><br>        <span class="hljs-keyword">for</span>(sint i = <span class="hljs-number">0</span>,tmp_row = row - <span class="hljs-number">1</span>;i &lt; col; ++i)&#123;<span class="hljs-comment">//行</span><br>            <span class="hljs-keyword">if</span>(board[<span class="hljs-number">0</span>][i] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                state_vec.<span class="hljs-built_in">push_back</span>(point&#123;<span class="hljs-number">0</span>,i&#125;);<br>                board[<span class="hljs-number">0</span>][i] = <span class="hljs-string">&#x27;J&#x27;</span>;<br>            &#125; <br>            <span class="hljs-keyword">if</span>(board[tmp_row][i] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                state_vec.<span class="hljs-built_in">push_back</span>(point&#123;tmp_row,i&#125;);<br>                board[tmp_row][i] = <span class="hljs-string">&#x27;J&#x27;</span>;<br>            &#125; <br>        &#125;<br>        <span class="hljs-keyword">for</span>(sint i = <span class="hljs-number">0</span>,tmp_col = col - <span class="hljs-number">1</span>;i &lt; row; ++i)&#123;<span class="hljs-comment">//列</span><br>            <span class="hljs-keyword">if</span>(board[i][<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                state_vec.<span class="hljs-built_in">push_back</span>(point&#123;i,<span class="hljs-number">0</span>&#125;);<br>                board[i][<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;J&#x27;</span>;<br>            &#125; <br>            <span class="hljs-keyword">if</span>(board[i][tmp_col] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                state_vec.<span class="hljs-built_in">push_back</span>(point&#123;i,tmp_col&#125;);<br>                board[i][tmp_col] = <span class="hljs-string">&#x27;J&#x27;</span>;<br>            &#125; <br>        &#125;<br><br>        <span class="hljs-built_in">setStateVec</span>();<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>将原数组的O设置成三种状态：</p><ul><li>‘O’：没有遍历过的O</li><li>‘B’：遍历过的O</li><li>‘J’：失效的O</li></ul><p>在对一个状态为’O’的O进行广度优先搜索后，只要在过程中碰到一个’J’，那么此次广度优先搜索所涉及的所有O都设置为失效。那么当对所有的点都进行了BFS后，数组中状态为’O’的元素就是被围绕的O。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>LeetCode</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>递归</tag>
-      
-      <tag>广度优先搜索</tag>
-      
-      <tag>图</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>1334. 阈值距离内邻居最少的城市</title>
     <link href="/2021/12/09/LeetCode/1334.%20%E9%98%88%E5%80%BC%E8%B7%9D%E7%A6%BB%E5%86%85%E9%82%BB%E5%B1%85%E6%9C%80%E5%B0%91%E7%9A%84%E5%9F%8E%E5%B8%82/"/>
     <url>/2021/12/09/LeetCode/1334.%20%E9%98%88%E5%80%BC%E8%B7%9D%E7%A6%BB%E5%86%85%E9%82%BB%E5%B1%85%E6%9C%80%E5%B0%91%E7%9A%84%E5%9F%8E%E5%B8%82/</url>
@@ -592,9 +563,9 @@
     
     <tags>
       
-      <tag>图</tag>
-      
       <tag>最短路Floyd算法</tag>
+      
+      <tag>图</tag>
       
     </tags>
     
@@ -620,6 +591,35 @@
     <tags>
       
       <tag>优先级队列</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>130. 被围绕的区域</title>
+    <link href="/2021/12/09/LeetCode/130.%20%E8%A2%AB%E5%9B%B4%E7%BB%95%E7%9A%84%E5%8C%BA%E5%9F%9F/"/>
+    <url>/2021/12/09/LeetCode/130.%20%E8%A2%AB%E5%9B%B4%E7%BB%95%E7%9A%84%E5%8C%BA%E5%9F%9F/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/surrounded-regions/">本题链接</a></p><h2 id="BFS-递归"><a href="#BFS-递归" class="headerlink" title="BFS+递归"></a>BFS+递归</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br>    <br>    <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">short</span> <span class="hljs-keyword">int</span> sint;<br>    <span class="hljs-keyword">typedef</span> pair&lt;sint,sint&gt; point;<br>    sint row,col,head,tail,last;<br>    sint dirc[<span class="hljs-number">5</span>] = &#123;<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>&#125;;<span class="hljs-comment">//上 右 下 左</span><br>    vector&lt;point&gt; state_vec;<br>    point new_p;<br>    <span class="hljs-keyword">bool</span> is_touch_J = <span class="hljs-literal">false</span>;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">solve</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span> </span>&#123;<br><br>        row = board.<span class="hljs-built_in">size</span>();<br>        col = board[<span class="hljs-number">0</span>].<span class="hljs-built_in">size</span>(); <br>        <br>        <span class="hljs-comment">//异常情况</span><br>        <span class="hljs-keyword">if</span>(row &lt;= <span class="hljs-number">2</span> || col &lt;= <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span>;<br><br>        <span class="hljs-built_in">init</span>(board);<span class="hljs-comment">//O状态:O:空闲 B:待办 J:倒霉</span><br>     <br>        <span class="hljs-keyword">for</span>(sint r = <span class="hljs-number">1</span>;r &lt; row;++r)<br>            <span class="hljs-keyword">for</span>(sint c = <span class="hljs-number">1</span>;c &lt; col;++c)<br>                <span class="hljs-keyword">if</span>(board[r][c] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<span class="hljs-built_in">setB</span>(&#123;r,c&#125;,board);<span class="hljs-built_in">bfs</span>(&#123;r,c&#125;,board);<span class="hljs-built_in">isTouchJ</span>(board);<span class="hljs-built_in">setStateVec</span>();&#125;<br>            <br>        <span class="hljs-built_in">draw</span>(board);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setStateVec</span><span class="hljs-params">()</span></span>&#123;<br>        last = head = tail = state_vec.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> ;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">isTouchJ</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<br><br>         <span class="hljs-keyword">if</span>(is_touch_J)&#123;<br>            <span class="hljs-keyword">for</span>(sint i = state_vec.<span class="hljs-built_in">size</span>()<span class="hljs-number">-1</span>;i &gt; last;--i)<br>                board[state_vec[i].first][state_vec[i].second] = <span class="hljs-string">&#x27;J&#x27;</span>; <br>            is_touch_J = <span class="hljs-literal">false</span>;<br>         &#125;<br>                 <br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<span class="hljs-comment">//重新还原</span><br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = state_vec.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">0</span> ;--i)&#123;<br>            board[state_vec[i].first][state_vec[i].second] = board[state_vec[i].first][state_vec[i].second] == <span class="hljs-string">&#x27;J&#x27;</span>?<span class="hljs-string">&#x27;O&#x27;</span>:<span class="hljs-string">&#x27;X&#x27;</span>;<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setB</span><span class="hljs-params">(<span class="hljs-keyword">const</span> point&amp; p,vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<br>        board[p.first][p.second] = <span class="hljs-string">&#x27;B&#x27;</span>;<span class="hljs-comment">//设置该点状态</span><br>        state_vec.<span class="hljs-built_in">push_back</span>(p);<span class="hljs-comment">//保存该点状态</span><br>        ++tail;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-keyword">const</span> point&amp; p,vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<br><br>        <span class="hljs-comment">//对四个方向遍历</span><br>        <span class="hljs-keyword">for</span>(sint d = <span class="hljs-number">0</span>;d &lt; <span class="hljs-number">4</span>;++d)&#123;<br><br>            new_p.first = p.first + dirc[d];<br>            new_p.second = p.second + dirc[d+<span class="hljs-number">1</span>];<br><br>            <span class="hljs-keyword">if</span>(board[new_p.first][new_p.second] != <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                <span class="hljs-keyword">if</span>(board[new_p.first][new_p.second] == <span class="hljs-string">&#x27;J&#x27;</span>) is_touch_J = <span class="hljs-literal">true</span>;<span class="hljs-comment">//如果碰到倒霉蛋</span><br>            &#125;<span class="hljs-keyword">else</span> <span class="hljs-built_in">setB</span>(new_p,board);<br><br>        &#125;<br><br>        <span class="hljs-comment">//广度优先搜索完之后</span><br>        <span class="hljs-keyword">while</span>(++head &lt; state_vec.<span class="hljs-built_in">size</span>())&#123;<br>            <span class="hljs-built_in">bfs</span>(&#123;state_vec[head].first,state_vec[head].second&#125;,board);<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board)</span></span>&#123;<br><br>        <span class="hljs-comment">//预处理:设置所有边界的O为&quot;倒霉&quot;</span><br>        <span class="hljs-keyword">for</span>(sint i = <span class="hljs-number">0</span>,tmp_row = row - <span class="hljs-number">1</span>;i &lt; col; ++i)&#123;<span class="hljs-comment">//行</span><br>            <span class="hljs-keyword">if</span>(board[<span class="hljs-number">0</span>][i] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                state_vec.<span class="hljs-built_in">push_back</span>(point&#123;<span class="hljs-number">0</span>,i&#125;);<br>                board[<span class="hljs-number">0</span>][i] = <span class="hljs-string">&#x27;J&#x27;</span>;<br>            &#125; <br>            <span class="hljs-keyword">if</span>(board[tmp_row][i] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                state_vec.<span class="hljs-built_in">push_back</span>(point&#123;tmp_row,i&#125;);<br>                board[tmp_row][i] = <span class="hljs-string">&#x27;J&#x27;</span>;<br>            &#125; <br>        &#125;<br>        <span class="hljs-keyword">for</span>(sint i = <span class="hljs-number">0</span>,tmp_col = col - <span class="hljs-number">1</span>;i &lt; row; ++i)&#123;<span class="hljs-comment">//列</span><br>            <span class="hljs-keyword">if</span>(board[i][<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                state_vec.<span class="hljs-built_in">push_back</span>(point&#123;i,<span class="hljs-number">0</span>&#125;);<br>                board[i][<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;J&#x27;</span>;<br>            &#125; <br>            <span class="hljs-keyword">if</span>(board[i][tmp_col] == <span class="hljs-string">&#x27;O&#x27;</span>)&#123;<br>                state_vec.<span class="hljs-built_in">push_back</span>(point&#123;i,tmp_col&#125;);<br>                board[i][tmp_col] = <span class="hljs-string">&#x27;J&#x27;</span>;<br>            &#125; <br>        &#125;<br><br>        <span class="hljs-built_in">setStateVec</span>();<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>将原数组的O设置成三种状态：</p><ul><li>‘O’：没有遍历过的O</li><li>‘B’：遍历过的O</li><li>‘J’：失效的O</li></ul><p>在对一个状态为’O’的O进行广度优先搜索后，只要在过程中碰到一个’J’，那么此次广度优先搜索所涉及的所有O都设置为失效。那么当对所有的点都进行了BFS后，数组中状态为’O’的元素就是被围绕的O。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>递归</tag>
+      
+      <tag>图</tag>
+      
+      <tag>广度优先搜索</tag>
       
     </tags>
     
@@ -1074,6 +1074,31 @@
   
   
   <entry>
+    <title>190. 颠倒二进制位</title>
+    <link href="/2021/12/09/LeetCode/190.%20%E9%A2%A0%E5%80%92%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D/"/>
+    <url>/2021/12/09/LeetCode/190.%20%E9%A2%A0%E5%80%92%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/reverse-bits/">本题链接</a></p><h2 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">uint32_t</span> <span class="hljs-title">reverseBits</span><span class="hljs-params">(<span class="hljs-keyword">uint32_t</span> n)</span> </span>&#123;<br><br>        <span class="hljs-keyword">uint32_t</span> res = <span class="hljs-number">0</span>;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; <span class="hljs-number">32</span>;++i)&#123;<br><br>            res &lt;&lt;= <span class="hljs-number">1</span>;<br>            res += n &amp; <span class="hljs-number">1</span>;<br>            n &gt;&gt;= <span class="hljs-number">1</span>;<br><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>在for循环的每次迭代中，都将n的最低位复制到res的最低位。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>位运算</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>19. 删除链表的倒数第 N 个结点</title>
     <link href="/2021/12/09/LeetCode/19.%20%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%AC%20N%20%E4%B8%AA%E7%BB%93%E7%82%B9/"/>
     <url>/2021/12/09/LeetCode/19.%20%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%AC%20N%20%E4%B8%AA%E7%BB%93%E7%82%B9/</url>
@@ -1095,31 +1120,6 @@
       <tag>链表</tag>
       
       <tag>快慢指针</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>190. 颠倒二进制位</title>
-    <link href="/2021/12/09/LeetCode/190.%20%E9%A2%A0%E5%80%92%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D/"/>
-    <url>/2021/12/09/LeetCode/190.%20%E9%A2%A0%E5%80%92%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D/</url>
-    
-    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/reverse-bits/">本题链接</a></p><h2 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">uint32_t</span> <span class="hljs-title">reverseBits</span><span class="hljs-params">(<span class="hljs-keyword">uint32_t</span> n)</span> </span>&#123;<br><br>        <span class="hljs-keyword">uint32_t</span> res = <span class="hljs-number">0</span>;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; <span class="hljs-number">32</span>;++i)&#123;<br><br>            res &lt;&lt;= <span class="hljs-number">1</span>;<br>            res += n &amp; <span class="hljs-number">1</span>;<br>            n &gt;&gt;= <span class="hljs-number">1</span>;<br><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>在for循环的每次迭代中，都将n的最低位复制到res的最低位。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>LeetCode</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>位运算</tag>
       
     </tags>
     
@@ -1306,9 +1306,9 @@
       
       <tag>深度优先搜索</tag>
       
-      <tag>广度优先搜索</tag>
-      
       <tag>图</tag>
+      
+      <tag>广度优先搜索</tag>
       
       <tag>拓扑排序</tag>
       
@@ -1393,9 +1393,9 @@
       
       <tag>深度优先搜索</tag>
       
-      <tag>广度优先搜索</tag>
-      
       <tag>图</tag>
+      
+      <tag>广度优先搜索</tag>
       
       <tag>拓扑排序</tag>
       
@@ -2070,33 +2070,6 @@
   
   
   <entry>
-    <title>332. 重新安排行程</title>
-    <link href="/2021/12/09/LeetCode/332.%20%E9%87%8D%E6%96%B0%E5%AE%89%E6%8E%92%E8%A1%8C%E7%A8%8B/"/>
-    <url>/2021/12/09/LeetCode/332.%20%E9%87%8D%E6%96%B0%E5%AE%89%E6%8E%92%E8%A1%8C%E7%A8%8B/</url>
-    
-    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/reconstruct-itinerary/">本题链接</a></p><h2 id="哈希表-栈"><a href="#哈希表-栈" class="headerlink" title="哈希表+栈"></a>哈希表+栈</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;string&gt; <span class="hljs-title">findItinerary</span><span class="hljs-params">(vector&lt;vector&lt;string&gt;&gt;&amp; tickets)</span> </span>&#123;<br><br>        <span class="hljs-function">vector&lt;string&gt; <span class="hljs-title">res</span><span class="hljs-params">(tickets.size()+<span class="hljs-number">1</span>,<span class="hljs-string">&quot;&quot;</span>)</span></span>;<br>        unordered_map&lt;string,multiset&lt;string&gt;&gt; hash;<br>        <span class="hljs-comment">//将机票映射到hash中</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; tickets.<span class="hljs-built_in">size</span>();++i)<br>            hash[tickets[i][<span class="hljs-number">0</span>]].<span class="hljs-built_in">insert</span>(tickets[i][<span class="hljs-number">1</span>]);<br>            <br>        stack&lt;string&gt; s;<br>        s.<span class="hljs-built_in">push</span>(<span class="hljs-string">&quot;JFK&quot;</span>);<br>        <span class="hljs-keyword">int</span> pos = res.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">while</span>(!s.<span class="hljs-built_in">empty</span>())&#123;<br><br>            string next = s.<span class="hljs-built_in">top</span>();<br>            <span class="hljs-keyword">if</span>(!hash[next].<span class="hljs-built_in">empty</span>())&#123;<span class="hljs-comment">//如果非空,说明还能飞</span><br>                s.<span class="hljs-built_in">push</span>(*(hash[next].<span class="hljs-built_in">begin</span>()));<br>                hash[next].<span class="hljs-built_in">erase</span>(hash[next].<span class="hljs-built_in">begin</span>());<br>            &#125;<span class="hljs-keyword">else</span>&#123;<span class="hljs-comment">//如果为空,说明已经没法继续飞了</span><br>                res[pos--] = s.<span class="hljs-built_in">top</span>();<br>                s.<span class="hljs-built_in">pop</span>();<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> res;<br><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>先将每张机票的起点和终点设置映射关系，由于一个起点会对应多个终点，所以在<code>unordered_map</code>中使用<code>multiset&lt;string&gt;</code>存放多个终点。</p><p>之后维护一个栈，每次都寻找从栈顶元素出发的终点。若没有找到，说明这个栈顶元素已经无法继续飞了，就将栈顶元素弹出，存放到结果数组中。若还能继续飞，那么就将终点入栈，并把这个终点从映射表中删除。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>LeetCode</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>哈希表</tag>
-      
-      <tag>栈</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>33. 搜索旋转排序数组</title>
     <link href="/2021/12/09/LeetCode/33.%20%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/"/>
     <url>/2021/12/09/LeetCode/33.%20%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/</url>
@@ -2118,6 +2091,33 @@
       <tag>二分搜索</tag>
       
       <tag>分治</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>332. 重新安排行程</title>
+    <link href="/2021/12/09/LeetCode/332.%20%E9%87%8D%E6%96%B0%E5%AE%89%E6%8E%92%E8%A1%8C%E7%A8%8B/"/>
+    <url>/2021/12/09/LeetCode/332.%20%E9%87%8D%E6%96%B0%E5%AE%89%E6%8E%92%E8%A1%8C%E7%A8%8B/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/reconstruct-itinerary/">本题链接</a></p><h2 id="哈希表-栈"><a href="#哈希表-栈" class="headerlink" title="哈希表+栈"></a>哈希表+栈</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;string&gt; <span class="hljs-title">findItinerary</span><span class="hljs-params">(vector&lt;vector&lt;string&gt;&gt;&amp; tickets)</span> </span>&#123;<br><br>        <span class="hljs-function">vector&lt;string&gt; <span class="hljs-title">res</span><span class="hljs-params">(tickets.size()+<span class="hljs-number">1</span>,<span class="hljs-string">&quot;&quot;</span>)</span></span>;<br>        unordered_map&lt;string,multiset&lt;string&gt;&gt; hash;<br>        <span class="hljs-comment">//将机票映射到hash中</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; tickets.<span class="hljs-built_in">size</span>();++i)<br>            hash[tickets[i][<span class="hljs-number">0</span>]].<span class="hljs-built_in">insert</span>(tickets[i][<span class="hljs-number">1</span>]);<br>            <br>        stack&lt;string&gt; s;<br>        s.<span class="hljs-built_in">push</span>(<span class="hljs-string">&quot;JFK&quot;</span>);<br>        <span class="hljs-keyword">int</span> pos = res.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">while</span>(!s.<span class="hljs-built_in">empty</span>())&#123;<br><br>            string next = s.<span class="hljs-built_in">top</span>();<br>            <span class="hljs-keyword">if</span>(!hash[next].<span class="hljs-built_in">empty</span>())&#123;<span class="hljs-comment">//如果非空,说明还能飞</span><br>                s.<span class="hljs-built_in">push</span>(*(hash[next].<span class="hljs-built_in">begin</span>()));<br>                hash[next].<span class="hljs-built_in">erase</span>(hash[next].<span class="hljs-built_in">begin</span>());<br>            &#125;<span class="hljs-keyword">else</span>&#123;<span class="hljs-comment">//如果为空,说明已经没法继续飞了</span><br>                res[pos--] = s.<span class="hljs-built_in">top</span>();<br>                s.<span class="hljs-built_in">pop</span>();<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> res;<br><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>先将每张机票的起点和终点设置映射关系，由于一个起点会对应多个终点，所以在<code>unordered_map</code>中使用<code>multiset&lt;string&gt;</code>存放多个终点。</p><p>之后维护一个栈，每次都寻找从栈顶元素出发的终点。若没有找到，说明这个栈顶元素已经无法继续飞了，就将栈顶元素弹出，存放到结果数组中。若还能继续飞，那么就将终点入栈，并把这个终点从映射表中删除。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>哈希表</tag>
+      
+      <tag>栈</tag>
       
     </tags>
     
@@ -2844,11 +2844,11 @@
   
   
   <entry>
-    <title>53. 最大子序和</title>
-    <link href="/2021/12/09/LeetCode/53.%20%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/"/>
-    <url>/2021/12/09/LeetCode/53.%20%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/</url>
+    <title>540. 有序数组中的单一元素</title>
+    <link href="/2021/12/09/LeetCode/540.%20%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%8D%95%E4%B8%80%E5%85%83%E7%B4%A0/"/>
+    <url>/2021/12/09/LeetCode/540.%20%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%8D%95%E4%B8%80%E5%85%83%E7%B4%A0/</url>
     
-    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/maximum-subarray/">本题链接</a></p><h2 id="前缀和"><a href="#前缀和" class="headerlink" title="前缀和"></a>前缀和</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br><br>        <span class="hljs-function">vector&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">psum</span><span class="hljs-params">(nums.size() + <span class="hljs-number">1</span>,<span class="hljs-number">0</span>)</span></span>;<br>        <br>        <span class="hljs-comment">//构造前缀和</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; nums.<span class="hljs-built_in">size</span>(); ++i)<br>            psum[i + <span class="hljs-number">1</span>] = psum[i] + nums[i];<br><br>        <span class="hljs-keyword">int</span> res = psum[<span class="hljs-number">1</span>];<br><br>        <span class="hljs-comment">//使用滑动窗口</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i &lt; psum.<span class="hljs-built_in">size</span>(); ++i)<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i;j &lt; psum.<span class="hljs-built_in">size</span>(); ++j)<br>                res = <span class="hljs-built_in">max</span>(res,psum[j] - psum[i<span class="hljs-number">-1</span>]);<br>            <br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>记录每个元素的前缀和，然后使用滑动窗口计算每个区域的大小。但是后面发现多此一举…没必要统计前缀和，使用单纯的累计值对比就行。</p><h2 id="暴力"><a href="#暴力" class="headerlink" title="暴力"></a>暴力</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br><br>        <span class="hljs-keyword">int</span> res = INT_MIN;<br><br>        <span class="hljs-comment">//使用滑动窗口</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; nums.<span class="hljs-built_in">size</span>(); ++i)&#123;<br>            <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i;j &lt; nums.<span class="hljs-built_in">size</span>(); ++j)&#123;<br>                sum+=nums[j];<br>                res = <span class="hljs-built_in">max</span>(res,sum);<br>            &#125;   <br>        &#125;<br> <br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><p>简单直观，直接暴力遍历每个可能的区间，但是复杂度很高。</p><h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br><br>        <span class="hljs-keyword">int</span> pre = <span class="hljs-number">0</span>,ans = nums[<span class="hljs-number">0</span>];<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; p : nums)&#123;<br>            <br>            pre = <span class="hljs-built_in">max</span>(p,pre + p);<span class="hljs-comment">//选择是否保留前面的区域</span><br>            ans = <span class="hljs-built_in">max</span>(pre,ans);<span class="hljs-comment">//选择最大的结果</span><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h3><p>根据规律其实可以推出状态转移方程：</p><script type="math/tex; mode=display">dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己还小于自己的话，说明前面的区域可以舍弃了。</p>]]></content>
+    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/single-element-in-a-sorted-array/">本题链接</a></p><h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">singleNonDuplicate</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br>        <br>        <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span> , right = nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">int</span> mid;<br><br>        <span class="hljs-comment">//总是保持l和r之间为奇数个元素</span><br>        <span class="hljs-keyword">while</span>(left &lt; right)&#123;<br>            <br>            mid = (left + right) &gt;&gt; <span class="hljs-number">1</span>;<br><br>            <span class="hljs-comment">//如果left和mid之间为偶数个</span><br>            <span class="hljs-keyword">if</span>((mid - left) % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>)&#123;<br><br>                <span class="hljs-keyword">if</span>( nums[mid] ==  nums[mid + <span class="hljs-number">1</span>]) right = mid - <span class="hljs-number">1</span>;<span class="hljs-comment">//说明这个数在left与mid之间</span><br>                <span class="hljs-keyword">else</span> left = mid + <span class="hljs-number">1</span>;<span class="hljs-comment">//说明这个数在mid与right之间</span><br><br>            &#125;<span class="hljs-keyword">else</span>&#123;<span class="hljs-comment">//如果left和mid之间为奇数个</span><br><br>                <span class="hljs-keyword">if</span>( nums[mid] ==  nums[mid + <span class="hljs-number">1</span>]) left = mid;<span class="hljs-comment">//说明这个数在mid与right之间</span><br>                <span class="hljs-keyword">else</span>  right = mid;<span class="hljs-comment">//说明这个数在left与mid之间</span><br>            &#125;<br><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> nums[left];<br><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>观察题目给的例子发现，只要这个唯一数存在于某个区间内，那么这个区间的元素个数一定为奇数个。那么只要通过二分查找把区间保持在奇数个即可。</p>]]></content>
     
     
     <categories>
@@ -2860,13 +2860,9 @@
     
     <tags>
       
-      <tag>暴力</tag>
-      
       <tag>数组</tag>
       
-      <tag>动态规划</tag>
-      
-      <tag>前缀和</tag>
+      <tag>二分查找</tag>
       
     </tags>
     
@@ -2902,11 +2898,11 @@
   
   
   <entry>
-    <title>540. 有序数组中的单一元素</title>
-    <link href="/2021/12/09/LeetCode/540.%20%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%8D%95%E4%B8%80%E5%85%83%E7%B4%A0/"/>
-    <url>/2021/12/09/LeetCode/540.%20%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%8D%95%E4%B8%80%E5%85%83%E7%B4%A0/</url>
+    <title>53. 最大子序和</title>
+    <link href="/2021/12/09/LeetCode/53.%20%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/"/>
+    <url>/2021/12/09/LeetCode/53.%20%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/</url>
     
-    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/single-element-in-a-sorted-array/">本题链接</a></p><h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">singleNonDuplicate</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br>        <br>        <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span> , right = nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">int</span> mid;<br><br>        <span class="hljs-comment">//总是保持l和r之间为奇数个元素</span><br>        <span class="hljs-keyword">while</span>(left &lt; right)&#123;<br>            <br>            mid = (left + right) &gt;&gt; <span class="hljs-number">1</span>;<br><br>            <span class="hljs-comment">//如果left和mid之间为偶数个</span><br>            <span class="hljs-keyword">if</span>((mid - left) % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>)&#123;<br><br>                <span class="hljs-keyword">if</span>( nums[mid] ==  nums[mid + <span class="hljs-number">1</span>]) right = mid - <span class="hljs-number">1</span>;<span class="hljs-comment">//说明这个数在left与mid之间</span><br>                <span class="hljs-keyword">else</span> left = mid + <span class="hljs-number">1</span>;<span class="hljs-comment">//说明这个数在mid与right之间</span><br><br>            &#125;<span class="hljs-keyword">else</span>&#123;<span class="hljs-comment">//如果left和mid之间为奇数个</span><br><br>                <span class="hljs-keyword">if</span>( nums[mid] ==  nums[mid + <span class="hljs-number">1</span>]) left = mid;<span class="hljs-comment">//说明这个数在mid与right之间</span><br>                <span class="hljs-keyword">else</span>  right = mid;<span class="hljs-comment">//说明这个数在left与mid之间</span><br>            &#125;<br><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> nums[left];<br><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>观察题目给的例子发现，只要这个唯一数存在于某个区间内，那么这个区间的元素个数一定为奇数个。那么只要通过二分查找把区间保持在奇数个即可。</p>]]></content>
+    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/maximum-subarray/">本题链接</a></p><h2 id="前缀和"><a href="#前缀和" class="headerlink" title="前缀和"></a>前缀和</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br><br>        <span class="hljs-function">vector&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">psum</span><span class="hljs-params">(nums.size() + <span class="hljs-number">1</span>,<span class="hljs-number">0</span>)</span></span>;<br>        <br>        <span class="hljs-comment">//构造前缀和</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; nums.<span class="hljs-built_in">size</span>(); ++i)<br>            psum[i + <span class="hljs-number">1</span>] = psum[i] + nums[i];<br><br>        <span class="hljs-keyword">int</span> res = psum[<span class="hljs-number">1</span>];<br><br>        <span class="hljs-comment">//使用滑动窗口</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i &lt; psum.<span class="hljs-built_in">size</span>(); ++i)<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i;j &lt; psum.<span class="hljs-built_in">size</span>(); ++j)<br>                res = <span class="hljs-built_in">max</span>(res,psum[j] - psum[i<span class="hljs-number">-1</span>]);<br>            <br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>记录每个元素的前缀和，然后使用滑动窗口计算每个区域的大小。但是后面发现多此一举…没必要统计前缀和，使用单纯的累计值对比就行。</p><h2 id="暴力"><a href="#暴力" class="headerlink" title="暴力"></a>暴力</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br><br>        <span class="hljs-keyword">int</span> res = INT_MIN;<br><br>        <span class="hljs-comment">//使用滑动窗口</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; nums.<span class="hljs-built_in">size</span>(); ++i)&#123;<br>            <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i;j &lt; nums.<span class="hljs-built_in">size</span>(); ++j)&#123;<br>                sum+=nums[j];<br>                res = <span class="hljs-built_in">max</span>(res,sum);<br>            &#125;   <br>        &#125;<br> <br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><p>简单直观，直接暴力遍历每个可能的区间，但是复杂度很高。</p><h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br><br>        <span class="hljs-keyword">int</span> pre = <span class="hljs-number">0</span>,ans = nums[<span class="hljs-number">0</span>];<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; p : nums)&#123;<br>            <br>            pre = <span class="hljs-built_in">max</span>(p,pre + p);<span class="hljs-comment">//选择是否保留前面的区域</span><br>            ans = <span class="hljs-built_in">max</span>(pre,ans);<span class="hljs-comment">//选择最大的结果</span><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h3><p>根据规律其实可以推出状态转移方程：</p><script type="math/tex; mode=display">dp[i]=max(dp[i-1],dp[i-1]+numsp[i])</script><p>如果前面的区域加上自己还小于自己的话，说明前面的区域可以舍弃了。</p>]]></content>
     
     
     <categories>
@@ -2918,9 +2914,13 @@
     
     <tags>
       
+      <tag>暴力</tag>
+      
       <tag>数组</tag>
       
-      <tag>二分查找</tag>
+      <tag>动态规划</tag>
+      
+      <tag>前缀和</tag>
       
     </tags>
     
@@ -3203,6 +3203,35 @@
   
   
   <entry>
+    <title>695. 岛屿的最大面积</title>
+    <link href="/2021/12/09/LeetCode/695.%20%E5%B2%9B%E5%B1%BF%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9D%A2%E7%A7%AF/"/>
+    <url>/2021/12/09/LeetCode/695.%20%E5%B2%9B%E5%B1%BF%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9D%A2%E7%A7%AF/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/max-area-of-island/">本题链接</a></p><h2 id="DFS-递归"><a href="#DFS-递归" class="headerlink" title="DFS+递归"></a>DFS+递归</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><br>    set&lt;pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&gt; yet_set;<span class="hljs-comment">//已经被探寻过的地点</span><br>    pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; border;<span class="hljs-comment">//grid边界</span><br>    vector&lt;pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&gt; direction_vec&#123;&#123;<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-number">1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>&#125;&#125;;<span class="hljs-comment">//方向 上右下左的顺序</span><br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxAreaOfIsland</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;<br><br>        <span class="hljs-keyword">this</span>-&gt;border = pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&#123;grid.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>,grid[<span class="hljs-number">0</span>].<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>&#125;;<br>        <span class="hljs-keyword">int</span> max_land = <span class="hljs-number">0</span>;<br>        <br>        <span class="hljs-comment">//遍历所有能遍历到的点</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> row = <span class="hljs-number">0</span>;row &lt; grid.<span class="hljs-built_in">size</span>();++row)&#123;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> col = <span class="hljs-number">0</span>;col &lt; grid[<span class="hljs-number">0</span>].<span class="hljs-built_in">size</span>();++col)&#123;<br>                <br>                <span class="hljs-keyword">if</span>(grid[row][col] == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//如果是0,直接跳过</span><br>                <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">find</span>(&#123;row,col&#125;) != <span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">end</span>()) <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//如果已经探寻过,直接跳过</span><br>                <br>                pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; point&#123;row,col&#125;;<span class="hljs-comment">//创建一个点</span><br>                <span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">insert</span>(point);<span class="hljs-comment">//备份这个点</span><br>                max_land = <span class="hljs-built_in">max</span>(<span class="hljs-built_in">getLand</span>(point,grid),max_land);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> max_land;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getLand</span><span class="hljs-params">(pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; point,vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid)</span></span>&#123;<br>        <br>        <span class="hljs-keyword">int</span> local_max = <span class="hljs-number">1</span>;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;direction : <span class="hljs-keyword">this</span>-&gt;direction_vec)&#123;<span class="hljs-comment">//从上右下左的顺序遍历点</span><br><br>            pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; new_point&#123;point.first + direction.first,point.second + direction.second&#125;;<span class="hljs-comment">//获得新的点位置</span><br>            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">inGrid</span>(new_point) &amp;&amp; (<span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">find</span>(new_point) == <span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">end</span>()) &amp;&amp; grid[new_point.first][new_point.second] == <span class="hljs-number">1</span>)&#123;<span class="hljs-comment">//如果这个点合法且没被遍历过而且值为1</span><br>                <span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">insert</span>(new_point);<br>                local_max += <span class="hljs-built_in">getLand</span>(new_point,grid);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//否则跳过</span><br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> local_max;      <br>    &#125;<br><br>    <span class="hljs-comment">//判断点是否合法</span><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">inGrid</span><span class="hljs-params">(pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; point)</span></span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-number">0</span> &lt;= point.first &amp;&amp; point.first &lt;= <span class="hljs-keyword">this</span>-&gt;border.first)<br>            <span class="hljs-keyword">if</span>(<span class="hljs-number">0</span> &lt;= point.second &amp;&amp; point.second &lt;= <span class="hljs-keyword">this</span>-&gt;border.second) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>&#125;;<br><br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>需要保存被探寻过的地点，以免再次遍历；然后就是定义一个方向数组，用来保存不同方向的行走。注意要避开不存在的点。然后流程就是先遍历每一个点，在每次迭代中对当前符合题意的点进一步深入即可。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>递归</tag>
+      
+      <tag>深度优先搜索</tag>
+      
+      <tag>图</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>696. 计数二进制子串</title>
     <link href="/2021/12/09/LeetCode/696.%20%E8%AE%A1%E6%95%B0%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AD%90%E4%B8%B2/"/>
     <url>/2021/12/09/LeetCode/696.%20%E8%AE%A1%E6%95%B0%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AD%90%E4%B8%B2/</url>
@@ -3226,35 +3255,6 @@
       <tag>奇技淫巧</tag>
       
       <tag>中心扩展法</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>695. 岛屿的最大面积</title>
-    <link href="/2021/12/09/LeetCode/695.%20%E5%B2%9B%E5%B1%BF%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9D%A2%E7%A7%AF/"/>
-    <url>/2021/12/09/LeetCode/695.%20%E5%B2%9B%E5%B1%BF%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9D%A2%E7%A7%AF/</url>
-    
-    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/max-area-of-island/">本题链接</a></p><h2 id="DFS-递归"><a href="#DFS-递归" class="headerlink" title="DFS+递归"></a>DFS+递归</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><br>    set&lt;pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&gt; yet_set;<span class="hljs-comment">//已经被探寻过的地点</span><br>    pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; border;<span class="hljs-comment">//grid边界</span><br>    vector&lt;pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&gt; direction_vec&#123;&#123;<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-number">1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>&#125;&#125;;<span class="hljs-comment">//方向 上右下左的顺序</span><br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxAreaOfIsland</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;<br><br>        <span class="hljs-keyword">this</span>-&gt;border = pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&#123;grid.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>,grid[<span class="hljs-number">0</span>].<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>&#125;;<br>        <span class="hljs-keyword">int</span> max_land = <span class="hljs-number">0</span>;<br>        <br>        <span class="hljs-comment">//遍历所有能遍历到的点</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> row = <span class="hljs-number">0</span>;row &lt; grid.<span class="hljs-built_in">size</span>();++row)&#123;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> col = <span class="hljs-number">0</span>;col &lt; grid[<span class="hljs-number">0</span>].<span class="hljs-built_in">size</span>();++col)&#123;<br>                <br>                <span class="hljs-keyword">if</span>(grid[row][col] == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//如果是0,直接跳过</span><br>                <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">find</span>(&#123;row,col&#125;) != <span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">end</span>()) <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//如果已经探寻过,直接跳过</span><br>                <br>                pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; point&#123;row,col&#125;;<span class="hljs-comment">//创建一个点</span><br>                <span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">insert</span>(point);<span class="hljs-comment">//备份这个点</span><br>                max_land = <span class="hljs-built_in">max</span>(<span class="hljs-built_in">getLand</span>(point,grid),max_land);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> max_land;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getLand</span><span class="hljs-params">(pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; point,vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid)</span></span>&#123;<br>        <br>        <span class="hljs-keyword">int</span> local_max = <span class="hljs-number">1</span>;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;direction : <span class="hljs-keyword">this</span>-&gt;direction_vec)&#123;<span class="hljs-comment">//从上右下左的顺序遍历点</span><br><br>            pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; new_point&#123;point.first + direction.first,point.second + direction.second&#125;;<span class="hljs-comment">//获得新的点位置</span><br>            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">inGrid</span>(new_point) &amp;&amp; (<span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">find</span>(new_point) == <span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">end</span>()) &amp;&amp; grid[new_point.first][new_point.second] == <span class="hljs-number">1</span>)&#123;<span class="hljs-comment">//如果这个点合法且没被遍历过而且值为1</span><br>                <span class="hljs-keyword">this</span>-&gt;yet_set.<span class="hljs-built_in">insert</span>(new_point);<br>                local_max += <span class="hljs-built_in">getLand</span>(new_point,grid);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//否则跳过</span><br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> local_max;      <br>    &#125;<br><br>    <span class="hljs-comment">//判断点是否合法</span><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">inGrid</span><span class="hljs-params">(pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; point)</span></span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-number">0</span> &lt;= point.first &amp;&amp; point.first &lt;= <span class="hljs-keyword">this</span>-&gt;border.first)<br>            <span class="hljs-keyword">if</span>(<span class="hljs-number">0</span> &lt;= point.second &amp;&amp; point.second &lt;= <span class="hljs-keyword">this</span>-&gt;border.second) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>&#125;;<br><br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>需要保存被探寻过的地点，以免再次遍历；然后就是定义一个方向数组，用来保存不同方向的行走。注意要避开不存在的点。然后流程就是先遍历每一个点，在每次迭代中对当前符合题意的点进一步深入即可。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>LeetCode</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>递归</tag>
-      
-      <tag>深度优先搜索</tag>
-      
-      <tag>图</tag>
       
     </tags>
     
@@ -3445,9 +3445,9 @@
     
     <tags>
       
-      <tag>广度优先搜索</tag>
-      
       <tag>图</tag>
+      
+      <tag>广度优先搜索</tag>
       
       <tag>染色法</tag>
       
@@ -3489,33 +3489,6 @@
   
   
   <entry>
-    <title>852. 山脉数组的峰顶索引</title>
-    <link href="/2021/12/09/LeetCode/852.%20%E5%B1%B1%E8%84%89%E6%95%B0%E7%BB%84%E7%9A%84%E5%B3%B0%E9%A1%B6%E7%B4%A2%E5%BC%95/"/>
-    <url>/2021/12/09/LeetCode/852.%20%E5%B1%B1%E8%84%89%E6%95%B0%E7%BB%84%E7%9A%84%E5%B3%B0%E9%A1%B6%E7%B4%A2%E5%BC%95/</url>
-    
-    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/peak-index-in-a-mountain-array/">本题链接</a></p><h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">peakIndexInMountainArray</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; arr)</span> </span>&#123;<br><br>        <span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>,r = arr.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>,mid;<br><br>        <span class="hljs-keyword">while</span>((l + <span class="hljs-number">2</span>) != r)&#123;<br>            <br>            mid = (r + l)  / <span class="hljs-number">2</span>;<br>            <span class="hljs-keyword">if</span>(arr[mid] &gt; arr[mid - <span class="hljs-number">1</span>] &amp;&amp; arr[mid] &gt; arr[mid + <span class="hljs-number">1</span>]) <span class="hljs-keyword">return</span> mid;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(arr[mid] &gt; arr[mid - <span class="hljs-number">1</span>] &amp;&amp; arr[mid] &lt; arr[mid + <span class="hljs-number">1</span>]) l = mid;<br>            <span class="hljs-keyword">else</span> r = mid;<br>            <br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> l + <span class="hljs-number">1</span>;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>只要把峰值限制在左右边界之间即可</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>LeetCode</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>数组</tag>
-      
-      <tag>二分查找</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>83. 删除排序链表中的重复元素</title>
     <link href="/2021/12/09/LeetCode/83.%20%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0/"/>
     <url>/2021/12/09/LeetCode/83.%20%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0/</url>
@@ -3535,6 +3508,33 @@
       <tag>迭代</tag>
       
       <tag>链表</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>852. 山脉数组的峰顶索引</title>
+    <link href="/2021/12/09/LeetCode/852.%20%E5%B1%B1%E8%84%89%E6%95%B0%E7%BB%84%E7%9A%84%E5%B3%B0%E9%A1%B6%E7%B4%A2%E5%BC%95/"/>
+    <url>/2021/12/09/LeetCode/852.%20%E5%B1%B1%E8%84%89%E6%95%B0%E7%BB%84%E7%9A%84%E5%B3%B0%E9%A1%B6%E7%B4%A2%E5%BC%95/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/peak-index-in-a-mountain-array/">本题链接</a></p><h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">peakIndexInMountainArray</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; arr)</span> </span>&#123;<br><br>        <span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>,r = arr.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>,mid;<br><br>        <span class="hljs-keyword">while</span>((l + <span class="hljs-number">2</span>) != r)&#123;<br>            <br>            mid = (r + l)  / <span class="hljs-number">2</span>;<br>            <span class="hljs-keyword">if</span>(arr[mid] &gt; arr[mid - <span class="hljs-number">1</span>] &amp;&amp; arr[mid] &gt; arr[mid + <span class="hljs-number">1</span>]) <span class="hljs-keyword">return</span> mid;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(arr[mid] &gt; arr[mid - <span class="hljs-number">1</span>] &amp;&amp; arr[mid] &lt; arr[mid + <span class="hljs-number">1</span>]) l = mid;<br>            <span class="hljs-keyword">else</span> r = mid;<br>            <br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> l + <span class="hljs-number">1</span>;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>只要把峰值限制在左右边界之间即可</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数组</tag>
+      
+      <tag>二分查找</tag>
       
     </tags>
     
@@ -5576,6 +5576,31 @@
   
   
   <entry>
+    <title>备忘录模式</title>
+    <link href="/2019/06/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96%EF%BC%9A%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/"/>
+    <url>/2019/06/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96%EF%BC%9A%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在软件构建过程中，某些对象的状态在转换过程中，可能由于某种需要，要求程序能够回溯到对象之前处于某个点时的状态。如果使用一些公有接口来让其他对象得到对象的状态，便会暴露对象的细节实现。</li><li>如何实现对象状态的良好保存与恢复？但同时又不会因此而破坏对象本身的封装性？</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可以将该对象恢复到原本保存的状态。——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Memento</span></span><br><span class="hljs-class">&#123;</span><br>    string state;<br>    <span class="hljs-comment">//..</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Memento</span>(<span class="hljs-keyword">const</span> string &amp; s) : <span class="hljs-built_in">state</span>(s) &#123;&#125;<br>    <span class="hljs-function">string <span class="hljs-title">getState</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> state; &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setState</span><span class="hljs-params">(<span class="hljs-keyword">const</span> string &amp; s)</span> </span>&#123; state = s; &#125;<br>&#125;;<br><br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Originator</span></span><br><span class="hljs-class">&#123;</span><br>    string state;<br>    <span class="hljs-comment">//....</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Originator</span>() &#123;&#125;<br>    <span class="hljs-function">Memento <span class="hljs-title">createMomento</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-function">Memento <span class="hljs-title">m</span><span class="hljs-params">(state)</span></span>;<br>        <span class="hljs-keyword">return</span> m;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setMomento</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Memento &amp; m)</span> </span>&#123;<br>        state = m.<span class="hljs-built_in">getState</span>();<br>    &#125;<br>&#125;;<br><br><br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Originator orginator;<br>    <br>    <span class="hljs-comment">//捕获对象状态，存储到备忘录</span><br>    Memento mem = orginator.<span class="hljs-built_in">createMomento</span>();<br>    <br>    <span class="hljs-comment">//... 改变orginator状态</span><br>    <br>    <span class="hljs-comment">//从备忘录中恢复</span><br>    orginator.<span class="hljs-built_in">setMomento</span>(memento);<br>   <br>&#125;<br></code></pre></div></td></tr></table></figure><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a8c463389b28bf24c925f7dd4b745f7f-b47ff.png" alt="结构"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>备忘录(Memento)存储原发器(Originator)对象的内部状态，在需要时恢复原发器状态。</li><li>Memento模式的核心是信息隐藏，即Originator需要向外界隐藏信息，保持其封装性。但同时又需要将状态保持到外界（Memento）。</li><li>由于现代语言运行时（如C#、JAVA等）都具有相当的对象序列化支持，因此往往采用效率较高、又较容易正确实现的序列化方案来实现Memento模式。</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>设计模式</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>状态变化</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>状态模式</title>
     <link href="/2019/06/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96%EF%BC%9A%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/"/>
     <url>/2019/06/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96%EF%BC%9A%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/</url>
@@ -5618,31 +5643,6 @@
     <tags>
       
       <tag>组件协作</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>备忘录模式</title>
-    <link href="/2019/06/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96%EF%BC%9A%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/"/>
-    <url>/2019/06/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96%EF%BC%9A%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/</url>
-    
-    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在软件构建过程中，某些对象的状态在转换过程中，可能由于某种需要，要求程序能够回溯到对象之前处于某个点时的状态。如果使用一些公有接口来让其他对象得到对象的状态，便会暴露对象的细节实现。</li><li>如何实现对象状态的良好保存与恢复？但同时又不会因此而破坏对象本身的封装性？</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可以将该对象恢复到原本保存的状态。——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Memento</span></span><br><span class="hljs-class">&#123;</span><br>    string state;<br>    <span class="hljs-comment">//..</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Memento</span>(<span class="hljs-keyword">const</span> string &amp; s) : <span class="hljs-built_in">state</span>(s) &#123;&#125;<br>    <span class="hljs-function">string <span class="hljs-title">getState</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> state; &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setState</span><span class="hljs-params">(<span class="hljs-keyword">const</span> string &amp; s)</span> </span>&#123; state = s; &#125;<br>&#125;;<br><br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Originator</span></span><br><span class="hljs-class">&#123;</span><br>    string state;<br>    <span class="hljs-comment">//....</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Originator</span>() &#123;&#125;<br>    <span class="hljs-function">Memento <span class="hljs-title">createMomento</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-function">Memento <span class="hljs-title">m</span><span class="hljs-params">(state)</span></span>;<br>        <span class="hljs-keyword">return</span> m;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setMomento</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Memento &amp; m)</span> </span>&#123;<br>        state = m.<span class="hljs-built_in">getState</span>();<br>    &#125;<br>&#125;;<br><br><br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Originator orginator;<br>    <br>    <span class="hljs-comment">//捕获对象状态，存储到备忘录</span><br>    Memento mem = orginator.<span class="hljs-built_in">createMomento</span>();<br>    <br>    <span class="hljs-comment">//... 改变orginator状态</span><br>    <br>    <span class="hljs-comment">//从备忘录中恢复</span><br>    orginator.<span class="hljs-built_in">setMomento</span>(memento);<br>   <br>&#125;<br></code></pre></div></td></tr></table></figure><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a8c463389b28bf24c925f7dd4b745f7f-b47ff.png" alt="结构"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>备忘录(Memento)存储原发器(Originator)对象的内部状态，在需要时恢复原发器状态。</li><li>Memento模式的核心是信息隐藏，即Originator需要向外界隐藏信息，保持其封装性。但同时又需要将状态保持到外界（Memento）。</li><li>由于现代语言运行时（如C#、JAVA等）都具有相当的对象序列化支持，因此往往采用效率较高、又较容易正确实现的序列化方案来实现Memento模式。</li></ul>]]></content>
-    
-    
-    <categories>
-      
-      <category>设计模式</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>状态变化</tag>
       
     </tags>
     
