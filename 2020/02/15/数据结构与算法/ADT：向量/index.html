@@ -1,0 +1,744 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="向量是数组的抽象与泛化，由一组元素按线性次序封装而成...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>向量 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="向量">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-02-15 10:00" pubdate>
+        2020年2月15日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      68
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">向量</h1>
+            
+            <div class="markdown-body">
+              <h2 id="向量的定义"><a href="#向量的定义" class="headerlink" title="向量的定义"></a>向量的定义</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210629230258.png" srcset="/img/loading.gif" lazyload alt="向量的定义"></p>
+<h2 id="向量的构造和析构"><a href="#向量的构造和析构" class="headerlink" title="向量的构造和析构"></a>向量的构造和析构</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/******************************************************************************************</span><br><span class="hljs-comment"> * Data Structures in C++</span><br><span class="hljs-comment"> * ISBN: 7-302-33064-6 &amp; 7-302-33065-3 &amp; 7-302-29652-2 &amp; 7-302-26883-3</span><br><span class="hljs-comment"> * Junhui DENG, deng@tsinghua.edu.cn</span><br><span class="hljs-comment"> * Computer Science &amp; Technology, Tsinghua University</span><br><span class="hljs-comment"> * Copyright (c) 2003-2020. All rights reserved.</span><br><span class="hljs-comment"> ******************************************************************************************/</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> once</span><br><br><span class="hljs-keyword">using</span> Rank = <span class="hljs-keyword">int</span>; <span class="hljs-comment">//秩</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> DEFAULT_CAPACITY  3 <span class="hljs-comment">//默认的初始容量（实际应用中可设置为更大）</span></span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Vector</span> &#123;</span> <span class="hljs-comment">//向量模板类</span><br><span class="hljs-keyword">protected</span>:<br>   Rank _size; <span class="hljs-keyword">int</span> _capacity;  T* _elem; <span class="hljs-comment">//规模、容量、数据区</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">copyFrom</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>* A, Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//复制数组区间A[lo, hi)</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">expand</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//空间不足时扩容</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">shrink</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//装填因子过小时压缩</span><br>   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">bubble</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//扫描交换</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bubbleSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//起泡排序算法</span><br>   <span class="hljs-function">Rank <span class="hljs-title">maxItem</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//选取最大元素</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">selectionSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//选择排序算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge</span> <span class="hljs-params">( Rank lo, Rank mi, Rank hi )</span></span>; <span class="hljs-comment">//归并算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mergeSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//归并排序算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">heapSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//堆排序（稍后结合完全堆讲解）</span><br>   <span class="hljs-function">Rank <span class="hljs-title">partition</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//轴点构造算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quickSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//快速排序算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">shellSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//希尔排序算法</span><br><span class="hljs-keyword">public</span>:<br><span class="hljs-comment">// 构造函数</span><br>   <span class="hljs-built_in">Vector</span> ( <span class="hljs-keyword">int</span> c = DEFAULT_CAPACITY, <span class="hljs-keyword">int</span> s = <span class="hljs-number">0</span>, T v = <span class="hljs-number">0</span> ) <span class="hljs-comment">//容量为c、规模为s、所有元素初始为v</span><br>   &#123; _elem = <span class="hljs-keyword">new</span> T[_capacity = c]; <span class="hljs-keyword">for</span> ( _size = <span class="hljs-number">0</span>; _size &lt; s; _elem[_size++] = v ); &#125; <span class="hljs-comment">//s&lt;=c</span><br>   <span class="hljs-built_in">Vector</span> ( T <span class="hljs-keyword">const</span>* A, Rank n ) &#123; <span class="hljs-built_in">copyFrom</span> ( A, <span class="hljs-number">0</span>, n ); &#125; <span class="hljs-comment">//数组整体复制</span><br>   <span class="hljs-built_in">Vector</span> ( T <span class="hljs-keyword">const</span>* A, Rank lo, Rank hi ) &#123; <span class="hljs-built_in">copyFrom</span> ( A, lo, hi ); &#125; <span class="hljs-comment">//区间</span><br>   <span class="hljs-built_in">Vector</span> ( Vector&lt;T&gt; <span class="hljs-keyword">const</span>&amp; V ) &#123; <span class="hljs-built_in">copyFrom</span> ( V._elem, <span class="hljs-number">0</span>, V._size ); &#125; <span class="hljs-comment">//向量整体复制</span><br>   <span class="hljs-built_in">Vector</span> ( Vector&lt;T&gt; <span class="hljs-keyword">const</span>&amp; V, Rank lo, Rank hi ) &#123; <span class="hljs-built_in">copyFrom</span> ( V._elem, lo, hi ); &#125; <span class="hljs-comment">//区间</span><br><span class="hljs-comment">// 析构函数</span><br>   ~<span class="hljs-built_in">Vector</span>() &#123; <span class="hljs-keyword">delete</span> [] _elem; &#125; <span class="hljs-comment">//释放内部空间</span><br><span class="hljs-comment">// 只读访问接口</span><br>   <span class="hljs-function">Rank <span class="hljs-title">size</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> _size; &#125; <span class="hljs-comment">//规模</span><br>   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">empty</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> !_size; &#125; <span class="hljs-comment">//判空</span><br>   <span class="hljs-function">Rank <span class="hljs-title">find</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e )</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">find</span> ( e, <span class="hljs-number">0</span>, _size ); &#125; <span class="hljs-comment">//无序向量整体查找</span><br>   <span class="hljs-function">Rank <span class="hljs-title">find</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi )</span> <span class="hljs-keyword">const</span></span>; <span class="hljs-comment">//无序向量区间查找</span><br>   <span class="hljs-function">Rank <span class="hljs-title">search</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e )</span> <span class="hljs-keyword">const</span> <span class="hljs-comment">//有序向量整体查找</span></span><br><span class="hljs-function">   </span>&#123; <span class="hljs-keyword">return</span> ( <span class="hljs-number">0</span> &gt;= _size ) ? <span class="hljs-number">-1</span> : <span class="hljs-built_in">search</span> ( e, <span class="hljs-number">0</span>, _size ); &#125;<br>   <span class="hljs-function">Rank <span class="hljs-title">search</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi )</span> <span class="hljs-keyword">const</span></span>; <span class="hljs-comment">//有序向量区间查找</span><br><span class="hljs-comment">// 可写访问接口</span><br>   T&amp; <span class="hljs-keyword">operator</span>[] ( Rank r ); <span class="hljs-comment">//重载下标操作符，可以类似于数组形式引用各元素</span><br>   <span class="hljs-keyword">const</span> T&amp; <span class="hljs-keyword">operator</span>[] ( Rank r ) <span class="hljs-keyword">const</span>; <span class="hljs-comment">//仅限于做右值的重载版本</span><br>   Vector&lt;T&gt; &amp; <span class="hljs-keyword">operator</span>= ( Vector&lt;T&gt; <span class="hljs-keyword">const</span>&amp; ); <span class="hljs-comment">//重载赋值操作符，以便直接克隆向量</span><br>   <span class="hljs-function">T <span class="hljs-title">remove</span> <span class="hljs-params">( Rank r )</span></span>; <span class="hljs-comment">//删除秩为r的元素</span><br>   <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">remove</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//删除秩在区间[lo, hi)之内的元素</span><br>   <span class="hljs-function">Rank <span class="hljs-title">insert</span> <span class="hljs-params">( Rank r, T <span class="hljs-keyword">const</span>&amp; e )</span></span>; <span class="hljs-comment">//插入元素</span><br>   <span class="hljs-function">Rank <span class="hljs-title">insert</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e )</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">insert</span> ( _size, e ); &#125; <span class="hljs-comment">//默认作为末元素插入</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//对[lo, hi)排序</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sort</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">sort</span> ( <span class="hljs-number">0</span>, _size ); &#125; <span class="hljs-comment">//整体排序</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">unsort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//对[lo, hi)置乱</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">unsort</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">unsort</span> ( <span class="hljs-number">0</span>, _size ); &#125; <span class="hljs-comment">//整体置乱</span><br>   <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">deduplicate</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//无序去重</span><br>   <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">uniquify</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//有序去重</span><br><span class="hljs-comment">// 遍历</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">traverse</span> <span class="hljs-params">( <span class="hljs-keyword">void</span> (* ) ( T&amp; ) )</span></span>; <span class="hljs-comment">//遍历（使用函数指针，只读或局部性修改）</span><br>   <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> VST&gt; <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">traverse</span> <span class="hljs-params">( VST&amp; )</span></span>; <span class="hljs-comment">//遍历（使用函数对象，可全局性修改）</span><br>&#125;; <span class="hljs-comment">//Vector</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;vector_implementation.h&quot;</span></span><br><br></code></pre></div></td></tr></table></figure>
+<h2 id="向量的复制"><a href="#向量的复制" class="headerlink" title="向量的复制"></a>向量的复制</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//元素类型</span><br><span class="hljs-keyword">void</span> Vector&lt;T&gt;::<span class="hljs-built_in">copyFrom</span> ( T <span class="hljs-keyword">const</span>* A, Rank lo, Rank hi ) &#123; <span class="hljs-comment">//以数组区间A[lo, hi)为蓝本复制向量</span><br>   _elem = <span class="hljs-keyword">new</span> T[ _capacity = <span class="hljs-number">2</span> * ( hi - lo ) ]; <span class="hljs-comment">//分配空间</span><br>   <span class="hljs-keyword">for</span> (_size = <span class="hljs-number">0</span>; lo &lt; hi; _size++, lo++ ) <span class="hljs-comment">//A[lo, hi)内的元素逐一</span><br>      _elem[ _size ] = A[ lo ]; <span class="hljs-comment">//复制至_elem[0, hi - lo)</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/47131e825a6c7ce6a2e481b1d5bb558e-c3e0c.png" srcset="/img/loading.gif" lazyload alt="向量复制示意"></p>
+<h2 id="可扩充向量"><a href="#可扩充向量" class="headerlink" title="可扩充向量"></a>可扩充向量</h2><h3 id="静态空间管理"><a href="#静态空间管理" class="headerlink" title="静态空间管理"></a>静态空间管理</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210630132508.png" srcset="/img/loading.gif" lazyload alt="向量的静态空间管理"></p>
+<h3 id="动态空间管理"><a href="#动态空间管理" class="headerlink" title="动态空间管理"></a>动态空间管理</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210630133319.png" srcset="/img/loading.gif" lazyload alt="动态空间管理"></p>
+<p>动态空间的扩容算法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">void</span> Vector&lt;T&gt;::<span class="hljs-built_in">expand</span>() &#123; <span class="hljs-comment">//向量空间不足时扩容</span><br>   <span class="hljs-keyword">if</span> ( _size &lt; _capacity ) <span class="hljs-keyword">return</span>; <span class="hljs-comment">//尚未满员时，不必扩容</span><br>   <span class="hljs-keyword">if</span> ( _capacity &lt; DEFAULT_CAPACITY ) _capacity = DEFAULT_CAPACITY; <span class="hljs-comment">//不低于最小容量</span><br>   T* oldElem = _elem;  _elem = <span class="hljs-keyword">new</span> T[_capacity &lt;&lt;= <span class="hljs-number">1</span>]; <span class="hljs-comment">//容量加倍</span><br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; _size; i++ )<br>      _elem[i] = oldElem[i]; <span class="hljs-comment">//复制原向量内容（T为基本类型，或已重载赋值操作符&#x27;=&#x27;）</span><br>   <span class="hljs-keyword">delete</span> [] oldElem; <span class="hljs-comment">//释放原空间</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>动态空间的扩容算法问题：</p>
+<p><strong>问</strong>：for (int i = 0; i &lt; _size; i++) _elem[i] = oldElem[i];</p>
+<p>替代为：</p>
+<p>memcpy(_elem, oldElem, _size * sizeof(T));</p>
+<p>是否可行？</p>
+<p><strong>答</strong>：不行，当T为非基本类型且有对应的赋值运算符以执行深复制时，前一段代码会调用赋值运算符，而后一段只能进行浅复制。</p>
+<h3 id="扩容方式分析"><a href="#扩容方式分析" class="headerlink" title="扩容方式分析"></a>扩容方式分析</h3><h4 id="递增式扩容"><a href="#递增式扩容" class="headerlink" title="递增式扩容"></a>递增式扩容</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210630134743.png" srcset="/img/loading.gif" lazyload alt="递增式扩容"></p>
+<h4 id="倍增式扩容"><a href="#倍增式扩容" class="headerlink" title="倍增式扩容"></a>倍增式扩容</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210630135527.png" srcset="/img/loading.gif" lazyload alt="倍增式扩容"></p>
+<h4 id="递增和倍增扩容的对比"><a href="#递增和倍增扩容的对比" class="headerlink" title="递增和倍增扩容的对比"></a>递增和倍增扩容的对比</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701112219.png" srcset="/img/loading.gif" lazyload alt="递增和倍增扩容的对比"></p>
+<h4 id="平均复杂度与分摊复杂度"><a href="#平均复杂度与分摊复杂度" class="headerlink" title="平均复杂度与分摊复杂度"></a>平均复杂度与分摊复杂度</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701112538.png" srcset="/img/loading.gif" lazyload alt="平均复杂度与分摊复杂度"></p>
+<h2 id="无序向量"><a href="#无序向量" class="headerlink" title="无序向量"></a>无序向量</h2><h3 id="循秩访问"><a href="#循秩访问" class="headerlink" title="循秩访问"></a>循秩访问</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701114644.png" srcset="/img/loading.gif" lazyload alt="无序向量的循秩访问"></p>
+<p>可作为左值的原因是：返回值是引用</p>
+<h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//将e作为秩为r元素插入</span><br>Rank Vector&lt;T&gt;::<span class="hljs-built_in">insert</span> ( Rank r, T <span class="hljs-keyword">const</span>&amp; e ) &#123; <span class="hljs-comment">//assert: 0 &lt;= r &lt;= size</span><br>   <span class="hljs-built_in">expand</span>(); <span class="hljs-comment">//若有必要，扩容</span><br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> i = _size; i &gt; r; i-- ) _elem[i] = _elem[i<span class="hljs-number">-1</span>]; <span class="hljs-comment">//自后向前，后继元素顺次后移一个单元</span><br>   _elem[r] = e; _size++; <span class="hljs-comment">//置入新元素并更新容量</span><br>   <span class="hljs-keyword">return</span> r; <span class="hljs-comment">//返回秩</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/cfe2a77c2bfa4477a2d1e672799128bc-d288c.png" srcset="/img/loading.gif" lazyload alt="插入操作示意图"></p>
+<p>注意：如果自前向后挪动后继元素，会发生数据覆盖的情况，很危险！</p>
+<h3 id="区间删除"><a href="#区间删除" class="headerlink" title="区间删除"></a>区间删除</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">int</span> Vector&lt;T&gt;::<span class="hljs-built_in">remove</span> ( Rank lo, Rank hi ) &#123; <span class="hljs-comment">//删除区间[lo, hi)</span><br>   <span class="hljs-keyword">if</span> ( lo == hi ) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">//出于效率考虑，单独处理退化情况，比如remove(0, 0)</span><br>   <span class="hljs-keyword">while</span> ( hi &lt; _size ) _elem[lo++] = _elem[hi++]; <span class="hljs-comment">//[hi, _size)顺次前移hi - lo个单元</span><br>   _size = lo; <span class="hljs-comment">//更新规模，直接丢弃尾部[lo, _size = hi)区间</span><br>   <span class="hljs-built_in">shrink</span>(); <span class="hljs-comment">//若有必要，则缩容</span><br>   <span class="hljs-keyword">return</span> hi - lo; <span class="hljs-comment">//返回被删除元素的数目</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0d15857b96107249ee3ce33fc08975cb-9661e.png" srcset="/img/loading.gif" lazyload alt="删除操作"></p>
+<h3 id="单元素删除"><a href="#单元素删除" class="headerlink" title="单元素删除"></a>单元素删除</h3><p>可以视作区间删除操作的特例：<code>[r] = [r,r+1]</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; T Vector&lt;T&gt;::<span class="hljs-built_in">remove</span> ( Rank r ) &#123; <span class="hljs-comment">//删除向量中秩为r的元素，0 &lt;= r &lt; size</span><br>   T e = _elem[r]; <span class="hljs-comment">//备份被删除元素</span><br>   <span class="hljs-built_in">remove</span> ( r, r + <span class="hljs-number">1</span> ); <span class="hljs-comment">//调用区间删除算法，等效于对区间[r, r + 1)的删除</span><br>   <span class="hljs-keyword">return</span> e; <span class="hljs-comment">//返回被删除元素</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="区间删除与单元素删除的讨论"><a href="#区间删除与单元素删除的讨论" class="headerlink" title="区间删除与单元素删除的讨论"></a>区间删除与单元素删除的讨论</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701120134.png" srcset="/img/loading.gif" lazyload alt="区间删除与单元素删除的讨论"></p>
+<p><strong>注意：以上的复杂度都基于最坏情况</strong></p>
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/96438381bd0bae3e86c01423ca2fbdaf-8d7a3.png" srcset="/img/loading.gif" lazyload alt="查找操作"></p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//无序向量的顺序查找：返回最后一个元素e的位置；失败时，返回lo - 1</span><br>Rank Vector&lt;T&gt;::<span class="hljs-built_in">find</span> ( T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi ) <span class="hljs-keyword">const</span> &#123; <span class="hljs-comment">//assert: 0 &lt;= lo &lt; hi &lt;= _size</span><br>   <span class="hljs-keyword">while</span> ( ( lo &lt; hi-- ) &amp;&amp; ( e != _elem[hi] ) ); <span class="hljs-comment">//从后向前，顺序查找</span><br>   <span class="hljs-keyword">return</span> hi; <span class="hljs-comment">//若hi &lt; lo，则意味着失败；否则hi即命中元素的秩</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>逆向查找的原因：</p>
+<blockquote>
+<p>因为相同元素需要返回位置靠后者，这是之前的约定</p>
+</blockquote>
+<h3 id="唯一化"><a href="#唯一化" class="headerlink" title="唯一化"></a>唯一化</h3><p>应用场景：网络搜索的局部结果经过去重操作，汇总为最终报告。</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">int</span> Vector&lt;T&gt;::<span class="hljs-built_in">deduplicate</span>() &#123; <span class="hljs-comment">//删除无序向量中重复元素（高效版）</span><br>   <span class="hljs-keyword">int</span> oldSize = _size; <span class="hljs-comment">//记录原规模</span><br>   Rank i = <span class="hljs-number">1</span>; <span class="hljs-comment">//从_elem[1]开始</span><br>   <span class="hljs-keyword">while</span> (i &lt; _size) <span class="hljs-comment">//自前向后逐一考查各元素_elem[i]</span><br>      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">find</span>(_elem[i], <span class="hljs-number">0</span>, i) &lt; <span class="hljs-number">0</span>) <span class="hljs-comment">//在前缀[0,i)中寻找与之雷同者（至多一个）</span><br>         i++; <span class="hljs-comment">//若无雷同则继续考查其后继</span><br>      <span class="hljs-keyword">else</span><br>         <span class="hljs-built_in">remove</span>(i); <span class="hljs-comment">//否则删除当前元素</span><br>   <span class="hljs-keyword">return</span> oldSize - _size; <span class="hljs-comment">//被删除元素总数</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>对唯一化正确性的讨论：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701152044.png" srcset="/img/loading.gif" lazyload alt="对唯一化正确性的讨论"></p>
+<p>唯一化的复杂度：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701152218.png" srcset="/img/loading.gif" lazyload alt="唯一化的复杂度"></p>
+<h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><p>函数指针与函数对象：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701153149.png" srcset="/img/loading.gif" lazyload alt="函数指针与函数对象"></p>
+<p><strong>函数对象更通用！</strong></p>
+<p>实例：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701153251.png" srcset="/img/loading.gif" lazyload alt="函数对象实例"></p>
+<h2 id="有序向量：唯一化"><a href="#有序向量：唯一化" class="headerlink" title="有序向量：唯一化"></a>有序向量：唯一化</h2><h3 id="有序性判断"><a href="#有序性判断" class="headerlink" title="有序性判断"></a>有序性判断</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701155300.png" srcset="/img/loading.gif" lazyload alt="判断有序性"></p>
+<h3 id="低效版"><a href="#低效版" class="headerlink" title="低效版"></a>低效版</h3><p>算法：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701155732.png" srcset="/img/loading.gif" lazyload alt="低效版"></p>
+<p>复杂度：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701160158.png" srcset="/img/loading.gif" lazyload alt="复杂度"></p>
+<p>算法低效的原因在于，每个相同的元素需要逐个的进行删除，花费了很多在后继移动上的开销</p>
+<h3 id="高效版"><a href="#高效版" class="headerlink" title="高效版"></a>高效版</h3><p>算法：</p>
+<ul>
+<li>反思：低效的根源在于，同意元素可作为被删除元素的后继多次前移</li>
+<li>启示：若能以重复区间为单位，成批删除雷同元素，性能必将改进</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">int</span> Vector&lt;T&gt;::<span class="hljs-built_in">uniquify</span>() &#123; <span class="hljs-comment">//有序向量重复元素剔除算法（高效版）</span><br>   Rank i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>; <span class="hljs-comment">//各对互异“相邻”元素的秩</span><br>   <span class="hljs-keyword">while</span> ( ++j &lt; _size ) <span class="hljs-comment">//逐一扫描，直至末元素</span><br>      <span class="hljs-keyword">if</span> ( _elem[i] != _elem[j] ) <span class="hljs-comment">//跳过雷同者</span><br>         _elem[++i] = _elem[j]; <span class="hljs-comment">//发现不同元素时，向前移至紧邻于前者右侧</span><br>   _size = ++i; <span class="hljs-built_in">shrink</span>(); <span class="hljs-comment">//直接截除尾部多余元素</span><br>   <span class="hljs-keyword">return</span> j - i; <span class="hljs-comment">//向量规模变化量，即被删除元素总数</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/48dc37ab2dd2a0ba5d75126d8f9cd294-c7b67.png" srcset="/img/loading.gif" lazyload alt="高效版"></p>
+<p>复杂度：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701161627.png" srcset="/img/loading.gif" lazyload alt="高效版复杂度"></p>
+<p>高效版不再将重复元素一个个处理，而是整体的并且隐式的覆盖（删除）</p>
+<h2 id="有序向量：二分查找"><a href="#有序向量：二分查找" class="headerlink" title="有序向量：二分查找"></a>有序向量：二分查找</h2><h3 id="接口规范"><a href="#接口规范" class="headerlink" title="接口规范"></a>接口规范</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//在有序向量的区间[lo, hi)内，确定不大于e的最后一个节点的秩</span><br>Rank Vector&lt;T&gt;::<span class="hljs-built_in">search</span> ( T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi ) <span class="hljs-keyword">const</span> &#123; <span class="hljs-comment">//assert: 0 &lt;= lo &lt; hi &lt;= _size</span><br>   <span class="hljs-keyword">return</span> ( <span class="hljs-built_in">rand</span>() % <span class="hljs-number">2</span> ) ? <span class="hljs-comment">//按各50%的概率随机使用二分查找或Fibonacci查找</span><br>          <span class="hljs-built_in">binSearch</span> ( _elem, e, lo, hi ) : <span class="hljs-built_in">fibSearch</span> ( _elem, e, lo, hi );<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/25eeee35e1b75b7098e69419d99f870e-fc371.png" srcset="/img/loading.gif" lazyload alt="二分查找"></p>
+<h3 id="语义约束"><a href="#语义约束" class="headerlink" title="语义约束"></a>语义约束</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701182901.png" srcset="/img/loading.gif" lazyload alt="语义约束"></p>
+<h3 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h3><h4 id="A版本（初始版本）"><a href="#A版本（初始版本）" class="headerlink" title="A版本（初始版本）"></a>A版本（初始版本）</h4><h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701183423.png" srcset="/img/loading.gif" lazyload alt="二分查找原理"></p>
+<h5 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h5><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">// 二分查找算法（版本A）：在有序向量的区间[lo, hi)内查找元素e，0 &lt;= lo &lt;= hi &lt;= _size</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function"><span class="hljs-keyword">static</span> Rank <span class="hljs-title">binSearch</span> <span class="hljs-params">( T* S, T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi )</span> </span>&#123;<br>   <span class="hljs-keyword">while</span> ( lo &lt; hi ) &#123; <span class="hljs-comment">//每步迭代可能要做两次比较判断，有三个分支</span><br>      Rank mi = ( lo + hi ) &gt;&gt; <span class="hljs-number">1</span>; <span class="hljs-comment">//以中点为轴点（区间宽度的折半，等效于宽度之数值表示的右移）</span><br>      <span class="hljs-keyword">if</span>      ( e &lt; S[mi] ) hi = mi; <span class="hljs-comment">//深入前半段[lo, mi)继续查找</span><br>      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( S[mi] &lt; e ) lo = mi + <span class="hljs-number">1</span>; <span class="hljs-comment">//深入后半段(mi, hi)继续查找</span><br>      <span class="hljs-keyword">else</span>                  <span class="hljs-keyword">return</span> mi; <span class="hljs-comment">//在mi处命中</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>; <span class="hljs-comment">//查找失败</span><br>&#125; <span class="hljs-comment">//有多个命中元素时，不能保证返回秩最大者；查找失败时，简单地返回-1，而不能指示失败的位置</span><br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/ed41a167743c57da26c9f75e56b6858a-be3f5.png" srcset="/img/loading.gif" lazyload alt="二分查找算法（版本A）"></p>
+<h5 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701195155.png" srcset="/img/loading.gif" lazyload alt="二分查找复杂度分析"></p>
+<h5 id="查找长度"><a href="#查找长度" class="headerlink" title="查找长度"></a>查找长度</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701200420.png" srcset="/img/loading.gif" lazyload alt="查找长度"></p>
+<p>粗略估算的情况下，由于4.5=$1.5*log_2{8}$ ,其中的8由n=7粗略+1得来</p>
+<h4 id="B版本（改进）"><a href="#B版本（改进）" class="headerlink" title="B版本（改进）"></a>B版本（改进）</h4><h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701215743.png" srcset="/img/loading.gif" lazyload alt="二分查找改进"></p>
+<h5 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h5><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">// 二分查找算法（版本B）：在有序向量的区间[lo, hi)内查找元素e，0 &lt;= lo &lt; hi &lt;= _size</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function"><span class="hljs-keyword">static</span> Rank <span class="hljs-title">binSearch</span> <span class="hljs-params">( T* S, T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi )</span> </span>&#123;<br>   <span class="hljs-keyword">while</span> ( <span class="hljs-number">1</span> &lt; hi - lo ) &#123; <span class="hljs-comment">//每步迭代仅需做一次比较判断，有两个分支；成功查找不能提前终止</span><br>      Rank mi = ( lo + hi ) &gt;&gt; <span class="hljs-number">1</span>; <span class="hljs-comment">//以中点为轴点（区间宽度的折半，等效于宽度之数值表示的右移）</span><br>      ( e &lt; S[mi] ) ? hi = mi : lo = mi; <span class="hljs-comment">//经比较后确定深入[lo, mi)或[mi, hi)</span><br>   &#125; <span class="hljs-comment">//出口时hi = lo + 1，查找区间仅含一个元素A[lo]</span><br>   <span class="hljs-keyword">return</span> e &lt; S[lo] ? lo - <span class="hljs-number">1</span> : lo; <span class="hljs-comment">//返回位置，总是不超过e的最大者</span><br>&#125; <span class="hljs-comment">//有多个命中元素时，不能保证返回秩最大者；查找失败时，简单地返回-1，而不能指示失败的位置</span><br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/7ad15b0cbc6eff9bed0dae4a674dad81-6d9c2.png" srcset="/img/loading.gif" lazyload alt="二分查找算法（版本B）"></p>
+<p>与最开始版本的二分查找的本质区别在于轴点和边界</p>
+<h4 id="C版本（最终）"><a href="#C版本（最终）" class="headerlink" title="C版本（最终）"></a>C版本（最终）</h4><h5 id="语义以及接口规范"><a href="#语义以及接口规范" class="headerlink" title="语义以及接口规范"></a>语义以及接口规范</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701221151.png" srcset="/img/loading.gif" lazyload alt="语义以及接口规范"></p>
+<h5 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h5><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">// 二分查找算法（版本C）：在有序向量的区间[lo, hi)内查找元素e，0 &lt;= lo &lt;= hi &lt;= _size</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function"><span class="hljs-keyword">static</span> Rank <span class="hljs-title">binSearch</span> <span class="hljs-params">( T* S, T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi )</span> </span>&#123;<br>   <span class="hljs-keyword">while</span> ( lo &lt; hi ) &#123; <span class="hljs-comment">//每步迭代仅需做一次比较判断，有两个分支</span><br>      Rank mi = ( lo + hi ) &gt;&gt; <span class="hljs-number">1</span>; <span class="hljs-comment">//以中点为轴点（区间宽度的折半，等效于宽度之数值表示的右移）</span><br>      ( e &lt; S[mi] ) ? hi = mi : lo = mi + <span class="hljs-number">1</span>; <span class="hljs-comment">//经比较后确定深入[lo, mi)或(mi, hi)</span><br>   &#125; <span class="hljs-comment">//成功查找不能提前终止</span><br>   <span class="hljs-keyword">return</span> lo - <span class="hljs-number">1</span>; <span class="hljs-comment">//循环结束时，lo为大于e的元素的最小秩，故lo - 1即不大于e的元素的最大秩</span><br>&#125; <span class="hljs-comment">//有多个命中元素时，总能保证返回秩最大者；查找失败时，能够返回失败的位置</span><br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/1a1254cc27493d45e413deb9c354ef6d-ecd7c.png" srcset="/img/loading.gif" lazyload alt="与版本B的差异"></p>
+<h5 id="正确性"><a href="#正确性" class="headerlink" title="正确性"></a>正确性</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701225546.png" srcset="/img/loading.gif" lazyload alt="正确性"></p>
+<h3 id="斐波那契查找"><a href="#斐波那契查找" class="headerlink" title="斐波那契查找"></a>斐波那契查找</h3><h4 id="思路与原理"><a href="#思路与原理" class="headerlink" title="思路与原理"></a>思路与原理</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701205026.png" srcset="/img/loading.gif" lazyload alt="思路与原理"></p>
+<h4 id="实现-3"><a href="#实现-3" class="headerlink" title="实现"></a>实现</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;fibonacci/Fib.h&quot;</span> <span class="hljs-comment">//引入Fib数列类</span></span><br><span class="hljs-comment">// Fibonacci查找算法（版本A）：在有序向量的区间[lo, hi)内查找元素e，0 &lt;= lo &lt;= hi &lt;= _size</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function"><span class="hljs-keyword">static</span> Rank <span class="hljs-title">fibSearch</span> <span class="hljs-params">( T* S, T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi )</span> </span>&#123;<br>    <span class="hljs-comment">//用O(log_phi(n = hi - lo)时间创建Fib数列</span><br>   <span class="hljs-keyword">for</span> ( Fib <span class="hljs-built_in">fib</span> ( hi - lo ); lo &lt; hi; ) &#123;  <span class="hljs-comment">//Fib数列制表备查；此后每步迭代仅一次比较、两个分支</span><br>      <span class="hljs-keyword">while</span> ( hi - lo &lt; fib.<span class="hljs-built_in">get</span>() ) fib.<span class="hljs-built_in">prev</span>(); <span class="hljs-comment">//自后向前顺序查找（分摊O(1)）</span><br>      Rank mi = lo + fib.<span class="hljs-built_in">get</span>() - <span class="hljs-number">1</span>; <span class="hljs-comment">//确定形如Fib(k) - 1的轴点</span><br>      <span class="hljs-keyword">if</span>      ( e &lt; S[mi] ) hi = mi; <span class="hljs-comment">//深入前半段[lo, mi)继续查找</span><br>      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( S[mi] &lt; e ) lo = mi + <span class="hljs-number">1</span>; <span class="hljs-comment">//深入后半段(mi, hi)继续查找</span><br>      <span class="hljs-keyword">else</span>                  <span class="hljs-keyword">return</span> mi; <span class="hljs-comment">//在mi处命中</span><br>   &#125; <span class="hljs-comment">//成功查找可以提前终止</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>; <span class="hljs-comment">//查找失败</span><br>&#125; <span class="hljs-comment">//有多个命中元素时，不能保证返回秩最大者；失败时，简单地返回-1，而不能指示失败的位置</span><br></code></pre></div></td></tr></table></figure>
+<h4 id="查找长度-1"><a href="#查找长度-1" class="headerlink" title="查找长度"></a>查找长度</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701210052.png" srcset="/img/loading.gif" lazyload alt="查找长度"></p>
+<h4 id="最优性证明"><a href="#最优性证明" class="headerlink" title="最优性证明"></a>最优性证明</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701210643.png" srcset="/img/loading.gif" lazyload alt="最优性证明"></p>
+<p>当算法的整体策略不改变的情况下，黄金分割数已经是极限，即最优解</p>
+<h2 id="有序向量：插值查找"><a href="#有序向量：插值查找" class="headerlink" title="有序向量：插值查找"></a>有序向量：插值查找</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701231130.png" srcset="/img/loading.gif" lazyload alt="原理"></p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210701232417.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<p>注意：插值查找有时候效率会很低，在某些情况下会退化为平凡的顺序查找（最坏情况复杂度O(hi-lo)=O(n)）。显然，最好情况就是一次命中(复杂度为O(n))</p>
+<h3 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210702083449.png" srcset="/img/loading.gif" lazyload alt="性能分析"></p>
+<h3 id="字宽折半"><a href="#字宽折半" class="headerlink" title="字宽折半"></a>字宽折半</h3><p>对于插值查找的待查找区间，每次查询都是对n的不断开方。相应的n的二进制宽度也在不断变化，变化的趋势为不断地二分。即</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210705164031.png" srcset="/img/loading.gif" lazyload alt="字宽折半" style="zoom:50%;" /></p>
+<p>所以可以说，对于插值查找，可以看作是对于n的二进制宽度进行二分查找</p>
+<h3 id="综合分析"><a href="#综合分析" class="headerlink" title="综合分析"></a>综合分析</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210705165647.png" srcset="/img/loading.gif" lazyload alt="综合分析"></p>
+<p>插值查找的缺点：</p>
+<ol>
+<li>容易在局部花费很多时间</li>
+<li>引入成本更高的乘法和除法运算</li>
+</ol>
+<p>所以为了避免以上的缺点，可以首先通过插值查找，将查找范围缩小到一定的范围，然后再进行二分查找</p>
+<p><strong>即：</strong></p>
+<p><strong>大规模：插值查找</strong></p>
+<p><strong>中规模：二分查找</strong></p>
+<p><strong>小规模：顺序查找</strong></p>
+<h2 id="起泡排序"><a href="#起泡排序" class="headerlink" title="起泡排序"></a>起泡排序</h2><h3 id="算法优化"><a href="#算法优化" class="headerlink" title="算法优化"></a>算法优化</h3><h4 id="初始版本"><a href="#初始版本" class="headerlink" title="初始版本"></a>初始版本</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210617171713.png" srcset="/img/loading.gif" lazyload alt="起泡排序算法1"></p>
+<h4 id="第一次改进"><a href="#第一次改进" class="headerlink" title="第一次改进"></a>第一次改进</h4><p>思路：分析初始版本后发现，如果在某一次扫描后，剩下的扫描部分其实已经有序了，即整体向量有序。但是初始版本的算法还是会进行扫描操作，浪费了时间。所以有了第一次改进：在每次扫描后去判断总体的有序性，若在其中的某个时刻，整体向量已经有序，则提前退出算法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//向量的起泡排序（提前终止版）</span><br><span class="hljs-keyword">void</span> Vector&lt;T&gt;::<span class="hljs-built_in">bubbleSort</span>( Rank lo, Rank hi ) &#123; <span class="hljs-comment">//assert: 0 &lt;= lo &lt; hi &lt;= size</span><br>   <span class="hljs-keyword">for</span>( <span class="hljs-keyword">bool</span> sorted = <span class="hljs-literal">false</span>; sorted = !sorted; )<br>      <span class="hljs-keyword">for</span>( Rank i = lo; i &lt; hi - <span class="hljs-number">1</span>; i++ )<br>         <span class="hljs-keyword">if</span>( _elem[i] &gt; _elem[i + <span class="hljs-number">1</span>] ) <span class="hljs-comment">//若逆序，则</span><br>            <span class="hljs-built_in">swap</span>( _elem[i], _elem[i + <span class="hljs-number">1</span>] ), sorted = <span class="hljs-literal">false</span>;<br>            <span class="hljs-comment">//经交换使局部有序——当然，至此还不能确定已整体有序</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>与初始版本的比较：（x轴为向量规模，y轴为扫描次数）</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210705180153.png" srcset="/img/loading.gif" lazyload alt="与初始版本的改进"></p>
+<p><strong>完成的扫描交换趟数 = 实际发生元素交换的扫描交换趟数 + 1</strong>，其中的1表示某趟扫描交换中没有发生元素交换（返回值sorted = true）</p>
+<h4 id="第二次改进"><a href="#第二次改进" class="headerlink" title="第二次改进"></a>第二次改进</h4><p>对于第一次改进的版本，有着这么一个缺点。</p>
+<p>假设以下情况（如图）：一个向量中的无序区间（前）与有序区间（后）中元素的个数相差悬殊（即一个足够短的乱序前缀和一个非常长的有序后缀），那么根据第一次改进算法的思路，每一趟扫描实际上处理的是前面无序的区间，而后面的有序区间则会被波及到，造成不必要的开销。即多余的时间消耗，是对有序区间内的已就位元素进行反复扫描交换。</p>
+<p><strong>注意：在这种情况下，假设无序区间的元素个数为r，那么扫描的次数&lt;r（根据起泡排序的单调性可得）。</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210705181420.png" srcset="/img/loading.gif" lazyload alt="第二次改进思路"></p>
+<p><strong>改进思路：记录在上一趟扫描交换过程中，所进行的最后一次交换</strong></p>
+<p><strong>算法体现：将hi标志位直接指向交换的位置</strong></p>
+<p>第二次改进算法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//向量的起泡排序（跳跃版）</span><br><span class="hljs-keyword">void</span> Vector&lt;T&gt;::<span class="hljs-built_in">bubbleSort</span>( Rank lo, Rank hi ) &#123; <span class="hljs-comment">//assert: 0 &lt;= lo &lt; hi &lt;= size</span><br>   <span class="hljs-keyword">for</span>( Rank last = --hi; lo &lt; hi; hi = last )<br>      <span class="hljs-keyword">for</span>( Rank i = last = lo; i &lt; hi; i++ )<br>         <span class="hljs-keyword">if</span>( _elem[i] &gt; _elem[i + <span class="hljs-number">1</span>] ) <span class="hljs-comment">//若逆序，则</span><br>            <span class="hljs-built_in">swap</span>( _elem[ last = i ], _elem[ i + <span class="hljs-number">1</span> ] ); <span class="hljs-comment">//经交换使局部有序</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>对于以上的假设情况，在同一个向量中可能连续的出现。即表现为</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210705184130.png" srcset="/img/loading.gif" lazyload alt="第二次改进算法表现为" style="zoom:50%;" /></p>
+<p><strong>注意：在最坏情况下，第二次改进算法的时间复杂度依然是$O(n^2)$</strong></p>
+<blockquote>
+<p>这个算法真的很巧妙！它利用了起泡排序的特性使得它的正确性得到保障：起泡排序每一次扫描总是将最大的元素（也就是最大的起泡）从某个位置放到序列的最后，在此过程中它与它后面的每一个元素都分别作了一次交换操作。如果当前后半段都没有发生交换操作，说明后半段都已经有序了（否则后半段内部的逆序对会发生交换），而且前半段都比后半段最小的元素小（否则前半段最大的元素会跑到后半段去从而引起后半段的交换）。</p>
+</blockquote>
+<h4 id="综合评价（算法的稳定性）"><a href="#综合评价（算法的稳定性）" class="headerlink" title="综合评价（算法的稳定性）"></a>综合评价（算法的稳定性）</h4><p> <img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210705185237.png" srcset="/img/loading.gif" lazyload alt="算法的稳定性"></p>
+<p>原因1：<img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210705185346.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>原因2：在交换元素的判断条件中，条件为”&gt;”而不是”&gt;=”。</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-comment">//...</span><br><span class="hljs-keyword">if</span>(_elem[lo<span class="hljs-number">-1</span>] &gt; _elem[lo])&#123;<br>    ...<br>&#125;<br><span class="hljs-comment">//...</span><br></code></pre></div></td></tr></table></figure>
+<h5 id="拓展：基数排序"><a href="#拓展：基数排序" class="headerlink" title="拓展：基数排序"></a>拓展：基数排序</h5><p><strong>问</strong>： 试用以下算法对V={19, 17, 23}排序：1. 先按个位排序。2. 在上一步基础上，再按十位排序。 这个算法是否正确？</p>
+<p>A.一定正确    B.一定不正确    C.若第2步用的排序算法是稳定的，则正确    D.若第1步用的排序算法是稳定的，则正确</p>
+<p><strong>答</strong>：C。若第2步不稳定，可能的情况是：{19, 17, 23} -&gt; {23, 17, 19} -&gt; {19, 17, 23}</p>
+<p><strong>基数排序适用于被排序元素可分为若干个域的情况，它的正确性要依赖于对每个域分别排序时的稳定性。</strong></p>
+<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><h3 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210705191933.png" srcset="/img/loading.gif" lazyload alt="构思"></p>
+<h3 id="实现-4"><a href="#实现-4" class="headerlink" title="实现"></a>实现</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//向量归并排序</span><br><span class="hljs-keyword">void</span> Vector&lt;T&gt;::<span class="hljs-built_in">mergeSort</span> ( Rank lo, Rank hi ) &#123; <span class="hljs-comment">//0 &lt;= lo &lt; hi &lt;= size</span><br>   <span class="hljs-comment">/*DSA*/</span> <span class="hljs-comment">//printf ( &quot;\tMERGEsort [%3d, %3d)\n&quot;, lo , hi );</span><br>   <span class="hljs-keyword">if</span> ( hi - lo &lt; <span class="hljs-number">2</span> ) <span class="hljs-keyword">return</span>; <span class="hljs-comment">//单元素区间自然有序，否则...</span><br>   <span class="hljs-keyword">int</span> mi = ( lo + hi ) / <span class="hljs-number">2</span>; <span class="hljs-comment">//以中点为界</span><br>   <span class="hljs-built_in">mergeSort</span> ( lo, mi ); <span class="hljs-built_in">mergeSort</span> ( mi, hi ); <span class="hljs-comment">//分别排序</span><br>   <span class="hljs-built_in">merge</span> ( lo, mi, hi ); <span class="hljs-comment">//归并</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/c06295596349ac24aca5a0fc611c86f7-0df5e.png" srcset="/img/loading.gif" lazyload alt="向量归并排序"></p>
+<h3 id="二路归并"><a href="#二路归并" class="headerlink" title="二路归并"></a>二路归并</h3><h4 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210705192531.png" srcset="/img/loading.gif" lazyload alt="原理"></p>
+<h4 id="实现-5"><a href="#实现-5" class="headerlink" title="实现"></a>实现</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//有序向量（区间）的归并</span><br><span class="hljs-keyword">void</span> Vector&lt;T&gt;::<span class="hljs-built_in">merge</span> ( Rank lo, Rank mi, Rank hi ) &#123; <span class="hljs-comment">//[lo, mi)和[mi, hi)各自有序，lo &lt; mi &lt; hi</span><br>   Rank i = <span class="hljs-number">0</span>; T* A = _elem + lo; <span class="hljs-comment">//合并后的有序向量A[0, hi - lo) = _elem[lo, hi)，就地</span><br>   Rank j = <span class="hljs-number">0</span>, lb = mi - lo; T* B = <span class="hljs-keyword">new</span> T[lb]; <span class="hljs-comment">//前子向量B[0, lb) &lt;-- _elem[lo, mi)</span><br>   <span class="hljs-keyword">for</span> ( Rank i = <span class="hljs-number">0</span>; i &lt; lb; i++ ) B[i] = A[i]; <span class="hljs-comment">//复制自A的前缀</span><br>   Rank k = <span class="hljs-number">0</span>, lc = hi - mi; T* C = _elem + mi; <span class="hljs-comment">//后子向量C[0, lc) = _elem[mi, hi)，就地</span><br>   <span class="hljs-keyword">while</span> ( ( j &lt; lb ) &amp;&amp; ( k &lt; lc ) ) <span class="hljs-comment">//反复地比较B、C的首元素</span><br>      A[i++] = ( B[j] &lt;= C[k] ) ? B[j++] : C[k++]; <span class="hljs-comment">//将更小者归入A中</span><br>   <span class="hljs-keyword">while</span> ( j &lt; lb ) <span class="hljs-comment">//若C先耗尽，则</span><br>      A[i++] = B[j++]; <span class="hljs-comment">//将B残余的后缀归入A中——若B先耗尽呢？</span><br>   <span class="hljs-keyword">delete</span> [] B; <span class="hljs-comment">//释放临时空间：mergeSort()过程中，如何避免此类反复的new/delete？</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/df38d3c82e5a5ffd3b04ee0e47f04479-5c3a0.png" srcset="/img/loading.gif" lazyload alt="二路归并"></p>
+<p><strong>如果不开B缓冲区的话，在执行下面的比较和赋值操作，非一般情况下A中的前面部分会被覆盖</strong></p>
+<h4 id="正确性-1"><a href="#正确性-1" class="headerlink" title="正确性"></a>正确性</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210706130145.png" srcset="/img/loading.gif" lazyload alt="正确性1"></p>
+<p>a情况：由于B是事先开出的缓冲区，而j&lt;=i，所以A的前半部分并不会发生数据覆盖的情况</p>
+<p>b情况：虽然说C是A中的后半部分，对A后半部分的写操作相当于对C的写操作。但是由于此时的i已经处在mi的右侧，且k绝对不会位于i的左侧，说明C[0]~C[k]前的这些元素已经在A[lo]~A[i]中，所以这种情况下依然是安全的。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210706130805.png" srcset="/img/loading.gif" lazyload alt="正确性2"></p>
+<p>c情况：此时的情况下，虽然B向量已经耗尽，但是此时的哨兵节点lb可看作正无穷，也就是说C中的向量小于正无穷向量，C向量中的剩余元素会被视为更小</p>
+<p>d情况：与c情况相同</p>
+<p>对比c和d情况可得出：当B向量提前耗尽时，由于C向量实质是A向量的后半部分，所以此时的A[i]=C[k]实际上是浪费操作。而C向量提前耗尽时，由于B向量是额外的缓冲区，所以A[i]=B[j]是必要的。</p>
+<p>至此，二路归并有了一个更精简的版本：一旦B提前耗尽，就可以直接终止这个算法</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210706131731.png" srcset="/img/loading.gif" lazyload alt="精简版本"></p>
+<h4 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210706132553.png" srcset="/img/loading.gif" lazyload alt="复杂度"></p>
+<p> 对于规模为n的向量，归并排序的最优、最坏时间复杂度都为$O(nlog_2n)$</p>
+<h2 id="随记"><a href="#随记" class="headerlink" title="随记"></a>随记</h2><ol>
+<li>递归版的空间复杂度一般等于最大递归深度</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">二分查找</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">归并排序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%B5%B7%E6%B3%A1%E6%8E%92%E5%BA%8F/">起泡排序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%90%91%E9%87%8F/">向量</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%94%AF%E4%B8%80%E5%8C%96/">唯一化</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%9F%A5%E6%89%BE/">斐波那契查找</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%8F%92%E5%80%BC%E6%9F%A5%E6%89%BE/">插值查找</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E5%88%97%E8%A1%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">列表</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E7%BB%AA%E8%AE%BA/">
+                        <span class="hidden-mobile">绪论</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

@@ -1,0 +1,677 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="栈和队列都是序列的特例，所以可以直接由向量和列表派生。栈的应用有逆序输出、递归嵌套、延迟缓冲、栈式计算...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>栈与队列 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="栈与队列">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-02 10:00" pubdate>
+        2020年3月2日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      26
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">栈与队列</h1>
+            
+            <div class="markdown-body">
+              <h2 id="栈接口与实现"><a href="#栈接口与实现" class="headerlink" title="栈接口与实现"></a>栈接口与实现</h2><h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/824c466b75fad2304801135552f63680-ee407e.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/76ccd18ec322bd16448e9651ea53677d-847060.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>可以通过向量实现栈</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5d3adfab74d0d23552fe27d798b5cb6f-20aee5.png" srcset="/img/loading.gif" lazyload alt="可以通过向量实现栈"></p>
+<p>注意：将向量的尾部作为栈顶，那么<code>push</code>和pop<code>操作</code>的复杂度实际上就为$O(1)$（由<code>insert</code>和<code>remove</code>决定）。而如果相反的，将向量的首部作为栈顶，那么复杂度将会变为原来的$O(n)$。</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ul>
+<li>逆序输出（conversion）：输出次序与处理过程颠倒；递归深度和输出长度不易预知</li>
+<li>递归嵌套（stack permutation + parenthesis）：具有自相似性的问题可递归描述，但分支位置和嵌套深度不固定</li>
+<li>延迟缓冲（evaluation）：线性扫描算法模式中，在预读足够长之后，方能确定可处理的前缀</li>
+<li>栈式计算（RPN）：基于栈结构的特定计算模式</li>
+</ul>
+<h2 id="栈应用：进制转换（逆序输出）"><a href="#栈应用：进制转换（逆序输出）" class="headerlink" title="栈应用：进制转换（逆序输出）"></a>栈应用：进制转换（逆序输出）</h2><h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/365037d7010619717ed69554b487c244-36fe3f.png" srcset="/img/loading.gif" lazyload alt="算法"></p>
+<p>分析进制转换的过程，会发现结果（1011001）和计算过程中得到的（1001101）正好是相反的，且结果的长度未知。所以当计算出一位时，便将这一位入栈。到最后，栈中的数据排放方式，就是结果。</p>
+<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">convert</span> <span class="hljs-params">( Stack&lt;<span class="hljs-keyword">char</span>&gt;&amp; S, __int64 n, <span class="hljs-keyword">int</span> base )</span> </span>&#123; <span class="hljs-comment">//整数n的1&lt;base&lt;=16进制打印（迭代版）</span><br>   <span class="hljs-keyword">char</span> digit[] = <span class="hljs-string">&quot;0123456789ABCDEF&quot;</span>; <span class="hljs-comment">//数位符号，如有必要可相应扩充</span><br>   <span class="hljs-keyword">while</span> ( n &gt; <span class="hljs-number">0</span> ) &#123; <span class="hljs-comment">//由低到高，逐一计算出新进制下的各数位</span><br>      <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot;%20I64d = %20I64d * %d + %20I64d\n&quot;</span>, n , n/base, base, n%base );<br>      S.<span class="hljs-built_in">push</span> ( digit[ n % base ] ); <span class="hljs-comment">//余数（当前位）入栈</span><br>      n /= base; <span class="hljs-comment">//n更新为其对base的除商</span><br>      <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">print</span> ( S ); <span class="hljs-built_in">getchar</span>();<br>   &#125;<br>&#125; <span class="hljs-comment">//新进制下由高到低的各数位，自顶而下保存于栈S中</span><br></code></pre></div></td></tr></table></figure>
+<h3 id="递归版"><a href="#递归版" class="headerlink" title="递归版"></a>递归版</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">convert</span> <span class="hljs-params">( Stack&lt;<span class="hljs-keyword">char</span>&gt;&amp; S, __int64 n, <span class="hljs-keyword">int</span> base )</span> </span>&#123; <span class="hljs-comment">//整数n的1&lt;base&lt;=16进制打印（递归版）</span><br>   <span class="hljs-keyword">static</span> <span class="hljs-keyword">char</span> digit[] = <span class="hljs-string">&quot;0123456789ABCDEF&quot;</span>; <span class="hljs-comment">//数位符号，如有必要可相应扩充</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-number">0</span> &lt; n ) &#123; <span class="hljs-comment">//在尚有余数之前，反复地</span><br>      S.<span class="hljs-built_in">push</span> ( digit[n % base] ); <span class="hljs-comment">//逆向记录当前最低位，再</span><br>      <span class="hljs-built_in">convert</span> ( S, n / base, base ); <span class="hljs-comment">//通过递归得到所有更高位</span><br>   &#125;<br>&#125; <span class="hljs-comment">//新进制下由高到低的各数位，自顶而下保存于栈S中</span><br></code></pre></div></td></tr></table></figure>
+<p>打印十进制整数x的y进制表示</p>
+<h2 id="栈应用：括号匹配（递归嵌套）"><a href="#栈应用：括号匹配（递归嵌套）" class="headerlink" title="栈应用：括号匹配（递归嵌套）"></a>栈应用：括号匹配（递归嵌套）</h2><h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8728e30e1320795afe9dfd24f984735e-ca0b3b.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<h3 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e3b9d4ab62bd6d33ad8694e97f1b36b2-81a538.png" srcset="/img/loading.gif" lazyload alt="尝试"></p>
+<p>减而治之和分而治之在这种情况下无法使用</p>
+<h3 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/1970bb6a24b14084159939a53ff746c0-a03f22.png" srcset="/img/loading.gif" lazyload alt="构思"></p>
+<h3 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">paren</span> <span class="hljs-params">( <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> exp[], <span class="hljs-keyword">int</span> lo, <span class="hljs-keyword">int</span> hi )</span> </span>&#123; <span class="hljs-comment">//表达式括号匹配检查，可兼顾三种括号</span><br>   Stack&lt;<span class="hljs-keyword">char</span>&gt; S; <span class="hljs-comment">//使用栈记录已发现但尚未匹配的左括号</span><br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> i = lo; i &lt;= hi; i++ ) <span class="hljs-comment">/* 逐一检查当前字符 */</span> <span class="hljs-comment">/*DSA*/</span>&#123;<br>      <span class="hljs-built_in"><span class="hljs-keyword">switch</span></span> ( exp[i] ) &#123; <span class="hljs-comment">//左括号直接进栈；右括号若与栈顶失配，则表达式必不匹配</span><br>         <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;(&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;[&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;&#123;&#x27;</span>: S.<span class="hljs-built_in">push</span> ( exp[i] ); <span class="hljs-keyword">break</span>;<br>         <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;)&#x27;</span>: <span class="hljs-keyword">if</span> ( ( S.<span class="hljs-built_in">empty</span>() ) || ( <span class="hljs-string">&#x27;(&#x27;</span> != S.<span class="hljs-built_in">pop</span>() ) ) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-keyword">break</span>;<br>         <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;]&#x27;</span>: <span class="hljs-keyword">if</span> ( ( S.<span class="hljs-built_in">empty</span>() ) || ( <span class="hljs-string">&#x27;[&#x27;</span> != S.<span class="hljs-built_in">pop</span>() ) ) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-keyword">break</span>;<br>         <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;&#125;&#x27;</span>: <span class="hljs-keyword">if</span> ( ( S.<span class="hljs-built_in">empty</span>() ) || ( <span class="hljs-string">&#x27;&#123;&#x27;</span> != S.<span class="hljs-built_in">pop</span>() ) ) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-keyword">break</span>;<br>         <span class="hljs-keyword">default</span>: <span class="hljs-keyword">break</span>; <span class="hljs-comment">//非括号字符一律忽略</span><br>   &#125;<br>   <span class="hljs-keyword">return</span> S.<span class="hljs-built_in">empty</span>(); <span class="hljs-comment">//最终栈空，当且仅当匹配</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>当匹配到右括号时，栈为空，说明没有多余的左括号与右括号匹配。</p>
+<p>当返回值<code>S.empty()</code>的结果不为空时，说明栈里面还有元素，即没有多余的右括号与左括号匹配。</p>
+<h3 id="反思与拓展"><a href="#反思与拓展" class="headerlink" title="反思与拓展"></a>反思与拓展</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a304f7abfbe927792152fa08a4016af8-c2796b.png" srcset="/img/loading.gif" lazyload alt="反思"></p>
+<p>对于上图，上方的计数器其实就可以完成下方的栈操作，因为计数器实际上就代表着某一时刻栈中元素的个数。</p>
+<p>但是计数器并不能代替栈，因为计数器只能代表数量，无法进行精确的匹配。比如下图的反例。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/ad4f3b44f3eb8186c94db7639364fd0c-8288d1.png" srcset="/img/loading.gif" lazyload alt="拓展"></p>
+<h2 id="栈应用：栈混洗"><a href="#栈应用：栈混洗" class="headerlink" title="栈应用：栈混洗"></a>栈应用：栈混洗</h2><h3 id="混洗"><a href="#混洗" class="headerlink" title="混洗"></a>混洗</h3><p><strong>&lt;</strong>为顶，]为底，<strong>S</strong>为中转栈</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/7efc2b2249742946bf05bdfd09cb8c52-86bb2d.png" srcset="/img/loading.gif" lazyload alt="混洗1"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/95ad6123955c89095d39c8ef9277fcd3-ff0010.png" srcset="/img/loading.gif" lazyload alt="混洗2"></p>
+<h3 id="计数（待证明）"><a href="#计数（待证明）" class="headerlink" title="计数（待证明）"></a>计数（待证明）</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/58597e426089ae5b1f3eb99823abfe25-7c52f4.png" srcset="/img/loading.gif" lazyload alt="计数"></p>
+<p>栈混洗的合法序列数目公式：</p>
+<script type="math/tex; mode=display">
+(2n)!/(n+1)!/n!</script><h3 id="甄别算法"><a href="#甄别算法" class="headerlink" title="甄别算法"></a>甄别算法</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/cd6083fd09d68ea2535f89e1d6d9ad1a-36dc7d.png" srcset="/img/loading.gif" lazyload alt="甄别"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e4a38d23690da8e80e55be84ffb75568-2044d4.png" srcset="/img/loading.gif" lazyload alt="甄别算法"></p>
+<h3 id="栈混洗与括号匹配之间的关系"><a href="#栈混洗与括号匹配之间的关系" class="headerlink" title="栈混洗与括号匹配之间的关系"></a>栈混洗与括号匹配之间的关系</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/d0b6e47190b1beb5dac76523cf557b1e-d6cdfe.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>由n对括号所构成的任何一个合法的表达式，就是对n个元素进行栈混洗的一个合法的过程</li>
+<li>合法的栈混洗序列与合法的括号匹配表达式之间，存在一一对应的关系</li>
+<li>n个元素的栈混洗有多少种，n个括号所能构成的合法表达式就有多少种</li>
+</ul>
+<h2 id="栈应用：中缀表达式求值（延迟缓冲）"><a href="#栈应用：中缀表达式求值（延迟缓冲）" class="headerlink" title="栈应用：中缀表达式求值（延迟缓冲）"></a>栈应用：中缀表达式求值（延迟缓冲）</h2><h3 id="表达式求值"><a href="#表达式求值" class="headerlink" title="表达式求值"></a>表达式求值</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/7864cdf5387de5df5548902918c16591-39db72.png" srcset="/img/loading.gif" lazyload alt="表达式求值"></p>
+<h3 id="构思-1"><a href="#构思-1" class="headerlink" title="构思"></a>构思</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/de7ec16642067058e9cde21fdd61d07e-58440a.png" srcset="/img/loading.gif" lazyload alt="构思"></p>
+<p>如果使用线性扫描，扫描的次序未必与运算的次序一致</p>
+<p>思路：使用栈结构缓冲</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/2a22255b51c53f4a9ba256f95c721f64-13e9f3.png" srcset="/img/loading.gif" lazyload alt="栈结构缓冲"></p>
+<ul>
+<li>scanned：已经扫描过的部分</li>
+<li>done：经过判断以后，能够及时处理的，能够在局部具有足够高的优先级，并且已经计算过的部分</li>
+<li>buffered：经过判断无法进行处理的部分</li>
+<li>to scan：还未扫描的部分</li>
+</ul>
+<h3 id="求值算法：线性扫描"><a href="#求值算法：线性扫描" class="headerlink" title="求值算法：线性扫描"></a>求值算法：线性扫描</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e3730a3ba7592224f006ead7c751cad7-1ead5e.png" srcset="/img/loading.gif" lazyload alt="求值算法：线性扫描"></p>
+<h3 id="算法框架"><a href="#算法框架" class="headerlink" title="算法框架"></a>算法框架</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/dccbd4c109f5a7806c98e90f5f210439-2b1840.png" srcset="/img/loading.gif" lazyload alt="整体框架"></p>
+<h4 id="判断运算符优先级思路"><a href="#判断运算符优先级思路" class="headerlink" title="判断运算符优先级思路"></a>判断运算符优先级思路</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/37024000b71c1abb49c2951d614aa418-0b90c1.png" srcset="/img/loading.gif" lazyload alt="判断运算符优先级思路"></p>
+<ul>
+<li>&lt;：优先级低</li>
+<li>>：优先级高</li>
+<li>=：优先级一样</li>
+<li>“ “：？</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a59beb00fca120f36720b72ddef5eb86-086a5b.png" srcset="/img/loading.gif" lazyload alt="优先级处理方法"></p>
+<p>当<code>case &#39;=&#39;</code>时，有两种情况。</p>
+<ol>
+<li>说明左括号匹配到了右括号。右括号之前的运算符已经被执行，就是说此时的操作数栈顶为括号中的值。所以直接将运算符栈顶中的左括号出栈即可。</li>
+<li>说明运算符栈最初栈底的那个<code>&#39;\0&#39;</code>被当前运算符中的<code>&#39;\0&#39;</code>所匹配，即当前的运算已经结束，直接将运算符栈底的<code>&#39;\0&#39;</code>出栈即可。</li>
+</ol>
+<h2 id="栈应用：逆波兰表达式（栈式计算）"><a href="#栈应用：逆波兰表达式（栈式计算）" class="headerlink" title="栈应用：逆波兰表达式（栈式计算）"></a>栈应用：逆波兰表达式（栈式计算）</h2><h3 id="简化"><a href="#简化" class="headerlink" title="简化"></a>简化</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/70ab0eca59f4bedf2081a86a903fc154-1632db.png" srcset="/img/loading.gif" lazyload alt="简化"></p>
+<p>在逆波兰表达式中，运算符谁先出现，就先运算</p>
+<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/3563ddbdb272082de491a0b655d49b60-3a5db2.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<p>读到操作数，便将操作数入栈。读到运算符，根据运算符需要几个操作数，再从操作数栈弹出几个，然后将计算的结果重新推入操作数栈。</p>
+<h3 id="中缀表达式转化为RPN"><a href="#中缀表达式转化为RPN" class="headerlink" title="中缀表达式转化为RPN"></a>中缀表达式转化为RPN</h3><p><strong>运算符</strong>未必保持之前的相对次序，但是<strong>操作数</strong>的相对次序永远不会改变</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/3a3e09c5daa1e31189657c60164b5a0e-63f0bd.png" srcset="/img/loading.gif" lazyload alt="转化"></p>
+<p>例子：中缀表达式$(1+2<em>3!)/(4</em>5-7)$转化为RPN：$123!<em>+45</em>7-/$</p>
+<h3 id="算法（待证明）"><a href="#算法（待证明）" class="headerlink" title="算法（待证明）"></a>算法（待证明）</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">evaluate</span> <span class="hljs-params">( <span class="hljs-keyword">char</span>* S, <span class="hljs-keyword">char</span>*&amp; RPN )</span> </span>&#123; <span class="hljs-comment">//对（已剔除白空格的）表达式S求值，并转换为逆波兰式RPN</span><br>   Stack&lt;<span class="hljs-keyword">double</span>&gt; opnd; Stack&lt;<span class="hljs-keyword">char</span>&gt; optr; <span class="hljs-comment">//运算数栈、运算符栈 /*DSA*/任何时刻，其中每对相邻元素之间均大小一致</span><br>   <span class="hljs-comment">/*DSA*/</span> <span class="hljs-keyword">char</span>* expr = S;<br>   optr.<span class="hljs-built_in">push</span> ( <span class="hljs-string">&#x27;\0&#x27;</span> ); <span class="hljs-comment">//尾哨兵&#x27;\0&#x27;也作为头哨兵首先入栈</span><br>   <span class="hljs-keyword">while</span> ( !optr.<span class="hljs-built_in">empty</span>() ) &#123; <span class="hljs-comment">//在运算符栈非空之前，逐个处理表达式中各字符</span><br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">isdigit</span> ( *S ) ) &#123; <span class="hljs-comment">//若当前字符为操作数，则</span><br>         <span class="hljs-built_in">readNumber</span> ( S, opnd ); <span class="hljs-built_in">append</span> ( RPN, opnd.<span class="hljs-built_in">top</span>() ); <span class="hljs-comment">//读入操作数，并将其接至RPN末尾</span><br>      &#125; <span class="hljs-keyword">else</span> <span class="hljs-comment">//若当前字符为运算符，则</span><br>         <span class="hljs-built_in"><span class="hljs-keyword">switch</span></span> ( <span class="hljs-built_in">orderBetween</span> ( optr.<span class="hljs-built_in">top</span>(), *S ) ) &#123; <span class="hljs-comment">//视其与栈顶运算符之间优先级高低分别处理</span><br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;&lt;&#x27;</span>: <span class="hljs-comment">//栈顶运算符优先级更低时</span><br>               optr.<span class="hljs-built_in">push</span> ( *S ); S++; <span class="hljs-comment">//计算推迟，当前运算符进栈</span><br>               <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;=&#x27;</span>: <span class="hljs-comment">//优先级相等（当前运算符为右括号或者尾部哨兵&#x27;\0&#x27;）时</span><br>               optr.<span class="hljs-built_in">pop</span>(); S++; <span class="hljs-comment">//脱括号并接收下一个字符</span><br>               <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;&gt;&#x27;</span>: &#123; <span class="hljs-comment">//栈顶运算符优先级更高时，可实施相应的计算，并将结果重新入栈</span><br>               <span class="hljs-keyword">char</span> op = optr.<span class="hljs-built_in">pop</span>(); <span class="hljs-built_in">append</span> ( RPN, op ); <span class="hljs-comment">//栈顶运算符出栈并续接至RPN末尾</span><br>               <span class="hljs-keyword">if</span> ( <span class="hljs-string">&#x27;!&#x27;</span> == op ) &#123; <span class="hljs-comment">//若属于一元运算符</span><br>                  <span class="hljs-keyword">double</span> pOpnd = opnd.<span class="hljs-built_in">pop</span>(); <span class="hljs-comment">//只需取出一个操作数，并</span><br>                  opnd.<span class="hljs-built_in">push</span> ( <span class="hljs-built_in">calcu</span> ( op, pOpnd ) ); <span class="hljs-comment">//实施一元计算，结果入栈</span><br>               &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">//对于其它（二元）运算符</span><br>                  <span class="hljs-keyword">double</span> pOpnd2 = opnd.<span class="hljs-built_in">pop</span>(), pOpnd1 = opnd.<span class="hljs-built_in">pop</span>(); <span class="hljs-comment">//取出后、前操作数 /*DSA*/提问：可否省去两个临时变量？</span><br>                  opnd.<span class="hljs-built_in">push</span> ( <span class="hljs-built_in">calcu</span> ( pOpnd1, op, pOpnd2 ) ); <span class="hljs-comment">//实施二元计算，结果入栈</span><br>               &#125;<br>               <span class="hljs-keyword">break</span>;<br>            &#125;<br>            <span class="hljs-keyword">default</span> : <span class="hljs-built_in">exit</span> ( <span class="hljs-number">-1</span> ); <span class="hljs-comment">//逢语法错误，不做处理直接退出</span><br>         &#125;<span class="hljs-comment">//switch</span><br>      <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">displayProgress</span> ( expr, S, opnd, optr, RPN );<br>   &#125;<span class="hljs-comment">//while</span><br>   <span class="hljs-keyword">return</span> opnd.<span class="hljs-built_in">pop</span>(); <span class="hljs-comment">//弹出并返回最后的计算结果</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h2 id="队列接口与实现"><a href="#队列接口与实现" class="headerlink" title="队列接口与实现"></a>队列接口与实现</h2><h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/60bb6f2eb0bb7a1790afd23190a89bcb-216718.png" srcset="/img/loading.gif" lazyload alt="接口"></p>
+<h3 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/7883ee153fec58b18e6ef22686658986-6a78eb.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<h3 id="实现-3"><a href="#实现-3" class="headerlink" title="实现"></a>实现</h3><p><strong>队列继承于列表</strong></p>
+<p>而对于栈继承于向量：</p>
+<ul>
+<li>栈顶的选择会比较敏感，因为会影响到一些方法的效率。所以栈继承于向量，向量的尾部将作为栈的栈顶。</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/704e6c0514c9ff071eb94282df0c4d3b-689487.png" srcset="/img/loading.gif" lazyload alt="实现"></p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用栈实现队列"><a href="#使用栈实现队列" class="headerlink" title="使用栈实现队列"></a>使用栈实现队列</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/d5648635d5343df1b5013ba55ab417ee-7c7c5b.png" srcset="/img/loading.gif" lazyload alt="使用栈实现队列"></p>
+<p>该数据结构即为队列。<code>enqueue()</code>的复杂度为O(1)，单次<code>dequeue()的</code>最坏时间复杂度为Ω(n)。但分摊复杂度为O(1)。</p>
+<h3 id="使用队列实现栈"><a href="#使用队列实现栈" class="headerlink" title="使用队列实现栈"></a>使用队列实现栈</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/82f921fe6bf8aebd05c26e3dca788996-259bf9.png" srcset="/img/loading.gif" lazyload alt="使用队列实现栈"></p>
+<p>该数据结构即为栈，只不过规模为n时，其<code>pop()</code>的时间复杂度高达Ω(n)。</p>
+<h3 id="常见的量"><a href="#常见的量" class="headerlink" title="常见的量"></a>常见的量</h3><ul>
+<li>不同的n位二进制数个数： $ 2^n$</li>
+<li>n对小括号所能构成的合法括号匹配个数：Catalan(n)</li>
+<li>{1, 2 .. n}的不同栈混洗个数：Catalan(n)</li>
+<li>含n个运算符的中缀表达式求值过程中运算符栈push操作的次数：≤n</li>
+</ul>
+<p><strong>注：栈混洗中的push和pop分别对应于括号匹配中的”( ”和”) ”,故它们数量相等</strong></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%A0%88/">栈</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%98%9F%E5%88%97/">队列</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E6%A0%91/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">树</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E5%88%97%E8%A1%A8/">
+                        <span class="hidden-mobile">列表</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

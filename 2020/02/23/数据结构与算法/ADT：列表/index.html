@@ -1,0 +1,657 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="列表（链表）是采用动态储存策略的典型结构，其中的元素称为节点，各节点通过指针或引用彼此联接，在逻辑上构成一个线性序列...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>列表 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="列表">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-02-23 10:00" pubdate>
+        2020年2月23日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">列表</h1>
+            
+            <div class="markdown-body">
+              <h2 id="接口与实现"><a href="#接口与实现" class="headerlink" title="接口与实现"></a>接口与实现</h2><h3 id="从静态到动态"><a href="#从静态到动态" class="headerlink" title="从静态到动态"></a>从静态到动态</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210708151945.png" srcset="/img/loading.gif" lazyload alt="从静态到动态"></p>
+<p>静态操作在向量上效率很高，但是对于动态操作却效率低下</p>
+<h3 id="从向量到列表"><a href="#从向量到列表" class="headerlink" title="从向量到列表"></a>从向量到列表</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210708152420.png" srcset="/img/loading.gif" lazyload alt="从向量到列表"></p>
+<h3 id="从秩到位置"><a href="#从秩到位置" class="headerlink" title="从秩到位置"></a>从秩到位置</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210708152832.png" srcset="/img/loading.gif" lazyload alt="从秩到位置"></p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h4><h5 id="节点接口"><a href="#节点接口" class="headerlink" title="节点接口"></a>节点接口</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210708152941.png" srcset="/img/loading.gif" lazyload alt="接口"></p>
+<h5 id="列表接口"><a href="#列表接口" class="headerlink" title="列表接口"></a>列表接口</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210708153054.png" srcset="/img/loading.gif" lazyload alt="接口2"></p>
+<h4 id="模板类"><a href="#模板类" class="headerlink" title="模板类"></a>模板类</h4><h5 id="节点模板类"><a href="#节点模板类" class="headerlink" title="节点模板类"></a>节点模板类</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210708153142.png" srcset="/img/loading.gif" lazyload alt="模板类"></p>
+<h5 id="列表模板类"><a href="#列表模板类" class="headerlink" title="列表模板类"></a>列表模板类</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210708153602.png" srcset="/img/loading.gif" lazyload alt="列表模板类"></p>
+<p>头尾节点对外部隐藏，作为哨兵节点存在。首末节点为实实在在的数据，虽然不一定存在。</p>
+<h4 id="构造"><a href="#构造" class="headerlink" title="构造"></a>构造</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">void</span> List&lt;T&gt;::<span class="hljs-built_in">init</span>() &#123; <span class="hljs-comment">//列表初始化，在创建列表对象时统一调用</span><br>   header = <span class="hljs-keyword">new</span> ListNode&lt;T&gt;; <span class="hljs-comment">//创建头哨兵节点</span><br>   trailer = <span class="hljs-keyword">new</span> ListNode&lt;T&gt;; <span class="hljs-comment">//创建尾哨兵节点</span><br>   header-&gt;succ = trailer; header-&gt;pred = <span class="hljs-literal">NULL</span>;<br>   trailer-&gt;pred = header; trailer-&gt;succ = <span class="hljs-literal">NULL</span>;<br>   _size = <span class="hljs-number">0</span>; <span class="hljs-comment">//记录规模</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/3e207cd22c3b769aa3dbe771cff9d64e-71603.png" srcset="/img/loading.gif" lazyload alt="链表构造"></p>
+<h2 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h2><h3 id="循秩访问-模仿"><a href="#循秩访问-模仿" class="headerlink" title="循秩访问(模仿)"></a>循秩访问(模仿)</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//重载下标操作符，以通过秩直接访问列表节点（虽方便，效率低，需慎用）</span><br>T&amp; List&lt;T&gt;::<span class="hljs-keyword">operator</span>[] ( Rank r ) <span class="hljs-keyword">const</span> &#123; <span class="hljs-comment">//assert: 0 &lt;= r &lt; size</span><br>   ListNodePosi&lt;T&gt; p = <span class="hljs-built_in">first</span>(); <span class="hljs-comment">//从首节点出发</span><br>   <span class="hljs-keyword">while</span> ( <span class="hljs-number">0</span> &lt; r-- ) p = p-&gt;succ; <span class="hljs-comment">//顺数第r个节点即是</span><br>   <span class="hljs-keyword">return</span> p-&gt;data; <span class="hljs-comment">//目标节点，返回其中所存元素</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>平均复杂度为(1+2+3+….+n)/n= $O(n^2)$/n = $O(n)$</p>
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><p>在节点p（可能是trailer）的n个（真）前驱中，找到等于e的最后者：</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//在无序列表内节点p（可能是trailer）的n个（真）前驱中，找到等于e的最后者</span><br>ListNodePosi&lt;T&gt; List&lt;T&gt;::<span class="hljs-built_in">find</span> ( T <span class="hljs-keyword">const</span>&amp; e, <span class="hljs-keyword">int</span> n, ListNodePosi&lt;T&gt; p ) <span class="hljs-keyword">const</span> &#123;<br>   <span class="hljs-keyword">while</span> ( <span class="hljs-number">0</span> &lt; n-- ) <span class="hljs-comment">//（0 &lt;= n &lt;= rank(p) &lt; _size）对于p的最近的n个前驱，从右向左</span><br>      <span class="hljs-keyword">if</span> ( e == ( p = p-&gt;pred )-&gt;data ) <span class="hljs-keyword">return</span> p; <span class="hljs-comment">//逐个比对，直至命中或范围越界</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//p越出左边界意味着区间内不含e，查找失败</span><br>&#125; <span class="hljs-comment">//失败时，返回NULL</span><br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/807b15b70f354fc5775b9042b76bfb2b-0f65f.png" srcset="/img/loading.gif" lazyload alt="查找"></p>
+<p>最坏复杂度为O(n)</p>
+<p>另外，函数形参特定的排放顺序，虽然对程序没什么影响，但是可以更贴近语义。比如<code>find(e,n,p)</code>可以表示从p的n个前驱节点中查询e；而<code>find(e,p,n)</code>可以表示从p的n个后继节点中查询e。</p>
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//将e紧靠当前节点之前插入于当前节点所属列表（设有哨兵头节点header）</span><br>ListNodePosi&lt;T&gt; ListNode&lt;T&gt;::<span class="hljs-built_in">insertAsPred</span> ( T <span class="hljs-keyword">const</span>&amp; e ) &#123;<br>   ListNodePosi&lt;T&gt; x = <span class="hljs-keyword">new</span> <span class="hljs-built_in">ListNode</span> ( e, pred, <span class="hljs-keyword">this</span> ); <span class="hljs-comment">//创建新节点</span><br>   pred-&gt;succ = x; pred = x; <span class="hljs-comment">//设置正向链接</span><br>   <span class="hljs-keyword">return</span> x; <span class="hljs-comment">//返回新节点的位置</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/952eb5e294395fcdd1e8b1a836adf5c4-07b95.png" srcset="/img/loading.gif" lazyload alt="插入"></p>
+<p>对于特殊情况下，比如当前节点为首节点，由于存在了一个头节点（哨兵节点），所以取首节点的前驱也是安全的。</p>
+<h3 id="基于复制的构造"><a href="#基于复制的构造" class="headerlink" title="基于复制的构造"></a>基于复制的构造</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//列表内部方法：复制列表中自位置p起的n项</span><br><span class="hljs-keyword">void</span> List&lt;T&gt;::<span class="hljs-built_in">copyNodes</span> ( ListNodePosi&lt;T&gt; p, <span class="hljs-keyword">int</span> n ) &#123; <span class="hljs-comment">//p合法，且至少有n-1个真后继节点</span><br>   <span class="hljs-built_in">init</span>(); <span class="hljs-comment">//创建头、尾哨兵节点并做初始化</span><br>   <span class="hljs-keyword">while</span> ( n-- ) &#123; <span class="hljs-built_in">insertAsLast</span> ( p-&gt;data ); p = p-&gt;succ; &#125; <span class="hljs-comment">//将起自p的n项依次作为末节点插入</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; T List&lt;T&gt;::<span class="hljs-built_in">remove</span> ( ListNodePosi&lt;T&gt; p ) &#123; <span class="hljs-comment">//删除合法节点p，返回其数值</span><br>   T e = p-&gt;data; <span class="hljs-comment">//备份待删除节点的数值（假定T类型可直接赋值）</span><br>   p-&gt;pred-&gt;succ = p-&gt;succ; p-&gt;succ-&gt;pred = p-&gt;pred; <span class="hljs-comment">//后继、前驱</span><br>   <span class="hljs-keyword">delete</span> p; _size--; <span class="hljs-comment">//释放节点，更新规模</span><br>   <span class="hljs-keyword">return</span> e; <span class="hljs-comment">//返回备份的数值</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6708837a86e0ab198ffe8a0750af1913-1321a.png" srcset="/img/loading.gif" lazyload alt="删除"></p>
+<h3 id="析构"><a href="#析构" class="headerlink" title="析构"></a>析构</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">int</span> List&lt;T&gt;::<span class="hljs-built_in">clear</span>() &#123; <span class="hljs-comment">//清空列表</span><br>   <span class="hljs-keyword">int</span> oldSize = _size;<br>   <span class="hljs-keyword">while</span> ( <span class="hljs-number">0</span> &lt; _size ) <span class="hljs-built_in">remove</span> ( header-&gt;succ ); <span class="hljs-comment">//反复删除首节点，直至列表变空</span><br>   <span class="hljs-keyword">return</span> oldSize;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a85ae645960e7c3924a624c48da44f91-3ee8f.png" srcset="/img/loading.gif" lazyload alt="析构"></p>
+<h3 id="唯一化"><a href="#唯一化" class="headerlink" title="唯一化"></a>唯一化</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">int</span> List&lt;T&gt;::<span class="hljs-built_in">deduplicate</span>() &#123;<br>   <span class="hljs-keyword">int</span> oldSize = _size; ListNodePosi&lt;T&gt; p = <span class="hljs-built_in">first</span>();<br>   <span class="hljs-keyword">for</span> ( Rank r = <span class="hljs-number">0</span>; p != trailer; p = p-&gt;succ ) <span class="hljs-comment">//O(n)</span><br>      <span class="hljs-keyword">if</span> ( ListNodePosi&lt;T&gt; q = <span class="hljs-built_in">find</span>(p-&gt;data, r, p) )<br>         <span class="hljs-built_in">remove</span>(q); <span class="hljs-comment">//此时q与p雷同，但删除前者更为简明</span><br>      <span class="hljs-keyword">else</span> r++; <span class="hljs-comment">//r为无重前缀的长度</span><br>   <span class="hljs-keyword">return</span> oldSize - _size; <span class="hljs-comment">//删除元素总数</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>若找到相同元素，删除q而不删除p的原因是：如果删除了p，那么<code>while(trailer != (p = p-&gt;succ))</code>这条语句将会是不安全的</p>
+<h2 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h2><h3 id="唯一化-1"><a href="#唯一化-1" class="headerlink" title="唯一化"></a>唯一化</h3><h4 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210708171509.png" srcset="/img/loading.gif" lazyload alt="构思"></p>
+<p>移动指针p来剔除重复元素</p>
+<h4 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">int</span> List&lt;T&gt;::<span class="hljs-built_in">uniquify</span>() &#123; <span class="hljs-comment">//成批剔除重复元素，效率更高</span><br>   <span class="hljs-keyword">if</span> ( _size &lt; <span class="hljs-number">2</span> ) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">//平凡列表自然无重复</span><br>   <span class="hljs-keyword">int</span> oldSize = _size; <span class="hljs-comment">//记录原规模</span><br>   ListNodePosi&lt;T&gt; p = <span class="hljs-built_in">first</span>(); ListNodePosi&lt;T&gt; q; <span class="hljs-comment">//p为各区段起点，q为其后继</span><br>   <span class="hljs-keyword">while</span> ( trailer != ( q = p-&gt;succ ) ) <span class="hljs-comment">//反复考查紧邻的节点对(p, q)</span><br>      <span class="hljs-keyword">if</span> ( p-&gt;data != q-&gt;data ) p = q; <span class="hljs-comment">//若互异，则转向下一区段</span><br>      <span class="hljs-keyword">else</span> <span class="hljs-built_in">remove</span> ( q ); <span class="hljs-comment">//否则（雷同），删除后者</span><br>   <span class="hljs-keyword">return</span> oldSize - _size; <span class="hljs-comment">//列表规模变化量，即被删除元素总数</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="查找-1"><a href="#查找-1" class="headerlink" title="查找"></a>查找</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//在有序列表内节点p（可能是trailer）的n个（真）前驱中，找到不大于e的最后者</span><br>ListNodePosi&lt;T&gt; List&lt;T&gt;::<span class="hljs-built_in">search</span> ( T <span class="hljs-keyword">const</span>&amp; e, <span class="hljs-keyword">int</span> n, ListNodePosi&lt;T&gt; p ) <span class="hljs-keyword">const</span> &#123;<br>   <span class="hljs-keyword">do</span> &#123;<br>      p = p-&gt;pred; n--;  <span class="hljs-comment">//从右向左</span><br>   &#125; <span class="hljs-keyword">while</span> ( ( <span class="hljs-number">-1</span> &lt; n ) &amp;&amp; ( e &lt; p-&gt;data ) ); <span class="hljs-comment">//逐个比较，直至命中或越界</span><br>   <span class="hljs-keyword">return</span> p; <span class="hljs-comment">//返回查找终止的位置</span><br>&#125; <span class="hljs-comment">//失败时，返回区间左边界的前驱（可能是header）——调用者可通过valid()判断成功与否</span><br></code></pre></div></td></tr></table></figure>
+<p>向量与列表可以类比于RAM模型和图灵机模型</p>
+<h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><h3 id="构思-1"><a href="#构思-1" class="headerlink" title="构思"></a>构思</h3><p>对于起泡排序，效率低下的来源为每一次相邻元素的比较、交换，类似于小步慢跑。选择排序就是为了优化这部分低效率的影响</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/f4454098e02801507e59e1feb8733d4b.png" srcset="/img/loading.gif" lazyload alt="实现"></p>
+<h3 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//对列表中起始于位置p、宽度为n的区间做选择排序</span><br><span class="hljs-keyword">void</span> List&lt;T&gt;::<span class="hljs-built_in">selectionSort</span> ( ListNodePosi&lt;T&gt; p, <span class="hljs-keyword">int</span> n ) &#123; <span class="hljs-comment">//valid(p) &amp;&amp; rank(p) + n &lt;= size</span><br>   ListNodePosi&lt;T&gt; head = p-&gt;pred, tail = p;<br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++ ) tail = tail-&gt;succ; <span class="hljs-comment">//待排序区间为(head, tail)</span><br>   <span class="hljs-keyword">while</span> ( <span class="hljs-number">1</span> &lt; n ) &#123; <span class="hljs-comment">//在至少还剩两个节点之前，在待排序区间内</span><br>      ListNodePosi&lt;T&gt; max = <span class="hljs-built_in">selectMax</span> ( head-&gt;succ, n ); <span class="hljs-comment">//找出最大者（歧义时后者优先）</span><br>      <span class="hljs-built_in">insertB</span> ( tail, <span class="hljs-built_in">remove</span> ( max ) ); <span class="hljs-comment">//将其移至无序区间末尾（作为有序区间新的首元素）</span><br>      tail = tail-&gt;pred; n--;<br>   &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/746742ba68dc285a435182987eece30a-6746a.png" srcset="/img/loading.gif" lazyload alt="排序"></p>
+<p><code>selectMax(head-&gt;succ,n)</code>将返回以head-&gt;succ为节点，区域为n的最大值M。然后将M插入到T(tail)的前面，再将T移动到M的位置上。从整个排序区间的角度来看，通过每一次迭代，前面的无序区间[p,T)和后面的有序区间[T,p+n)都在同时的减少和增大。</p>
+<h3 id="推敲"><a href="#推敲" class="headerlink" title="推敲"></a>推敲</h3><ol>
+<li>对于选择排序中出现的<code>insertBefore()</code>和<code>remove()</code>，对于算法来说会简洁一些，但是这两个函数中有<code>new</code>和<code>delete</code>的操作，这两个操作的时间复杂度差不多为O(100)，相对于O(1)多出了两个数量级。</li>
+<li>对于特殊情况，当M正好是T的直接前驱，那么无需再进行<code>insertBefore()</code>操作</li>
+</ol>
+<h3 id="实现：selectMax"><a href="#实现：selectMax" class="headerlink" title="实现：selectMax()"></a>实现：selectMax()</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//从起始于位置p的n个元素中选出最大者</span><br>ListNodePosi&lt;T&gt; List&lt;T&gt;::<span class="hljs-built_in">selectMax</span> ( ListNodePosi&lt;T&gt; p, <span class="hljs-keyword">int</span> n ) &#123;<br>   ListNodePosi&lt;T&gt; max = p; <span class="hljs-comment">//最大者暂定为首节点p</span><br>   <span class="hljs-keyword">for</span> ( ListNodePosi&lt;T&gt; cur = p; <span class="hljs-number">1</span> &lt; n; n-- ) <span class="hljs-comment">//从首节点p出发，将后续节点逐一与max比较</span><br>      <span class="hljs-keyword">if</span> ( !<span class="hljs-built_in">lt</span> ( ( cur = cur-&gt;succ )-&gt;data, max-&gt;data ) ) <span class="hljs-comment">//若当前元素不小于max，则</span><br>         max = cur; <span class="hljs-comment">//更新最大元素位置记录</span><br>   <span class="hljs-keyword">return</span> max; <span class="hljs-comment">//返回最大节点位置</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/acc8e71fb0607e3f135fccf7b4034542-eda3c.png" srcset="/img/loading.gif" lazyload alt="selectMax流程"></p>
+<p>如果cur-&gt;data不小于max-&gt;data（大于等于），那么就更新max。</p>
+<p>这样做的好处，对于selectMax()来说，当最大的值有多个，那么会取位置最靠后的一个，符合规范或者说语义。对于选择排序算法来说，当有多个相同的值，那么最后的排序结果中，这些值的相对位置不会被改变，即符合了算法的稳定性。</p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5a9f95ffa3fbd7e5c98485db24f8d6c5-ad5717.png" srcset="/img/loading.gif" lazyload alt="性能"></p>
+<p>虽然说选择排序和起泡排序的复杂度一样，但是实际上由于移动的操作更少，所以会更快一些。</p>
+<h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2><h3 id="构思-2"><a href="#构思-2" class="headerlink" title="构思"></a>构思</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/27e7f74b3d4cdbaaa3afd825e16d34a3-c0cb5f.png" srcset="/img/loading.gif" lazyload alt="构思"></p>
+<h3 id="对比（与选择排序）"><a href="#对比（与选择排序）" class="headerlink" title="对比（与选择排序）"></a>对比（与选择排序）</h3><ol>
+<li>选择排序的unsorted在前，sorted在后。插入排序则相反</li>
+<li>选择排序中unsorted的最大值<strong>不会超过</strong>sorted的最小值，而插入排序没有任何限制</li>
+</ol>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/f91d2680c6fc806564d439d0bed4487b-e2c408.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<h3 id="实现-3"><a href="#实现-3" class="headerlink" title="实现"></a>实现</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/7eca1f0f90cedec9923d7f47213098f8-1332a5.png" srcset="/img/loading.gif" lazyload alt="实现"></p>
+<ol>
+<li><code>search()</code>返回一个不大于p的合适的位置k</li>
+<li><code>insertAfter()</code>将p插入到位置k的后面</li>
+<li>此时有序区间内已经有p，无序区间内也有p，所以将无序区间内的p往后移(<code>p=p-&gt;succ</code>)，以用于下一次迭代操作</li>
+<li><code>remove()</code>删除掉本次迭代中，p原本所处位置的节点，因为这个节点已经放入有序区间内</li>
+</ol>
+<h3 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/66c1d062032840604ebdbc2990a0bcac-864fe2.png" srcset="/img/loading.gif" lazyload alt="性能分析"></p>
+<p>插入排序中的<code>select()</code>采用向量的结构去替代列表，于事无补</p>
+<h4 id="平均性能（待证明）"><a href="#平均性能（待证明）" class="headerlink" title="平均性能（待证明）"></a>平均性能（待证明）</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/f66cbc1c3a4e0afdc2ec36696a15104d-84af0c.png" srcset="/img/loading.gif" lazyload alt="平均性能"></p>
+<p>插入排序的最好情况概率极低，而它的平均复杂度和最坏复杂度都为$O(n^2)$</p>
+<h3 id="逆序对（待证明）"><a href="#逆序对（待证明）" class="headerlink" title="逆序对（待证明）"></a>逆序对（待证明）</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/114437c50d38ac9ec1407555a44d799a-002483.png" srcset="/img/loading.gif" lazyload alt="逆序对"></p>
+<p>逆序对：一个长度为n的列表中，两个元素（不一定相邻）以”大-&gt;小“的顺序出现</p>
+<p>I：表示长度为n的列表中逆序对的总数。I最多为$n^2$个，最少为0个，即I为无序程度</p>
+<p>由于插入排序大量消耗的时间都在对逆序对进行排序，所以插入排序的复杂度可视为O(I+n)，其中的n为插入排序中元素交换操作的复杂度。所以根据逆序对可得出插入排序的最好和最坏复杂度分别是$O(n)$、$O(n^2)$。</p>
+<p>总结：插入排序的复杂度取决于列表的无序程度，无序程度的范围为0~$n^2$，所以说插入排序是输入敏感的算法</p>
+<p><strong>问：</strong>长度为n的列表，被等分为n/k段，每段长度为k，不同段之间的元素不存在逆序。对该列表进行插入排序的最坏时间复杂度为？</p>
+<p><strong>答：</strong>$O(nk)$。对每段的排序实际上可以视为分别进行。在某些库中的排序算法（比如STL中的sort）会先用其它的排序算法达到以上分段的效果，再对整个序列调用插入排序，以期获得较高的实际效率。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%93%BE%E8%A1%A8/">链表</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">选择排序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">插入排序</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/02/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">栈与队列</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E5%90%91%E9%87%8F/">
+                        <span class="hidden-mobile">向量</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

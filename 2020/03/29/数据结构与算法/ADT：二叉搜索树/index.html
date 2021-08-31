@@ -1,0 +1,686 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="二叉搜索树是任意节点均不小于/不大于其左/右后代的特殊二叉树...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>二叉搜索树 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="二叉搜索树">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-29 10:00" pubdate>
+        2020年3月29日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      32
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">二叉搜索树</h1>
+            
+            <div class="markdown-body">
+              <h2 id="BST：Binary-Search-Tree"><a href="#BST：Binary-Search-Tree" class="headerlink" title="BST：Binary Search Tree"></a>BST：Binary Search Tree</h2><h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><h4 id="循关键码访问"><a href="#循关键码访问" class="headerlink" title="循关键码访问"></a>循关键码访问</h4><p>在BST中，数据项之间，依照各自的关键码彼此区分。关键码之间支持：</p>
+<ul>
+<li>大小比较</li>
+<li>相等比较</li>
+</ul>
+<h5 id="词条"><a href="#词条" class="headerlink" title="词条"></a>词条</h5><p>数据集合中的数据项，统一地表示和实现为词条<strong>entry</strong>形式。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/71a647814721756ad77c41fbc8188733-94724.png" srcset="/img/loading.gif" lazyload alt="词条"></p>
+<h4 id="组成单位"><a href="#组成单位" class="headerlink" title="组成单位"></a>组成单位</h4><ul>
+<li>节点<ul>
+<li>词条：在节点内<ul>
+<li>关键码：在词条内，且唯一</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h4><h5 id="顺序性"><a href="#顺序性" class="headerlink" title="顺序性"></a>顺序性</h5><ul>
+<li>顺序性：任意节点均不小于/不大于其左/右后代</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e143306fb7a6d997cd8e806ba4e3b190-41081.png" srcset="/img/loading.gif" lazyload alt="特征"></p>
+<ul>
+<li>单个节点的二叉树必然是BST</li>
+<li>只要满足局部顺序性的单分支二叉树，也是BST</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/f290fea422806f06a34a3ed03adbaebb-fcda7.png" srcset="/img/loading.gif" lazyload alt="特征"></p>
+<ol>
+<li>不是BST，因为不是二叉树</li>
+<li>不是BST，因为词条等于3的节点的右后代中，有一个词条等于2的节点，不满足局部顺序性。</li>
+<li>是BST</li>
+<li>是BST</li>
+<li>是BST</li>
+</ol>
+<p>顺序性虽然只是对局部特征的刻画，但由此却可导出某种全局特征：单调性</p>
+<h5 id="单调性"><a href="#单调性" class="headerlink" title="单调性"></a>单调性</h5><p>单调性：BST的中序遍历序列，必然单调非降。这个性质也是BST的充要条件。</p>
+<ul>
+<li><p>一棵树中所有节点的垂直投影，就是这棵数的<strong>中序遍历序列</strong>。</p>
+</li>
+<li><p>只要这个序列是单调变化的，那么这棵树必然是BST。</p>
+</li>
+<li><p>BST在微观上处处满足顺序性，在宏观上，整体满足单调性。</p>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/2986c45cd4384308a5e12e60aa9086cc-d39ef.png" srcset="/img/loading.gif" lazyload alt="单调性"></p>
+<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><p>由<code>BinTree</code>类派生而来</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/******************************************************************************************</span><br><span class="hljs-comment"> * Data Structures in C++</span><br><span class="hljs-comment"> * ISBN: 7-302-33064-6 &amp; 7-302-33065-3 &amp; 7-302-29652-2 &amp; 7-302-26883-3</span><br><span class="hljs-comment"> * Junhui DENG, deng@tsinghua.edu.cn</span><br><span class="hljs-comment"> * Computer Science &amp; Technology, Tsinghua University</span><br><span class="hljs-comment"> * Copyright (c) 2003-2020. All rights reserved.</span><br><span class="hljs-comment"> ******************************************************************************************/</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> once</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;BinTree/BinTree.h&quot;</span> <span class="hljs-comment">//引入BinTree</span></span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BST</span> :</span> <span class="hljs-keyword">public</span> BinTree&lt;T&gt; &#123; <span class="hljs-comment">//由BinTree派生BST模板类</span><br><span class="hljs-keyword">protected</span>:<br>   BinNodePosi&lt;T&gt; _hot; <span class="hljs-comment">//“命中”节点的父亲</span><br>   <span class="hljs-function">BinNodePosi&lt;T&gt; <span class="hljs-title">connect34</span> <span class="hljs-params">( <span class="hljs-comment">//按照“3 + 4”结构，联接3个节点及四棵子树</span></span></span><br><span class="hljs-params"><span class="hljs-function">      BinNodePosi&lt;T&gt;, BinNodePosi&lt;T&gt;, BinNodePosi&lt;T&gt;,</span></span><br><span class="hljs-params"><span class="hljs-function">      BinNodePosi&lt;T&gt;, BinNodePosi&lt;T&gt;, BinNodePosi&lt;T&gt;, BinNodePosi&lt;T&gt; )</span></span>;<br>   <span class="hljs-function">BinNodePosi&lt;T&gt; <span class="hljs-title">rotateAt</span> <span class="hljs-params">( BinNodePosi&lt;T&gt; x )</span></span>; <span class="hljs-comment">//对x及其父亲、祖父做统一旋转调整</span><br><span class="hljs-keyword">public</span>: <span class="hljs-comment">//基本接口：以virtual修饰，强制要求所有派生类（BST变种）根据各自的规则对其重写</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> BinNodePosi&lt;T&gt; &amp; <span class="hljs-title">search</span> <span class="hljs-params">( <span class="hljs-keyword">const</span> T&amp; e )</span></span>; <span class="hljs-comment">//查找</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> BinNodePosi&lt;T&gt; <span class="hljs-title">insert</span> <span class="hljs-params">( <span class="hljs-keyword">const</span> T&amp; e )</span></span>; <span class="hljs-comment">//插入</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">remove</span> <span class="hljs-params">( <span class="hljs-keyword">const</span> T&amp; e )</span></span>; <span class="hljs-comment">//删除</span><br>   <span class="hljs-comment">/*DSA*/</span><br>   <span class="hljs-comment">/*DSA*/</span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">stretchToLPath</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">stretchByZag</span> ( _root ); &#125; <span class="hljs-comment">//借助zag旋转，转化为左向单链</span><br>   <span class="hljs-comment">/*DSA*/</span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">stretchToRPath</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">stretchByZig</span> ( _root ); &#125; <span class="hljs-comment">//借助zig旋转，转化为右向单链</span><br>   <span class="hljs-comment">/*DSA*/</span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">stretch</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;BST_implementation.h&quot;</span></span><br></code></pre></div></td></tr></table></figure>
+<h2 id="BST：查找"><a href="#BST：查找" class="headerlink" title="BST：查找"></a>BST：查找</h2><h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>根据BST的局部顺序性进行查找<strong>22</strong>：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8f74bd2d45f56ebcff0a871aa1d33556-fcc84.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<p>减而治之：从根节点出发，逐步地缩小查找范围，直到发现目标（成功），或查找范围缩小至空树（失败）。</p>
+<p>对照中序遍历序列可以看出，整个过程可视作是在仿效有序向量的二分查找。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/33fd93c942368ecd2020a2280e296b8f-6bd1c.png" srcset="/img/loading.gif" lazyload alt="实现"></p>
+<p>这个算法每递归一次，当前节点V就会下降一层，因此这个算法在最坏情况下的递归深度不会超过树高。所以这个算法所对应的时间复杂度为$O(h)$。</p>
+<p>在每一次深入递归之前，都会修改<code>hot</code>变量。所以hot变量表示刚刚访问的那个非空的节点。</p>
+<h3 id="接口语义"><a href="#接口语义" class="headerlink" title="接口语义"></a>接口语义</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/46bc3d5b1db8ac6c49cd599aa02a401b-34ff4.png" srcset="/img/loading.gif" lazyload alt="接口语义"></p>
+<h2 id="BST：插入"><a href="#BST：插入" class="headerlink" title="BST：插入"></a>BST：插入</h2><h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/ed34524f0c53195b4ee16be52e3fce0a-ef0bb.png" srcset="/img/loading.gif" lazyload alt="插入"></p>
+<p>由于事先定义了接口语义，所以每当插入时，只要根据<code>hot</code>变量和<code>search</code>方法返回的空节点，就可以知道插入的位置。</p>
+<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>对于首个节点插入之类的边界情况，均可正确处置。</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; BinNodePosi&lt;T&gt; BST&lt;T&gt;::<span class="hljs-built_in">insert</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//将关键码e插入BST树中</span><br>   BinNodePosi&lt;T&gt; &amp; x = <span class="hljs-built_in">search</span> ( e ); <span class="hljs-keyword">if</span> ( x ) <span class="hljs-keyword">return</span> x; <span class="hljs-comment">//确认目标不存在（留意对_hot的设置）</span><br>   x = <span class="hljs-keyword">new</span> BinNode&lt;T&gt; ( e, _hot ); <span class="hljs-comment">//创建新节点x：以e为关键码，以_hot为父</span><br>   _size++; <span class="hljs-comment">//更新全树规模</span><br>   <span class="hljs-built_in">updateHeightAbove</span> ( x ); <span class="hljs-comment">//更新x及其历代祖先的高度</span><br>   <span class="hljs-keyword">return</span> x; <span class="hljs-comment">//新插入的节点，必为叶子</span><br>&#125; <span class="hljs-comment">//无论e是否存在于原树中，返回时总有x-&gt;data == e</span><br></code></pre></div></td></tr></table></figure>
+<h3 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h3><p>时间消耗主要集中在<code>search</code>和<code>updateHeightAbove</code>，这两个方法在最坏情况下都不会超过整个树的高度。所以总体而言，<code>insert</code>算法的复杂度不过$O(h)$。</p>
+<h2 id="BST：删除"><a href="#BST：删除" class="headerlink" title="BST：删除"></a>BST：删除</h2><h3 id="算法框架"><a href="#算法框架" class="headerlink" title="算法框架"></a>算法框架</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">bool</span> BST&lt;T&gt;::<span class="hljs-built_in">remove</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//从BST树中删除关键码e</span><br>   BinNodePosi&lt;T&gt; &amp; x = <span class="hljs-built_in">search</span> ( e ); <span class="hljs-keyword">if</span> ( !x ) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">//确认目标存在（留意_hot的设置）</span><br>   <span class="hljs-built_in">removeAt</span> ( x, _hot ); _size--; <span class="hljs-comment">//实施删除</span><br>   <span class="hljs-built_in">updateHeightAbove</span> ( _hot ); <span class="hljs-comment">//更新_hot及其历代祖先的高度</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125; <span class="hljs-comment">//删除成功与否，由返回值指示</span><br></code></pre></div></td></tr></table></figure>
+<h3 id="元素删除"><a href="#元素删除" class="headerlink" title="元素删除"></a>元素删除</h3><h4 id="情况一"><a href="#情况一" class="headerlink" title="情况一"></a>情况一</h4><p>若x将要被删除时：</p>
+<ul>
+<li>x只有左子树</li>
+<li>x只有右子树</li>
+<li>x左右子树都没有</li>
+</ul>
+<p>若被删除的元素的某一子树为空，那么可将其替换为另一子树</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/59c021a7d36b1cdcde59a2547e349ad4-65b25.png" srcset="/img/loading.gif" lazyload alt="情况一"></p>
+<h4 id="情况二"><a href="#情况二" class="headerlink" title="情况二"></a>情况二</h4><p>若此时被删除的节点x有左右孩子：</p>
+<ul>
+<li>x的直接后继是x的右孩子</li>
+<li>x的直接后继是x的右子树中的后代</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/11749e9c912565c172ce1fc417250854-2f8cb.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>处理办法：</p>
+<ol>
+<li>先找到x的直接后继w，并互换数据域，相当于等效地将待删除节点转移位置，而且这个位置只有一个分支，且这个分支只可能是右孩子。原因是在BST中x的直接后继是沿着右子树左侧链下行至最后一个，即x在中序遍历下的直接后继</li>
+<li>并将这个右孩子跟新的父亲之间进行双向连接。</li>
+</ol>
+<h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/******************************************************************************************</span><br><span class="hljs-comment"> * BST节点删除算法：删除位置x所指的节点（全局静态模板函数，适用于AVL、Splay、RedBlack等各种BST）</span><br><span class="hljs-comment"> * 目标x在此前经查找定位，并确认非NULL，故必删除成功；与searchIn不同，调用之前不必将hot置空</span><br><span class="hljs-comment"> * 返回值指向实际被删除节点的接替者，hot指向实际被删除节点的父亲——二者均有可能是NULL</span><br><span class="hljs-comment"> ******************************************************************************************/</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">static</span> BinNodePosi&lt;T&gt; <span class="hljs-title">removeAt</span> <span class="hljs-params">( BinNodePosi&lt;T&gt; &amp; x, BinNodePosi&lt;T&gt; &amp; hot )</span> </span>&#123;<br>   BinNodePosi&lt;T&gt; w = x; <span class="hljs-comment">//实际被摘除的节点，初值同x</span><br>   BinNodePosi&lt;T&gt; succ = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//实际被删除节点的接替者</span><br>   <span class="hljs-keyword">if</span> ( !<span class="hljs-built_in">HasLChild</span> ( *x ) ) <span class="hljs-comment">//若*x的左子树为空，则可</span><br>      succ = x = x-&gt;rc; <span class="hljs-comment">//直接将*x替换为其右子树</span><br>   <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( !<span class="hljs-built_in">HasRChild</span> ( *x ) ) <span class="hljs-comment">//若右子树为空，则可</span><br>      succ = x = x-&gt;lc; <span class="hljs-comment">//对称地处理——注意：此时succ != NULL</span><br>   <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">//若左右子树均存在，则选择x的直接后继作为实际被摘除节点，为此需要</span><br>      w = w-&gt;<span class="hljs-built_in">succ</span>(); <span class="hljs-comment">//（在右子树中）找到*x的直接后继*w</span><br>      <span class="hljs-built_in">swap</span> ( x-&gt;data, w-&gt;data ); <span class="hljs-comment">//交换*x和*w的数据元素</span><br>      BinNodePosi&lt;T&gt; u = w-&gt;parent;<br>      ( ( u == x ) ? u-&gt;rc : u-&gt;lc ) = succ = w-&gt;rc; <span class="hljs-comment">//隔离节点*w</span><br>   &#125;<br>   hot = w-&gt;parent; <span class="hljs-comment">//记录实际被删除节点的父亲</span><br>   <span class="hljs-keyword">if</span> ( succ ) succ-&gt;parent = hot; <span class="hljs-comment">//并将被删除节点的接替者与hot相联</span><br>   <span class="hljs-built_in">release</span> ( w-&gt;data ); <span class="hljs-built_in">release</span> ( w ); <span class="hljs-keyword">return</span> succ; <span class="hljs-comment">//释放被摘除节点，返回接替者</span><br>&#125; <span class="hljs-comment">//release()负责释放复杂结构，与算法无直接关系，具体实现详见代码包</span><br></code></pre></div></td></tr></table></figure>
+<h3 id="复杂度-1"><a href="#复杂度-1" class="headerlink" title="复杂度"></a>复杂度</h3><p>主要取决于<code>removeAt</code>中第二种情况的<code>succ()</code>，所以不会超过$O(h)$。</p>
+<h2 id="BST：平衡与等价"><a href="#BST：平衡与等价" class="headerlink" title="BST：平衡与等价"></a>BST：平衡与等价</h2><h3 id="极端退化"><a href="#极端退化" class="headerlink" title="极端退化"></a>极端退化</h3><p>BST的极端退化成单链，此时的树高等于节点数-1。即最坏情况下的复杂度为$O(n)$。</p>
+<h3 id="平均高度"><a href="#平均高度" class="headerlink" title="平均高度"></a>平均高度</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/fd7daa219940dc908f042198db476fee-f26b4.png" srcset="/img/loading.gif" lazyload alt="平均高度"></p>
+<h4 id="随机生成"><a href="#随机生成" class="headerlink" title="随机生成"></a>随机生成</h4><p>当关键码总数为n时，可能的生成序列数量为$n!$。$n!$棵BST平均高度为$log_2{n}$。</p>
+<p>但是用这种方式会有重复，所以不可靠。不同的关键码序列，有可能生成同一棵BST。比如2,1,3和2,3,1。</p>
+<p><strong>推广：中位数或者是越接近中位数的关键码越早的被插入，这棵BST的高度也会更低。</strong></p>
+<h4 id="随机组成"><a href="#随机组成" class="headerlink" title="随机组成"></a>随机组成</h4><p>把n个关键码视作n个互异的积木，可能的生成序列数量为$catalan(n)$，$catalan(n)$棵BST平均高度为$\sqrt{n}$。</p>
+<h3 id="平衡度"><a href="#平衡度" class="headerlink" title="平衡度"></a>平衡度</h3><h4 id="理想平衡"><a href="#理想平衡" class="headerlink" title="理想平衡"></a>理想平衡</h4><p>实际应用中，理想平衡可遇不可求</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/027a38c52c96713bc4fec547ba89dcbc-d2d31.png" srcset="/img/loading.gif" lazyload alt="理想平衡"></p>
+<h4 id="适度平衡"><a href="#适度平衡" class="headerlink" title="适度平衡"></a>适度平衡</h4><p>在理想平衡上放松标准：高度渐进地不超过$O(log_2{n})$，即可称作适度平衡</p>
+<h3 id="等价变换"><a href="#等价变换" class="headerlink" title="等价变换"></a>等价变换</h3><h4 id="性质-1"><a href="#性质-1" class="headerlink" title="性质"></a>性质</h4><p><strong>中序遍历序列的歧义性：在两棵结构不同的BST中，它们的中序遍历序列有可能是完全雷同的。</strong></p>
+<p>相互等价的BST：拓扑结构不同，但中序遍历序列却相同的任何一对BST。它们的特点有：</p>
+<ul>
+<li>上下可变：联接关系不尽相同，承袭关系可能颠倒。（垂直方向有一定的自由度）</li>
+<li>左右不乱：中序遍历序列完全一致，全局单调非降。</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6e37078640deaf598ec70a23fd9d84f9-8d9d9.png" srcset="/img/loading.gif" lazyload alt="等价"></p>
+<p>所以可以通过以上两点性质，对失衡的BBST重新转换成平衡的BBST</p>
+<h4 id="变换"><a href="#变换" class="headerlink" title="变换"></a>变换</h4><h5 id="zig变换"><a href="#zig变换" class="headerlink" title="zig变换"></a>zig变换</h5><p>在此局部围绕着节点V做顺时针的旋转</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a1e2c49358d12bed1516d828a1b47232-9b56e.png" srcset="/img/loading.gif" lazyload alt="zig变换"></p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; BinNodePosi&lt;T&gt; BinNode&lt;T&gt;::<span class="hljs-built_in">zig</span>() &#123; <span class="hljs-comment">//顺时针旋转</span><br>   BinNodePosi&lt;T&gt; lChild = lc;<br>   lChild-&gt;parent = <span class="hljs-keyword">this</span>-&gt;parent;<br>   <span class="hljs-keyword">if</span> ( lChild-&gt;parent )<br>      ( ( <span class="hljs-keyword">this</span> == lChild-&gt;parent-&gt;rc ) ? lChild-&gt;parent-&gt;rc : lChild-&gt;parent-&gt;lc ) = lChild;<br>   lc = lChild-&gt;rc; <span class="hljs-keyword">if</span> ( lc ) lc-&gt;parent = <span class="hljs-keyword">this</span>;<br>   lChild-&gt;rc = <span class="hljs-keyword">this</span>; <span class="hljs-keyword">this</span>-&gt;parent = lChild;<br><span class="hljs-comment">// update heights ()</span><br>   height = <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span> ( <span class="hljs-built_in">stature</span> ( lc ), <span class="hljs-built_in">stature</span> ( rc ) );<br>   lChild-&gt;height = <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span> ( <span class="hljs-built_in">stature</span> ( lChild-&gt;lc ), <span class="hljs-built_in">stature</span> ( lChild-&gt;rc ) );<br>   <span class="hljs-keyword">for</span> ( BinNodePosi&lt;T&gt; x = lChild-&gt;parent; x; x = x-&gt;parent )<br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">HeightUpdated</span>( *x ) )<br>         <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">else</span><br>         x-&gt;height = <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span> ( <span class="hljs-built_in">stature</span> ( x-&gt;lc ), <span class="hljs-built_in">stature</span> ( x-&gt;rc ) );<br>   <span class="hljs-keyword">return</span> lChild;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h5 id="zag变换"><a href="#zag变换" class="headerlink" title="zag变换"></a>zag变换</h5><p>在此局部围绕着节点V做逆时针的旋转</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0bf077b36f707860879db1855dd36e6e-d4ce0.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; BinNodePosi&lt;T&gt; BinNode&lt;T&gt;::<span class="hljs-built_in">zag</span>() &#123; <span class="hljs-comment">//逆时针旋转</span><br>   BinNodePosi&lt;T&gt; rChild = rc;<br>   rChild-&gt;parent = <span class="hljs-keyword">this</span>-&gt;parent;<br>   <span class="hljs-keyword">if</span> ( rChild-&gt;parent )<br>      ( ( <span class="hljs-keyword">this</span> == rChild-&gt;parent-&gt;lc ) ? rChild-&gt;parent-&gt;lc : rChild-&gt;parent-&gt;rc ) = rChild;<br>   rc = rChild-&gt;lc; <span class="hljs-keyword">if</span> ( rc ) rc-&gt;parent = <span class="hljs-keyword">this</span>;<br>   rChild-&gt;lc = <span class="hljs-keyword">this</span>; <span class="hljs-keyword">this</span>-&gt;parent = rChild;<br><span class="hljs-comment">// update heights</span><br>   height = <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span> ( <span class="hljs-built_in">stature</span> ( lc ), <span class="hljs-built_in">stature</span> ( rc ) );<br>   rChild-&gt;height = <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span> ( <span class="hljs-built_in">stature</span> ( rChild-&gt;lc ), <span class="hljs-built_in">stature</span> ( rChild-&gt;rc ) );<br>   <span class="hljs-keyword">for</span> ( BinNodePosi&lt;T&gt; x = rChild-&gt;parent; x; x = x-&gt;parent )<br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">HeightUpdated</span>( *x ) )<br>         <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">else</span><br>         x-&gt;height = <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span> ( <span class="hljs-built_in">stature</span> ( x-&gt;lc ), <span class="hljs-built_in">stature</span> ( x-&gt;rc ) );<br>   <span class="hljs-keyword">return</span> rChild;<br></code></pre></div></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">二叉搜索树</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/02/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9AAVL%E6%A0%91/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AVL树</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E5%9B%BE/">
+                        <span class="hidden-mobile">图</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

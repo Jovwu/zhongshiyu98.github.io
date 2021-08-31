@@ -1,0 +1,664 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="AVL树是左右子树高度差不超过1的二叉搜索树，也称平衡二叉搜索树...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>AVL树 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="AVL树">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-02 10:00" pubdate>
+        2020年4月2日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">AVL树</h1>
+            
+            <div class="markdown-body">
+              <p>AVL树是一种BBST（Balanced Binary Search Tree）。</p>
+<p>重平衡：将刚刚失衡的搜索树，重新恢复为一棵BBST的过程。</p>
+<h2 id="平衡因子"><a href="#平衡因子" class="headerlink" title="平衡因子"></a>平衡因子</h2><p><strong>对于二叉树中的任何一个节点v，都可以定义它的平衡因子balanced factor：</strong></p>
+<script type="math/tex; mode=display">
+balFac(v)=height(lc(v))-height(rc(v))</script><p>即等于它的左子树高度和右子树高度之差。</p>
+<p><strong>AVL树：树中的所有节点的平衡因子都不超过1，也不小于-1：</strong></p>
+<script type="math/tex; mode=display">
+\forall v，|balFac(v)| \le 1</script><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/b3c784ec6e60147313e9f4b2703ef054-37ea3.png" srcset="/img/loading.gif" lazyload alt="平衡因子"></p>
+<h2 id="适度平衡标准（待证明）"><a href="#适度平衡标准（待证明）" class="headerlink" title="适度平衡标准（待证明）"></a>适度平衡标准（待证明）</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/ef0e74153a6da12771b60a0400032a30-3cbe8.png" srcset="/img/loading.gif" lazyload alt="适度平衡标准（待证明）"></p>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/196ddf31e443e25566c8ccca16fe27a1-bf33b.png" srcset="/img/loading.gif" lazyload alt="接口"></p>
+<h2 id="失衡到平衡"><a href="#失衡到平衡" class="headerlink" title="失衡到平衡"></a>失衡到平衡</h2><p>在一棵AVL树中：</p>
+<ul>
+<li>插入一个节点之后，有可能会导致若干个祖先失衡</li>
+<li>删除一个节点之后，至多只有一个祖先会失衡<ul>
+<li>考察高度最低的那个祖先：这个祖先尽管失衡了，它的高度却必然保持原样。如果它的失衡是因为它的某个后代被摘除了，那么这个后代在此前也必然属于它那个相对更短的分支；而它的高度则是由它相对更长的那些分支所决定的。因此这个节点的删除，并不至于引起这个祖先高度的变化，这个祖先高度不会变化，那么相对于更高的祖先而言，它们在计算平衡因子时，结果也应该与未删除节点之前是一样的。换而言之，它们也必然是平衡的。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/1839426c1579a15f96f4e94eed01b9ab-37d7c.png" srcset="/img/loading.gif" lazyload alt="失衡到平衡"></p>
+<p>QA：</p>
+<ul>
+<li>在AVL树中刚插入一个节点后失衡节点个数最多为？<ul>
+<li>$O(lg{n})$</li>
+</ul>
+</li>
+<li>高度为3的AVL树至少包含几个节点？<ul>
+<li>7</li>
+</ul>
+</li>
+</ul>
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><h3 id="单旋"><a href="#单旋" class="headerlink" title="单旋"></a>单旋</h3><p>像下图的g、p、v三个节点的方向同时往右，又称为zag-zag旋转（对称的，同时往左，称为zig-zig）</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5aa9dab75744d1dbf8240bf7b8c64aec-79f85.png" srcset="/img/loading.gif" lazyload alt="单旋"></p>
+<h3 id="双旋"><a href="#双旋" class="headerlink" title="双旋"></a>双旋</h3><p>祖孙三代呈<strong>之</strong>字形形式</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6a51fe8b739016a15f6bea1731b15cfa-e3866.png" srcset="/img/loading.gif" lazyload alt="双旋"></p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; BinNodePosi&lt;T&gt; AVL&lt;T&gt;::<span class="hljs-built_in">insert</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//将关键码e插入AVL树中</span><br>   BinNodePosi&lt;T&gt; &amp; x = <span class="hljs-built_in">search</span> ( e ); <span class="hljs-keyword">if</span> ( x ) <span class="hljs-keyword">return</span> x; <span class="hljs-comment">//确认目标节点不存在</span><br>   BinNodePosi&lt;T&gt; xx = x = <span class="hljs-keyword">new</span> BinNode&lt;T&gt; ( e, _hot ); _size++; <span class="hljs-comment">//创建新节点x</span><br><span class="hljs-comment">// 此时，x的父亲_hot若增高，则其祖父有可能失衡</span><br>   <span class="hljs-keyword">for</span> ( BinNodePosi&lt;T&gt; g = _hot; g; g = g-&gt;parent ) <span class="hljs-comment">//从x之父出发向上，逐层检查各代祖先g</span><br>      <span class="hljs-keyword">if</span> ( !<span class="hljs-built_in">AvlBalanced</span> ( *g ) ) &#123; <span class="hljs-comment">//一旦发现g失衡，则（采用“3 + 4”算法）使之复衡，并将子树</span><br>         <span class="hljs-built_in">FromParentTo</span> ( *g ) = <span class="hljs-built_in">rotateAt</span> ( <span class="hljs-built_in">tallerChild</span> ( <span class="hljs-built_in">tallerChild</span> ( g ) ) ); <span class="hljs-comment">//重新接入原树</span><br>         <span class="hljs-keyword">break</span>; <span class="hljs-comment">//局部子树复衡后，高度必然复原；其祖先亦必如此，故调整结束</span><br>      &#125; <span class="hljs-keyword">else</span> <span class="hljs-comment">//否则（g仍平衡）</span><br>         <span class="hljs-built_in">updateHeight</span> ( g ); <span class="hljs-comment">//只需更新其高度（注意：即便g未失衡，高度亦可能增加）</span><br>   <span class="hljs-keyword">return</span> xx; <span class="hljs-comment">//返回新节点位置</span><br>&#125; <span class="hljs-comment">//无论e是否存在于原树中，总有AVL::insert(e)-&gt;data == e</span><br></code></pre></div></td></tr></table></figure>
+<p>QA：</p>
+<ul>
+<li>AVL树中插入节点引发失衡，经旋转调整后重新平衡，此时包含节点g,p,v的子树高度？<ul>
+<li>不变。故在AVL树中修正插入节点引发的失衡不会出现失衡传播。</li>
+</ul>
+</li>
+</ul>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><h3 id="单旋-1"><a href="#单旋-1" class="headerlink" title="单旋"></a>单旋</h3><p>$T_0$和$T_1$子树的底部至少有一个节点，而$T_2$子树的底部可能存在一个节点。</p>
+<ul>
+<li>$T_2$子树底部的节点不存在时：相对于原树的高度，调整之后新树的高度，会缩短一个单位。这种情况下，可能会导致它的某个祖先节点的另一个分支更高，即这个祖先节点也失衡了。（失衡传播）</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8e0c83d53546d816402877ff061079cd-04917.png" srcset="/img/loading.gif" lazyload alt="单旋"></p>
+<h3 id="双旋-1"><a href="#双旋-1" class="headerlink" title="双旋"></a>双旋</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/3616647179747aac0d47061b3cbba7c6-0dd33.png" srcset="/img/loading.gif" lazyload alt="双旋"></p>
+<h3 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">bool</span> AVL&lt;T&gt;::<span class="hljs-built_in">remove</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//从AVL树中删除关键码e</span><br>   BinNodePosi&lt;T&gt; &amp; x = <span class="hljs-built_in">search</span> ( e ); <span class="hljs-keyword">if</span> ( !x ) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">//确认目标存在（留意_hot的设置）</span><br>   <span class="hljs-built_in">removeAt</span> ( x, _hot ); _size--; <span class="hljs-comment">//先按BST规则删除之（此后，原节点之父_hot及其祖先均可能失衡）</span><br>   <span class="hljs-keyword">for</span> ( BinNodePosi&lt;T&gt; g = _hot; g; g = g-&gt;parent ) &#123; <span class="hljs-comment">//从_hot出发向上，逐层检查各代祖先g</span><br>      <span class="hljs-keyword">if</span> ( !<span class="hljs-built_in">AvlBalanced</span> ( *g ) ) <span class="hljs-comment">//一旦发现g失衡，则（采用“3 + 4”算法）使之复衡，并将该子树联至</span><br>         g = <span class="hljs-built_in">FromParentTo</span> ( *g ) = <span class="hljs-built_in">rotateAt</span> ( <span class="hljs-built_in">tallerChild</span> ( <span class="hljs-built_in">tallerChild</span> ( g ) ) ); <span class="hljs-comment">//原父亲</span><br>      <span class="hljs-built_in">updateHeight</span> ( g ); <span class="hljs-comment">//更新高度（注意：即便g未失衡或已恢复平衡，高度均可能降低）</span><br>   &#125; <span class="hljs-comment">//可能需做Omega(logn)次调整——无论是否做过调整，全树高度均可能降低</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">//删除成功</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>QA：</p>
+<ul>
+<li>AVL树中删除节点引发失衡，经旋转调整后重新平衡，此时包含节点g,p,v的子树高度？<ul>
+<li>有可能不变也有可能减小1。故在AVL树中修正删除节点引发的失衡有可能出现失衡传播。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-4-重构"><a href="#3-4-重构" class="headerlink" title="3+4 重构"></a>3+4 重构</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ul>
+<li>设g(x)为最低的失衡节点，考察祖孙三代：g~p~v。按照中序遍历次序，将其重命名为：$a&lt;b&lt;c$</li>
+<li>它们总共拥有互不相交的四棵（可能为空的）子树。按照中序遍历次序，将其重命名为：$T_0&lt;T_1&lt;T_2&lt;T_3$</li>
+</ul>
+<p>将这两个序列混合起来，即：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/be012c1198efded490182ccfafe87dfe-1ed98.png" srcset="/img/loading.gif" lazyload alt="思路"></p>
+<h3 id="算法-2"><a href="#算法-2" class="headerlink" title="算法"></a>算法</h3><p><strong>rotateAt:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; BinNodePosi&lt;T&gt; BST&lt;T&gt;::<span class="hljs-built_in">rotateAt</span> ( BinNodePosi&lt;T&gt; v ) &#123; <span class="hljs-comment">//v为非空孙辈节点</span><br>   <span class="hljs-comment">/*DSA*/</span><span class="hljs-keyword">if</span> ( !v ) &#123; <span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot;\a\nFail to rotate a null node\n&quot;</span> ); <span class="hljs-built_in">exit</span> ( <span class="hljs-number">-1</span> ); &#125;<br>   BinNodePosi&lt;T&gt; p = v-&gt;parent; BinNodePosi&lt;T&gt; g = p-&gt;parent; <span class="hljs-comment">//视v、p和g相对位置分四种情况</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsLChild</span> ( *p ) ) <span class="hljs-comment">/* zig */</span><br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsLChild</span> ( *v ) ) &#123; <span class="hljs-comment">/* zig-zig */</span> <span class="hljs-comment">//*DSA*/printf(&quot;\tzIg-zIg: &quot;);</span><br>         p-&gt;parent = g-&gt;parent; <span class="hljs-comment">//向上联接</span><br>         <span class="hljs-keyword">return</span> <span class="hljs-built_in">connect34</span> ( v, p, g, v-&gt;lc, v-&gt;rc, p-&gt;rc, g-&gt;rc );<br>      &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">/* zig-zag */</span>  <span class="hljs-comment">//*DSA*/printf(&quot;\tzIg-zAg: &quot;);</span><br>         v-&gt;parent = g-&gt;parent; <span class="hljs-comment">//向上联接</span><br>         <span class="hljs-keyword">return</span> <span class="hljs-built_in">connect34</span> ( p, v, g, p-&gt;lc, v-&gt;lc, v-&gt;rc, g-&gt;rc );<br>      &#125;<br>   <span class="hljs-keyword">else</span>  <span class="hljs-comment">/* zag */</span><br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsRChild</span> ( *v ) ) &#123; <span class="hljs-comment">/* zag-zag */</span> <span class="hljs-comment">//*DSA*/printf(&quot;\tzAg-zAg: &quot;);</span><br>         p-&gt;parent = g-&gt;parent; <span class="hljs-comment">//向上联接</span><br>         <span class="hljs-keyword">return</span> <span class="hljs-built_in">connect34</span> ( g, p, v, g-&gt;lc, p-&gt;lc, v-&gt;lc, v-&gt;rc );<br>      &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">/* zag-zig */</span>  <span class="hljs-comment">//*DSA*/printf(&quot;\tzAg-zIg: &quot;);</span><br>         v-&gt;parent = g-&gt;parent; <span class="hljs-comment">//向上联接</span><br>         <span class="hljs-keyword">return</span> <span class="hljs-built_in">connect34</span> ( g, v, p, g-&gt;lc, v-&gt;lc, v-&gt;rc, p-&gt;rc );<br>      &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><strong>connect34</strong>:</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; BinNodePosi&lt;T&gt; BST&lt;T&gt;::<span class="hljs-built_in">connect34</span> (<br>   BinNodePosi&lt;T&gt; a, BinNodePosi&lt;T&gt; b, BinNodePosi&lt;T&gt; c,<br>   BinNodePosi&lt;T&gt; T0, BinNodePosi&lt;T&gt; T1, BinNodePosi&lt;T&gt; T2, BinNodePosi&lt;T&gt; T3<br>) &#123;<br>   a-&gt;lc = T0; <span class="hljs-keyword">if</span> ( T0 ) T0-&gt;parent = a;<br>   a-&gt;rc = T1; <span class="hljs-keyword">if</span> ( T1 ) T1-&gt;parent = a; <span class="hljs-built_in">updateHeight</span> ( a );<br>   c-&gt;lc = T2; <span class="hljs-keyword">if</span> ( T2 ) T2-&gt;parent = c;<br>   c-&gt;rc = T3; <span class="hljs-keyword">if</span> ( T3 ) T3-&gt;parent = c; <span class="hljs-built_in">updateHeight</span> ( c );<br>   b-&gt;lc = a; a-&gt;parent = b;<br>   b-&gt;rc = c; c-&gt;parent = b; <span class="hljs-built_in">updateHeight</span> ( b );<br>   <span class="hljs-keyword">return</span> b; <span class="hljs-comment">//该子树新的根节点</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>无论查找、插入或删除，最坏情况下的复杂度均为$O(log_2{n})$</li>
+<li>存储空间：$O(n)$</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>借助高度或平衡因子，因此需要改造元素结构，或额外封装</li>
+<li>实测复杂度与理论值尚有差距<ul>
+<li>插入/删除后的旋转，成本不菲</li>
+<li>删除操作后，最多需要旋转$\Omega(log_2{n})$次（knuth：平均仅0.21次）</li>
+<li>若需频繁进行插入/删除操作，未免得不偿失</li>
+</ul>
+</li>
+<li>（致命）单次动态调整后，全树拓扑结构的变化量可能高达$\Omega(log_2{n})$</li>
+<li>它的插入操作和删除操作是非常不对等的</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
+                    
+                      <a class="hover-with-bg" href="/tags/AVL%E6%A0%91/">AVL树</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/05/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E4%BC%B8%E5%B1%95%E6%A0%91/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">伸展树</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">
+                        <span class="hidden-mobile">二叉搜索树</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

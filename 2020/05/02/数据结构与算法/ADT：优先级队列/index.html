@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="优先级队列在逻辑上，等同于完全二叉树；物理上，直接借助向量实现；逻辑节点与物理元素，依层次遍历次序彼此对应...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>优先级队列 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="优先级队列">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-02 10:00" pubdate>
+        2020年5月2日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      50
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">优先级队列</h1>
+            
+            <div class="markdown-body">
+              <h2 id="完全二叉堆"><a href="#完全二叉堆" class="headerlink" title="完全二叉堆"></a>完全二叉堆</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/670cc7f1c1fd393d6c1672f80b9a8ff4-fc4f5.png" srcset="/img/loading.gif" lazyload alt="完全二叉堆" style="zoom:50%;" /></p>
+<ul>
+<li>逻辑上，等同于完全二叉树</li>
+<li>物理上，直接借助向量实现</li>
+<li>逻辑节点与物理元素，依层次遍历次序彼此对应</li>
+</ul>
+<p><strong>即完全二叉堆在物理上是向量，其所存储的元素次序是完全二叉树的层次遍历次序。</strong></p>
+<p>在完全二叉堆中（大顶堆）：</p>
+<ul>
+<li>任何节点的数值不超过其父亲</li>
+<li>兄弟节点之间的没有确定的大小关系</li>
+<li>节点的数值不超过其任何一个祖先</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> Parent(i) ((i-1)&gt;&gt;1)</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> LChild(i) (1+((i)&lt;&lt;1))</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> RChild(i) ((1+(i))&lt;&lt;1)</span><br></code></pre></div></td></tr></table></figure>
+<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><p>继承了优先级队列和向量</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;Vector/Vector.h&quot;</span> <span class="hljs-comment">//借助多重继承机制，基于向量</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;PQ/PQ.h&quot;</span> <span class="hljs-comment">//按照优先级队列ADT实现的</span></span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">PQ_ComplHeap</span> :</span> <span class="hljs-keyword">public</span> PQ&lt;T&gt;, <span class="hljs-keyword">public</span> Vector&lt;T&gt; &#123; <span class="hljs-comment">//完全二叉堆</span><br>   <span class="hljs-comment">/*DSA*/</span><span class="hljs-keyword">friend</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UniPrint</span>;</span> <span class="hljs-comment">//演示输出使用，否则不必设置友类</span><br>   <span class="hljs-built_in">PQ_ComplHeap</span>() &#123; &#125; <span class="hljs-comment">//默认构造</span><br>   <span class="hljs-built_in">PQ_ComplHeap</span> ( T* A, Rank n ) &#123; <span class="hljs-built_in">copyFrom</span> ( A, <span class="hljs-number">0</span>, n ); <span class="hljs-built_in">heapify</span> ( _elem, n ); &#125; <span class="hljs-comment">//批量构造</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insert</span> <span class="hljs-params">( T )</span></span>; <span class="hljs-comment">//按照比较器确定的优先级次序，插入词条</span><br>   <span class="hljs-function">T <span class="hljs-title">getMax</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//读取优先级最高的词条</span><br>   <span class="hljs-function">T <span class="hljs-title">delMax</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//删除优先级最高的词条</span><br>&#125;; <span class="hljs-comment">//PQ_ComplHeap</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">heapify</span> <span class="hljs-params">( T* A, Rank n )</span></span>; <span class="hljs-comment">//Floyd建堆算法</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function">Rank <span class="hljs-title">percolateDown</span> <span class="hljs-params">( T* A, Rank n, Rank i )</span></span>; <span class="hljs-comment">//下滤</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function">Rank <span class="hljs-title">percolateUp</span> <span class="hljs-params">( T* A, Rank i )</span></span>; <span class="hljs-comment">//上滤</span><br><br><span class="hljs-comment">/*DSA*/</span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;PQ_ComplHeap_macro.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;PQ_ComplHeap_implementation.h&quot;</span></span><br></code></pre></div></td></tr></table></figure>
+<h3 id="堆序性"><a href="#堆序性" class="headerlink" title="堆序性"></a>堆序性</h3><ul>
+<li>数值上，只要$0&lt;i$，必满足：$H[i]\le H[Parent(i)]$​​。</li>
+<li>$H[0]$​就是全局最大元素</li>
+</ul>
+<p><strong>即堆中的任意节点都优于它的所有孩子</strong>。</p>
+<p><strong>返回最大元：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br>PQ_ComplHeap&lt;T&gt;::<span class="hljs-built_in">getMax</span>()&#123;<span class="hljs-keyword">return</span> _elem[<span class="hljs-number">0</span>];&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="插入与上滤"><a href="#插入与上滤" class="headerlink" title="插入与上滤"></a>插入与上滤</h3><p>插入词条e，只需将e作为末元素接入向量。其中：</p>
+<ul>
+<li>只有e和其父节点才有可能违反堆序性，这时候将e与其父节点换位即可。</li>
+<li>若再次违反堆序性，那么再次将e和它的新父亲换位。</li>
+<li>直到<ul>
+<li>e与其父亲满足堆序性</li>
+<li>或者e到达栈顶（没有父亲）</li>
+</ul>
+</li>
+</ul>
+<p>e每次和它的父亲换位，就表示e的高度上升一层。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/b0a618b4702bdccd87976acc8f4ee65e-31e6d.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<p>这一过程，就是<strong>上滤</strong>。</p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e517ccffa2d474ede5b3037a43c1e597-0d0d2.png" srcset="/img/loading.gif" lazyload alt="实例" style="zoom:50%;" /></p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">void</span> PQ_ComplHeap&lt;T&gt;::<span class="hljs-built_in">insert</span> ( T e ) &#123; <span class="hljs-comment">//将词条插入完全二叉堆中</span><br>   Vector&lt;T&gt;::<span class="hljs-built_in">insert</span> ( e ); <span class="hljs-comment">//首先将新词条接至向量末尾</span><br>   <span class="hljs-built_in">percolateUp</span> ( _elem, _size - <span class="hljs-number">1</span> ); <span class="hljs-comment">//再对该词条实施上滤调整</span><br>&#125;<br><span class="hljs-comment">//对向量中的第i个词条实施上滤操作，i &lt; _size</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function">Rank <span class="hljs-title">percolateUp</span> <span class="hljs-params">( T* A, Rank i )</span> </span>&#123;<br>   <span class="hljs-keyword">while</span> ( <span class="hljs-number">0</span> &lt; i ) &#123; <span class="hljs-comment">//在抵达堆顶之前，反复地</span><br>      Rank j = <span class="hljs-built_in">Parent</span> ( i ); <span class="hljs-comment">//考查[i]之父亲[j]</span><br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">lt</span> ( A[i], A[j] ) ) <span class="hljs-keyword">break</span>; <span class="hljs-comment">//一旦父子顺序，上滤旋即完成；否则</span><br>      <span class="hljs-built_in">swap</span> ( A[i], A[j] ); i = j; <span class="hljs-comment">//父子换位，并继续考查上一层</span><br>   &#125; <span class="hljs-comment">//while</span><br>   <span class="hljs-keyword">return</span> i; <span class="hljs-comment">//返回上滤最终抵达的位置</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h4><p>整个算法在完全二叉堆的每一层次上最多只需做一步迭代，又因为完全二叉树是理想平衡二叉树，其树高可以严格的控制在$log_2{n}$的范围内，而每一步迭代只需常数时间，因此所有的迭代所需的时间累计不过$log_2{n}$。</p>
+<p>但是对于常系数意义而言，swap操作每次都会调用三条语句，所以复杂度为$3*log_2{n}$。</p>
+<p>所以新的改进办法是：先将e备份，然后和父节点对比。如果有必要交换，只是将父节点下移。如此迭代，直到无需交换为止，再将e纳入最终的位置。这样的改进将$3*log_2{n}$变为了$log_2{n}+2$​。</p>
+<h3 id="删除与下滤"><a href="#删除与下滤" class="headerlink" title="删除与下滤"></a>删除与下滤</h3><p>最大元素始终在堆顶，删除堆顶实际上是摘除向量的首元素，然后代之以末元素e。其中：</p>
+<ul>
+<li>若e与孩子们违背堆序性，那么将e和孩子们中的最大者进行交换</li>
+<li>若依然违反，则继续交换，直到最后一个或者无需交换，结束过程</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/633535647dda09f1c50e88020bcc6ee9-ed26b.png" srcset="/img/loading.gif" lazyload alt="删除与下滤" style="zoom:50%;" /></p>
+<h4 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/457b42e99458ae80fcf6c404bfb57895-b9a04.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" /></p>
+<h4 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span>  ProperParent(PQ, n, i) <span class="hljs-comment">/*父子（至多）三者中的大者*/</span> \</span><br><span class="hljs-meta">            ( RChildValid(n, i) ? Bigger( PQ, Bigger( PQ, i, LChild(i) ), RChild(i) ) : \</span><br><span class="hljs-meta">            ( LChildValid(n, i) ? Bigger( PQ, i, LChild(i) ) : i \</span><br><span class="hljs-meta">            ) \</span><br><span class="hljs-meta">            ) <span class="hljs-comment">//相等时父节点优先，如此可避免不必要的交换</span></span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; T PQ_ComplHeap&lt;T&gt;::<span class="hljs-built_in">delMax</span>() &#123; <span class="hljs-comment">//删除非空完全二叉堆中优先级最高的词条</span><br>   T maxElem = _elem[<span class="hljs-number">0</span>]; _elem[<span class="hljs-number">0</span>] = _elem[ --_size ]; <span class="hljs-comment">//摘除堆顶（首词条），代之以末词条</span><br>   <span class="hljs-built_in">percolateDown</span> ( _elem, _size, <span class="hljs-number">0</span> ); <span class="hljs-comment">//对新堆顶实施下滤</span><br>   <span class="hljs-keyword">return</span> maxElem; <span class="hljs-comment">//返回此前备份的最大词条</span><br>&#125;<br><br><span class="hljs-comment">//对向量前n个词条中的第i个实施下滤，i &lt; n</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function">Rank <span class="hljs-title">percolateDown</span> <span class="hljs-params">( T* A, Rank n, Rank i )</span> </span>&#123;<br>   Rank j; <span class="hljs-comment">//i及其（至多两个）孩子中，堪为父者</span><br>   <span class="hljs-keyword">while</span> ( i != ( j = <span class="hljs-built_in">ProperParent</span> ( A, n, i ) ) ) <span class="hljs-comment">//只要i非j，则</span><br>      &#123; <span class="hljs-built_in">swap</span> ( A[i], A[j] ); i = j; &#125; <span class="hljs-comment">//二者换位，并继续考查下降后的i</span><br>   <span class="hljs-keyword">return</span> i; <span class="hljs-comment">//返回下滤抵达的位置（亦i亦j）</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="复杂度-1"><a href="#复杂度-1" class="headerlink" title="复杂度"></a>复杂度</h4><p>和上滤过程一样，复杂度也是$O(log_2{n})$​。</p>
+<p>但是在常系数意义下，下滤过程中的每一步迭代所涉及的都是一个节点以及它的两个孩子，即每一次迭代都有两次比较。</p>
+<h2 id="批量建堆"><a href="#批量建堆" class="headerlink" title="批量建堆"></a>批量建堆</h2><h3 id="自上而下的上滤"><a href="#自上而下的上滤" class="headerlink" title="自上而下的上滤"></a>自上而下的上滤</h3><h4 id="蛮力算法"><a href="#蛮力算法" class="headerlink" title="蛮力算法"></a>蛮力算法</h4><p>按照层次遍历次序逐一上滤，每个节点都需要遍历一次。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/3936c1183b7f455b0bb4ca8370924192-1c4f7.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" /></p>
+<h4 id="复杂度-2"><a href="#复杂度-2" class="headerlink" title="复杂度"></a>复杂度</h4><p>最坏情况下，每个节点都要上滤到根，所需成本线性正比于其深度。所以总体的时间成本是每一个节点<strong>深度</strong>的总和。</p>
+<p>如果只需考虑底层的情况，n/2个叶节点，深度均为$O(log_2{n})$​​，所以累计耗时$O(nlog_2{n})$​​​​，这个时间成本是无法接受的。这些时间足以全排序！</p>
+<p><strong>QA：</strong></p>
+<ul>
+<li>现有n个元素需要组织成一个完全二叉堆，若使用不断插入所有元素的方法，整个过程是:<ul>
+<li>自上而下的上滤</li>
+</ul>
+</li>
+</ul>
+<h3 id="自下而上的下滤"><a href="#自下而上的下滤" class="headerlink" title="自下而上的下滤"></a>自下而上的下滤</h3><ul>
+<li>任意给定堆$H_0$​和$H_1$​，以及节点p。为得到堆$H_0\cup{p}\cup H_1$​​，只需要将$r_0$​和$r_1$当作[的孩子，对p下滤即可。</li>
+<li>自下而上，自右而左的逐个处理</li>
+<li>对每一个节点，只需做一次下滤</li>
+<li>对于叶子节点而言，下滤没有意义。所以只考虑所有的内部节点。所以第一个处理的应该是最后一个内部节点。</li>
+<li>如果全堆的规模为n，那么最末尾的内部节点在向量中的秩为$\lfloor n/2 \rfloor-1$​​。​​</li>
+<li>实质效果等同于将左右子堆合并起来，即各子堆逐层向上合并，规模不断增加的过程。当根节点的下滤也完成后，所有节点也自然在整体上构成了一个完全二叉堆。</li>
+</ul>
+<h4 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e40907b8530c0873b36485332660caa7-dc81a.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" /></p>
+<h4 id="Floyd算法"><a href="#Floyd算法" class="headerlink" title="Floyd算法"></a>Floyd算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">heapify</span> <span class="hljs-params">( T* A, <span class="hljs-keyword">const</span> Rank n )</span> </span>&#123; <span class="hljs-comment">//Floyd建堆算法，O(n)时间</span><br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> i = n/<span class="hljs-number">2</span> - <span class="hljs-number">1</span>; <span class="hljs-number">0</span> &lt;= i; i-- ) <span class="hljs-comment">//自底而上，依次（排除了叶节点）</span><br>      <span class="hljs-built_in">percolateDown</span> ( A, n, i ); <span class="hljs-comment">//下滤各内部节点</span><br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function">Rank <span class="hljs-title">percolateDown</span> <span class="hljs-params">( T* A, Rank n, Rank i )</span> </span>&#123;<br>   Rank j; <span class="hljs-comment">//i及其（至多两个）孩子中，堪为父者</span><br>   <span class="hljs-keyword">while</span> ( i != ( j = <span class="hljs-built_in">ProperParent</span> ( A, n, i ) ) ) <span class="hljs-comment">//只要i非j，则</span><br>      &#123; <span class="hljs-built_in">swap</span> ( A[i], A[j] ); i = j; &#125; <span class="hljs-comment">//二者换位，并继续考查下降后的i</span><br>   <span class="hljs-keyword">return</span> i; <span class="hljs-comment">//返回下滤抵达的位置（亦i亦j）</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="复杂度-3"><a href="#复杂度-3" class="headerlink" title="复杂度"></a>复杂度</h4><p>每个内部节点所需的调整时间，正比于其高度而非深度。</p>
+<p>所以整个Floyd算法的计算成本无非就是每一个节点所对应<strong>高度</strong>的总和，这个总和在渐进意义上为$O(n)$。</p>
+<p>与蛮力算法的对比：</p>
+<ul>
+<li>蛮力算法是对所有节点深度的求和，而Floyd算法是高度。</li>
+<li>两者复杂度的对比差异如此之大，实际上是因为在完全二叉树中，越是靠近底层，节点越多；而越是靠近顶层，节点也就越少。因此，如果以深度作为成本的指标，那么累计的总和也自然会更大。</li>
+</ul>
+<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/629a78dc5126e3427ff5cbcc29b39c9f-77c01.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<p>建堆后不断调用<code>delMax()</code>：</p>
+<ul>
+<li>先对一个向量进行Floyd算法，得到一个完全二叉堆，完成算法的预处理。</li>
+<li>主体循环：删除堆顶，然后将删除后的堆顶放入已排序的部分。接着将堆的最后一个元素挪到堆顶，做一次下滤。然后接着删除堆顶…不停迭代，直到排序完成。</li>
+</ul>
+<p>只要将完全二叉堆和已排序的部分放在同一个向量里，那么空间复杂度就能做到常数级别。</p>
+<h3 id="算法-2"><a href="#算法-2" class="headerlink" title="算法"></a>算法</h3><p>对于任何的向量，这个算法都可以对其中任意指定的区间进行排序。</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">void</span> Vector&lt;T&gt;::<span class="hljs-built_in">heapSort</span> ( Rank lo, Rank hi ) &#123; <span class="hljs-comment">//0 &lt;= lo &lt; hi &lt;= size</span><br>   T* A = _elem + lo; Rank n = hi - lo; <span class="hljs-built_in">heapify</span>( A, n ); <span class="hljs-comment">//将待排序区间建成一个完全二叉堆，O(n)</span><br>   <span class="hljs-keyword">while</span> ( <span class="hljs-number">0</span> &lt; --n ) <span class="hljs-comment">//反复地摘除最大元并归入已排序的后缀，直至堆空</span><br>      &#123; <span class="hljs-built_in">swap</span>( A[<span class="hljs-number">0</span>], A[n] ); <span class="hljs-built_in">percolateDown</span>( A, n, <span class="hljs-number">0</span> ); &#125; <span class="hljs-comment">//堆顶与末元素对换，再下滤</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5b7aa1438c77aeb47c315036685ccd22-9b994.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h3><p>建堆：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/41e0fff06eedc61a9cde5042b35d2549-8b48c.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" /></p>
+<p>排序：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/3fc93531ba507e6653b6fcd2193e7eca-a943c.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" /></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a7f02f20ae44af14428140121890cab6-16501.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" /></p>
+<h3 id="复杂度-4"><a href="#复杂度-4" class="headerlink" title="复杂度"></a>复杂度</h3><p>所谓堆排序就是每次取堆的根结点为最大值，然后将最后一个节点作为根节点，进行堆调整，堆排序的时间等于建堆$O(n)$和进行堆调整（<code>delMax()</code>然后迭代…即每次调整一个元素是$O(log_2{n}$)）的时间，所以堆排序的时间复杂度是$O(n<em>log_2{n}+ n) =O(n</em>log_2{n})$，在渐进时间复杂度上与归并排序相同。</p>
+<h2 id="左式堆"><a href="#左式堆" class="headerlink" title="左式堆"></a>左式堆</h2><p><strong>左式堆：在拓扑形态上更倾向于向左倾斜的一种堆。</strong></p>
+<p>引入左式堆的动机：为了能够有效地完成堆合并。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6b8d6803be494073cc07582aebb250e0-9f93a.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" /></p>
+<p>单侧倾斜：保持堆序性，附加新条件，使得在堆合并过程中，只需调整很少部分的节点。即堆将右侧肩部的长度严格控制在大O意义下的$O(log_2{n})$​。</p>
+<p>新条件：</p>
+<ul>
+<li>节点分布偏向左侧</li>
+<li>合并操作只涉及右侧</li>
+</ul>
+<p>左式堆从拓扑上不见得是完全二叉树，已经破坏了结构性。但是实际上，结构性并非堆结构的本质要求，只有堆序性才是其本质要求。在必要的时候，结构性是完全可以牺牲掉的。</p>
+<h3 id="空节点路径长度"><a href="#空节点路径长度" class="headerlink" title="空节点路径长度"></a>空节点路径长度</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/b8dfe97b14c3aa0ac065453e1820171a-8597d.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<p><strong>NPL（Null Path Length）</strong>：度量堆结构倾斜性的指标。</p>
+<ul>
+<li>消除一度节点</li>
+<li>转为真二叉树</li>
+</ul>
+<p>性质：</p>
+<ul>
+<li><strong>npl(null) = 0</strong>。即外部节点的空节点路径长度为0。</li>
+<li><strong>npl(x)</strong> = <code>1 + min( npl(lc(x),npl(rc(x)))</code>。即x节点的空节点路径长度等于它两个孩子中最小的空节点路径长度再加上一。</li>
+</ul>
+<p>所以：</p>
+<ul>
+<li><strong>npl(x)</strong>：x到外部节点的最近距离。</li>
+<li><strong>npl(x)</strong> = 以x为根的最大<strong>满子树</strong>的<strong>高度</strong>。</li>
+</ul>
+<h3 id="左倾性"><a href="#左倾性" class="headerlink" title="左倾性"></a>左倾性</h3><p><strong>左倾：对任何内节点x,都有$npl(lc(x))\ge npl(rc(x))$​。即对任何一个内节点X，如果在NPL的意义上，它的左孩子不小于它的右孩子。</strong></p>
+<p>在一个堆中，如果任何一个节点都是左倾的，那么这个堆就称为左倾堆，或者左式堆，左撇子堆。所以只需要考虑每个节点的右孩子，而忽略他的右孩子，就可以得出：</p>
+<p><strong>推论：对任何内节点x，都有$npl(x)=1+npl(rc(x))$​。</strong></p>
+<p>注意：左倾性与堆序性并不矛盾。</p>
+<p>既然左倾性是处处满足的，所以任何左式堆的任何一个子堆必定是左式堆。</p>
+<p>左式堆倾向于将更多的节点分布于左侧分支。但是这个只是一个大致的倾向，事实情况未必严格如此。即在一个左式堆中，左子堆的规模和高度未必大于右子堆。</p>
+<h3 id="右侧链"><a href="#右侧链" class="headerlink" title="右侧链"></a>右侧链</h3><p>对于左式堆而言，左子堆和右子堆在规模和高度上的差异并不是那么的重要，真正重要的是全堆的右侧链。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/ae66e5d63b4258bc3f04321ed5898140-ee212.png" srcset="/img/loading.gif" lazyload alt="右侧链" style="zoom:50%;" /></p>
+<p><strong>rChain(x)：</strong>从节点x出发，一致沿右分支前进。</p>
+<p>特别地，<strong>rChain(root)</strong>的终点，必为全堆中最浅的外部节点。即存在一棵以r为根，高度为d的满子树。</p>
+<script type="math/tex; mode=display">
+npl(r)\equiv |rChain(r)| =d</script><p>右侧链长为d的左式堆，至少包含：</p>
+<ul>
+<li>$2^d-1$个内部节点</li>
+<li>$2^{d+1}-1$​个节点</li>
+</ul>
+<p><strong>所以，在包含n个节点的左式堆中，右侧链的长度$d \le \lfloor log_2{n+1} \rfloor -1 = O(log_2{n})$​。​​</strong></p>
+<p>即相对于根节点r，不仅意味着这个外部节点的<strong>深度</strong>为d，更重要的是存在一棵以r为根，高度为d的<strong>极大满子树</strong>。这一点对左式堆来说至关重要，事实上这就意味着在左式堆中应该包含足够多个节点。反过来，如果将左式堆的规模固定为n，那么右侧链的长度d也就至多不过$log_2{n}$，因此进一步的，如果我们所设计的堆合并算法的确能将操作的范围限定为右侧链，那么相关算法的复杂度也同样可以控制在$log_2{n}$​范围内。</p>
+<h3 id="实现与接口"><a href="#实现与接口" class="headerlink" title="实现与接口"></a>实现与接口</h3><p>由于左式堆不满足结构性，物理结构不再保持紧凑性，所以采用树形结构来作为派生的基类。</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PQ_LeftHeap</span> :</span> <span class="hljs-keyword">public</span> PQ&lt;T&gt;, <span class="hljs-keyword">public</span> BinTree&lt;T&gt; &#123; <span class="hljs-comment">//基于二叉树，以左式堆形式实现的PQ</span><br>   <span class="hljs-comment">/*DSA*/</span><span class="hljs-keyword">friend</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UniPrint</span>;</span> <span class="hljs-comment">//演示输出使用，否则不必设置友类</span><br><span class="hljs-keyword">public</span>:<br>   <span class="hljs-built_in">PQ_LeftHeap</span>() &#123; &#125; <span class="hljs-comment">//默认构造</span><br>   <span class="hljs-built_in">PQ_LeftHeap</span> ( T* E, <span class="hljs-keyword">int</span> n ) <span class="hljs-comment">//批量构造：可改进为Floyd建堆算法</span><br>   &#123;  <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++ ) <span class="hljs-built_in">insert</span> ( E[i] );  &#125;<br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insert</span> <span class="hljs-params">( T )</span></span>; <span class="hljs-comment">//按照比较器确定的优先级次序插入元素</span><br>   <span class="hljs-function">T <span class="hljs-title">getMax</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//取出优先级最高的元素</span><br>   <span class="hljs-function">T <span class="hljs-title">delMax</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//删除优先级最高的元素</span><br>&#125;; <span class="hljs-comment">//PQ_LeftHeap</span><br></code></pre></div></td></tr></table></figure>
+<h4 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/cffff34800f2b5f187610f6dae962960-59f2a.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" /></p>
+<p>待合并的两个堆分别以a和b为根，并假设在抵达递归基之前，它们的左右子堆都是存在的。 整个流程就是将a的右子堆取出，并且递归地与刚才的堆b完成合并，合并所得到的结果继续作为a的右子堆。为了保证a在此后继续满足左倾性，在这次合并返回之后，还需比较a的左子堆与合并之后这个堆的npl值。如果有必要，还需令二者互换位置。</p>
+<h5 id="算法-3"><a href="#算法-3" class="headerlink" title="算法"></a>算法</h5><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//根据相对优先级确定适宜的方式，合并以a和b为根节点的两个左式堆</span><br><span class="hljs-function"><span class="hljs-keyword">static</span> BinNodePosi&lt;T&gt; <span class="hljs-title">merge</span> <span class="hljs-params">( BinNodePosi&lt;T&gt; a, BinNodePosi&lt;T&gt; b )</span> </span>&#123;<br>   <span class="hljs-keyword">if</span> ( ! a ) <span class="hljs-keyword">return</span> b; <span class="hljs-comment">//退化情况</span><br>   <span class="hljs-keyword">if</span> ( ! b ) <span class="hljs-keyword">return</span> a; <span class="hljs-comment">//退化情况</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">lt</span> ( a-&gt;data, b-&gt;data ) ) <span class="hljs-built_in">swap</span> ( a, b ); <span class="hljs-comment">//一般情况：首先确保b不大</span><br>   ( a-&gt;rc = <span class="hljs-built_in">merge</span> ( a-&gt;rc, b ) )-&gt;parent = a; <span class="hljs-comment">//将a的右子堆，与b合并</span><br>   <span class="hljs-keyword">if</span> ( !a-&gt;lc || a-&gt;lc-&gt;npl &lt; a-&gt;rc-&gt;npl ) <span class="hljs-comment">//若有必要</span><br>      <span class="hljs-built_in">swap</span> ( a-&gt;lc, a-&gt;rc ); <span class="hljs-comment">//交换a的左、右子堆，以确保右子堆的npl不大</span><br>   a-&gt;npl = a-&gt;rc ? a-&gt;rc-&gt;npl + <span class="hljs-number">1</span> : <span class="hljs-number">1</span>; <span class="hljs-comment">//更新a的npl</span><br>   <span class="hljs-keyword">return</span> a; <span class="hljs-comment">//返回合并后的堆顶</span><br>&#125; <span class="hljs-comment">//本算法只实现结构上的合并，堆的规模须由上层调用者负责更新</span><br></code></pre></div></td></tr></table></figure>
+<p>合并左式堆A和左式堆B，其中A的最大元素比B中所有元素都大，则递归的步骤为合并A的右子堆和B。</p>
+<h5 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/08a51ccaace6d3ec61dc72d815600e13-c22cd.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<h5 id="插入即合并"><a href="#插入即合并" class="headerlink" title="插入即合并"></a>插入即合并</h5><p>将这个新的节点视作只含一个节点的左式堆，那么插入操作就是一个合并操作。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/17a55013bef8df49634a775a099cf440-554d3.png" srcset="/img/loading.gif" lazyload alt="插入即合并" style="zoom: 50%;" /></p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">void</span> PQ_LeftHeap&lt;T&gt;::<span class="hljs-built_in">insert</span> ( T e ) &#123;<br>   _root = <span class="hljs-built_in">merge</span>( _root, <span class="hljs-keyword">new</span> BinNode&lt;T&gt;( e, <span class="hljs-literal">NULL</span> ) ); <span class="hljs-comment">//将e封装为左式堆，与当前左式堆合并</span><br>   _size++; <span class="hljs-comment">//更新规模</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h5 id="删除亦合并"><a href="#删除亦合并" class="headerlink" title="删除亦合并"></a>删除亦合并</h5><p>每次删除操作首先将这个根节点在物理上摘除掉，而接下来的任务也无非是将分离出来的左子堆和右子堆合并。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/226d96857a9043b77082f3f54c20258a-517da.png" srcset="/img/loading.gif" lazyload style="zoom: 25%;" /></p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; T PQ_LeftHeap&lt;T&gt;::<span class="hljs-built_in">delMax</span>() &#123;<br>   BinNodePosi&lt;T&gt; lHeap = _root-&gt;lc; <span class="hljs-keyword">if</span> (lHeap) lHeap-&gt;parent = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//左子堆</span><br>   BinNodePosi&lt;T&gt; rHeap = _root-&gt;rc; <span class="hljs-keyword">if</span> (rHeap) rHeap-&gt;parent = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//右子堆</span><br>   T e = _root-&gt;data; <span class="hljs-keyword">delete</span> _root; _size--; <span class="hljs-comment">//删除根节点</span><br>   _root = <span class="hljs-built_in">merge</span> ( lHeap, rHeap ); <span class="hljs-comment">//合并原左、右子堆</span><br>   <span class="hljs-keyword">return</span> e; <span class="hljs-comment">//返回原根节点的数据项</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97/">优先级队列</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%EF%BC%9A%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">装饰模式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%84%E4%BB%B6%E5%8D%8F%E4%BD%9C%EF%BC%9A%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/">
+                        <span class="hidden-mobile">观察者模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

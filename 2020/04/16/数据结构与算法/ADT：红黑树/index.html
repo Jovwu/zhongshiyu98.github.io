@@ -1,0 +1,743 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="红黑树是4阶B-树，由红、黑两类节点组成，统一增设外部节点NULL，使之成为真二叉树...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>红黑树 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="红黑树">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-16 10:00" pubdate>
+        2020年4月16日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      610 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      7
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">红黑树</h1>
+            
+            <div class="markdown-body">
+              <h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><h3 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h3><p>红黑树是由红、黑两类节点组成的BST，统一增设<strong>外部节点NULL</strong>，使之成为<strong>真二叉树</strong>。其中：</p>
+<ul>
+<li>树根：必为黑色</li>
+<li>外部节点：均为黑色</li>
+<li>其余节点：若为红，则只能有黑孩子。即红节点的父子皆黑（这条规则旨在控制红黑树的深度）</li>
+<li>外部节点到根：途中黑节点数目相等（这条规则旨在控制红黑树的平衡性）</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5f98af1aeafaf0be8e8de8f64d68b79f-129b9.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<h3 id="提升变换"><a href="#提升变换" class="headerlink" title="提升变换"></a>提升变换</h3><ul>
+<li>将每一个红色的节点都向上提升至与它的父亲平齐。提升后，两个红色节点一定不会紧邻，中间一定有一个黑色节点，也就是它们此前的父亲。</li>
+</ul>
+<p><strong>提升前：</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/491128180ded5a3046bd418889a18b65-cf721.png" srcset="/img/loading.gif" lazyload alt="提升前："></p>
+<p><strong>提升后：</strong></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5e88b968deed88d6ffd4d0d3b1cd29ac-63493.png" srcset="/img/loading.gif" lazyload alt="提升后："></p>
+<p>提升后，所有底层的节点都变成沿同一水平高度平齐的高度。</p>
+<h3 id="2-4-树-红黑树"><a href="#2-4-树-红黑树" class="headerlink" title="(2,4)树 == 红黑树"></a>(2,4)树 == 红黑树</h3><p>红黑树提升变换：</p>
+<ul>
+<li>提升各红节点，使之与其（黑）父亲等高，于是每棵红黑树，都对应于一棵$(2,4)$-树。</li>
+<li>将黑节点与其红孩子视作（关键码并合并为）超级节点</li>
+<li>无非四种组合，分别对应于4阶B-树的一类内部节点</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/f9031e9cb7d0db148e54c98cfda668f5-e890c.png" srcset="/img/loading.gif" lazyload alt="(2,4)树 == 红黑树"></p>
+<h3 id="红黑树-in-BBST"><a href="#红黑树-in-BBST" class="headerlink" title="红黑树$\in$BBST"></a>红黑树$\in$BBST</h3><ul>
+<li><p>由等价性，既然B-树是平衡的，红黑树自然也是。</p>
+</li>
+<li><p>定理：包含n个内部节点（n+1个外部节点）的红黑树T，高度$h=O(log_2{n})$</p>
+<script type="math/tex; mode=display">
+log_2{(n+1)}\le h \le 2*log_2{(n+1)}</script></li>
+<li><p>若：T高度为h，黑高度为H，则$h=R+H\le2H$</p>
+</li>
+<li>若：T所对应的B-树为$T_B$，则H即是$T_B$的高度。</li>
+<li>$T_B$的每个节点（超级节点），包含且仅含包含T的一个黑节点。</li>
+</ul>
+<p>结论：</p>
+<script type="math/tex; mode=display">
+H \le log_{\lceil 4/2 \rceil}{\frac{n+1}2}+1 \le log_2{(n+1)}</script><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/4016730bec94307a9bd2108ea1059b49-a9f12.png" srcset="/img/loading.gif" lazyload alt="红黑树$\in$BBST"></p>
+<h3 id="接口定义"><a href="#接口定义" class="headerlink" title="接口定义"></a>接口定义</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;BST/BST.h&quot;</span> <span class="hljs-comment">//基于BST实现RedBlack</span></span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedBlack</span> :</span> <span class="hljs-keyword">public</span> BST&lt;T&gt; &#123; <span class="hljs-comment">//RedBlack树模板类</span><br><span class="hljs-keyword">protected</span>:<br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">solveDoubleRed</span> <span class="hljs-params">( BinNodePosi&lt;T&gt; x )</span></span>; <span class="hljs-comment">//双红修正</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">solveDoubleBlack</span> <span class="hljs-params">( BinNodePosi&lt;T&gt; x )</span></span>; <span class="hljs-comment">//双黑修正</span><br>   <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">updateHeight</span> <span class="hljs-params">( BinNodePosi&lt;T&gt; x )</span></span>; <span class="hljs-comment">//更新节点x的高度</span><br><span class="hljs-keyword">public</span>:<br>   <span class="hljs-function">BinNodePosi&lt;T&gt; <span class="hljs-title">insert</span> <span class="hljs-params">( <span class="hljs-keyword">const</span> T&amp; e )</span></span>; <span class="hljs-comment">//插入（重写）</span><br>   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">remove</span> <span class="hljs-params">( <span class="hljs-keyword">const</span> T&amp; e )</span></span>; <span class="hljs-comment">//删除（重写）</span><br><span class="hljs-comment">// BST::search()等其余接口可直接沿用</span><br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><h3 id="双红缺陷"><a href="#双红缺陷" class="headerlink" title="双红缺陷"></a>双红缺陷</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/f863fa73beea06c7e634373355fc5e3e-f2249.png" srcset="/img/loading.gif" lazyload alt="双红缺陷"></p>
+<h4 id="u-gt-color-B"><a href="#u-gt-color-B" class="headerlink" title="u-&gt;color == B"></a>u-&gt;color == B</h4><ul>
+<li>此时，x、p、g的四个孩子（可能都是外部节点）全为黑，且<strong>黑高度相同</strong></li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/284da46cbe498c23ef89bd19222e0c7d-7098d.png" srcset="/img/loading.gif" lazyload alt="u-&gt;color == B"></p>
+<p><strong>解决办法：做局部3+4重构</strong></p>
+<ol>
+<li>将节点x、p、g及其四棵子树，按中序组合为：</li>
+</ol>
+<script type="math/tex; mode=display">
+T_0<a<T_1<b<T_2<c<T_3</script><ol>
+<li>染色<ul>
+<li>b转黑</li>
+<li>a或c转红</li>
+</ul>
+</li>
+</ol>
+<p>效果如下：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/919c82f669783cd2931278203696161d-70c03.png" srcset="/img/loading.gif" lazyload alt="效果" style="zoom:50%;" /></p>
+<ul>
+<li>调整前之所以非法，是因为在某个三叉节点中插入红关键码，使得原黑关键码不再居中。即<strong>RRB</strong>或<strong>BRR</strong>，出现相邻的红关键码。</li>
+<li>调整之后的效果相当于<strong>B-树的拓扑结构不变</strong>，但在新的四叉节点中，三个关键码的颜色改为<strong>RBR</strong>。</li>
+<li>虽然红黑树的拓扑结构有所调整，但仅限于局部。更重要的是，这种调整是一蹴而就的，无需任何进一步的调整。因此，就全树的拓扑连接关系变化量而言，必然是不超过$O(1)$。</li>
+</ul>
+<h4 id="u-gt-color-R"><a href="#u-gt-color-R" class="headerlink" title="u-&gt;color == R"></a>u-&gt;color == R</h4><ul>
+<li>在B-树中，等效于超级节点发生上溢</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/3ebe25c99bb4ee0c20317672d7ec17b6-a2012.png" srcset="/img/loading.gif" lazyload alt="u-&gt;color == R"></p>
+<p>修复这种情况下的双红缺陷，可以看作是修复B-树中的上溢。</p>
+<p><strong>解决办法：</strong></p>
+<ul>
+<li>p与u转黑</li>
+<li>g转红</li>
+</ul>
+<p>在B-树中，等效于节点分裂，关键码g上升一层。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/4871f7c2d7a0987ac9cecd2caa12a993-d52cf.png" srcset="/img/loading.gif" lazyload alt="解决办法"></p>
+<p>在B树角度来看，这种调整过程发生了拓扑结构变化。但是从红黑树的角度来看，除了若干个节点的颜色会发生改变，全树的拓扑连接关系并没有任何变化。也就是说虽然重染色的操作可能会达到$O(log_2{n})$，但是拓扑结构的操作只会$O(1)$。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>重构操作对<strong>持久化结构</strong>而言至关重要</li>
+<li>实际上AVL树的插入操作也能达到这要求</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/cd4d920d0ab67d6c3a08b543064217ae-0c793.png" srcset="/img/loading.gif" lazyload alt="总结"></p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">void</span> RedBlack&lt;T&gt;::<span class="hljs-built_in">solveDoubleRed</span> ( BinNodePosi&lt;T&gt; x ) &#123; <span class="hljs-comment">//x当前必为红</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsRoot</span> ( *x ) ) <span class="hljs-comment">//若已（递归）转至树根，则将其转黑，整树黑高度也随之递增</span><br>      &#123;  _root-&gt;color = RB_BLACK; _root-&gt;height++; <span class="hljs-keyword">return</span>;  &#125; <span class="hljs-comment">//否则，x的父亲p必存在</span><br>   BinNodePosi&lt;T&gt; p = x-&gt;parent; <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsBlack</span> ( p ) ) <span class="hljs-keyword">return</span>; <span class="hljs-comment">//若p为黑，则可终止调整。否则</span><br>   BinNodePosi&lt;T&gt; g = p-&gt;parent; <span class="hljs-comment">//既然p为红，则x的祖父必存在，且必为黑色</span><br>   BinNodePosi&lt;T&gt; u = <span class="hljs-built_in">uncle</span> ( x ); <span class="hljs-comment">//以下，视x叔父u的颜色分别处理</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsBlack</span> ( u ) ) &#123; <span class="hljs-comment">//u为黑色（含NULL）时 //*DSA*/printf(&quot;  case RR-1:\n&quot;);</span><br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsLChild</span> ( *x ) == <span class="hljs-built_in">IsLChild</span> ( *p ) ) <span class="hljs-comment">//若x与p同侧（即zIg-zIg或zAg-zAg），则</span><br>         p-&gt;color = RB_BLACK; <span class="hljs-comment">//p由红转黑，x保持红</span><br>      <span class="hljs-keyword">else</span> <span class="hljs-comment">//若x与p异侧（即zIg-zAg或zAg-zIg），则</span><br>         x-&gt;color = RB_BLACK; <span class="hljs-comment">//x由红转黑，p保持红</span><br>      g-&gt;color = RB_RED; <span class="hljs-comment">//g必定由黑转红</span><br><span class="hljs-comment">///// 以上虽保证总共两次染色，但因增加了判断而得不偿失</span><br><span class="hljs-comment">///// 在旋转后将根置黑、孩子置红，虽需三次染色但效率更高</span><br>      BinNodePosi&lt;T&gt; gg = g-&gt;parent; <span class="hljs-comment">//曾祖父（great-grand parent）</span><br>      BinNodePosi&lt;T&gt; r = <span class="hljs-built_in">FromParentTo</span> ( *g ) = <span class="hljs-built_in">rotateAt</span> ( x ); <span class="hljs-comment">//调整后的子树根节点</span><br>      r-&gt;parent = gg; <span class="hljs-comment">//与原曾祖父联接</span><br>   &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">//若u为红色 //*DSA*/printf(&quot;  case RR-2:\n&quot;);</span><br>      p-&gt;color = RB_BLACK; p-&gt;height++; <span class="hljs-comment">//p由红转黑</span><br>      u-&gt;color = RB_BLACK; u-&gt;height++; <span class="hljs-comment">//u由红转黑</span><br>      <span class="hljs-keyword">if</span> ( !<span class="hljs-built_in">IsRoot</span> ( *g ) ) g-&gt;color = RB_RED; <span class="hljs-comment">//g若非根，则转红</span><br>      <span class="hljs-built_in">solveDoubleRed</span> ( g ); <span class="hljs-comment">//继续调整g（类似于尾递归，可优化为迭代形式）</span><br>   &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="插入算法"><a href="#插入算法" class="headerlink" title="插入算法"></a>插入算法</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; BinNodePosi&lt;T&gt; RedBlack&lt;T&gt;::<span class="hljs-built_in">insert</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//将e插入红黑树</span><br>   BinNodePosi&lt;T&gt; &amp; x = <span class="hljs-built_in">search</span> ( e ); <br>   <span class="hljs-keyword">if</span> ( x ) <span class="hljs-keyword">return</span> x; <span class="hljs-comment">//确认目标不存在（留意对_hot的设置）</span><br>   x = <span class="hljs-keyword">new</span> BinNode&lt;T&gt; ( e, _hot, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span> ); _size++; <span class="hljs-comment">//创建红节点x：以_hot为父，黑高度0</span><br>   BinNodePosi&lt;T&gt; xOld = x; <span class="hljs-built_in">solveDoubleRed</span> ( x ); <br>   <span class="hljs-keyword">return</span> xOld; <span class="hljs-comment">//经双红修正后，即可返回</span><br>&#125; <span class="hljs-comment">//无论e是否存在于原树中，返回时总有x-&gt;data == e</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/83a7121daa0f26853e9641bcb7687e22-57dff.png" srcset="/img/loading.gif" lazyload alt="过程" style="zoom:50%;" /></p>
+<ul>
+<li>首先按照BST常规算法，执行<code>r = removeAt(x,_hot)</code>，此时将删除节点<strong>x</strong>和替代节点<strong>r</strong>的颜色分情况讨论：（r可能是个外部节点）<ul>
+<li>两者中有一个红色：将<strong>r</strong>染黑即可</li>
+<li>两者都是黑色：发生双黑缺陷。因为违反了规则4（即外部节点到根：途中黑节点数目相等）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="双黑缺陷"><a href="#双黑缺陷" class="headerlink" title="双黑缺陷"></a>双黑缺陷</h3><ul>
+<li>摘除x并代之以r后，全树黑深度不再统一，原B-树中x所属节点下溢</li>
+<li>修复红黑树的双黑缺陷，实际上是修复B-树的下溢</li>
+<li>在新树中，需要考察：<ul>
+<li>r的父亲：<code>p = r-&gt;parent</code></li>
+<li>r的兄弟：<code>s = r == p-&gt;lc ? p&gt;rc : p-&gt;lc</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/235b5225e6376bbc49b957556b256ab0-3b96d.png" srcset="/img/loading.gif" lazyload alt="双黑缺陷" style="zoom:50%;" /></p>
+<h4 id="BB-1：S为黑，且至少有一个红孩子t"><a href="#BB-1：S为黑，且至少有一个红孩子t" class="headerlink" title="BB-1：S为黑，且至少有一个红孩子t"></a>BB-1：S为黑，且至少有一个红孩子t</h4><p>这种情况下的修复过程为：</p>
+<ol>
+<li><p>3+4重构：t、s、p重命名为a、b、c</p>
+</li>
+<li><p>r保持黑色</p>
+</li>
+<li><p>a和c染黑</p>
+</li>
+<li><p>b继承p的原色</p>
+</li>
+</ol>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/9e577a4f5517b8f84cc0dc65653c16cd-1c9ef.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<p>此时红黑树中的黑深度保持一致，全局性质得以恢复。（与zig-zag等类似）</p>
+<p><strong>从B-树的角度看：</strong></p>
+<p>通过关键码的旋转，消除超级节点的下溢。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/b18e884e0ed4305d4531aee5278f89ef-071fb.png" srcset="/img/loading.gif" lazyload alt="**从B-树的角度看：**" style="zoom:50%;" /></p>
+<p>下溢节点从父亲那借得一个关键码，父亲再向下溢节点的兄弟那里借一个关键码，以填补空缺。</p>
+<h4 id="BB-2R：s为黑，且两个孩子均为黑；p为红"><a href="#BB-2R：s为黑，且两个孩子均为黑；p为红" class="headerlink" title="BB-2R：s为黑，且两个孩子均为黑；p为红"></a>BB-2R：s为黑，且两个孩子均为黑；p为红</h4><p>这种情况下的处理办法：（此时的s已处于下溢边缘，无法借出关键码）</p>
+<ol>
+<li><p>r保持黑</p>
+</li>
+<li><p>s转红</p>
+</li>
+<li><p>p转黑</p>
+</li>
+</ol>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/4c43abc0a3453b725e7d5c7577e91907-d8e34.png" srcset="/img/loading.gif" lazyload alt="BB-2R：s为黑，且两个孩子均为黑；p为红" style="zoom:50%;" /></p>
+<p>在对应的B-树中，等效于下溢节点与兄弟<strong>合并</strong>。合并之前，在p之左或右侧还应有（问号）关键码必为黑色，有且仅有一个。所以失去关键码p后，上层节点并不会发生下溢。</p>
+<h4 id="BB-2B：s为黑，且两个孩子均为黑；p为黑"><a href="#BB-2B：s为黑，且两个孩子均为黑；p为黑" class="headerlink" title="BB-2B：s为黑，且两个孩子均为黑；p为黑"></a>BB-2B：s为黑，且两个孩子均为黑；p为黑</h4><p>这种情况下的处理方法：</p>
+<ol>
+<li><p>s转红</p>
+</li>
+<li><p>r与p保持黑</p>
+</li>
+</ol>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0bc798b4902f829f7628e9dc777c0ae9-52c2d.png" srcset="/img/loading.gif" lazyload alt="BB-2B：s为黑，且两个孩子均为黑；p为黑" style="zoom:50%;" /></p>
+<p>从B树的角度来看，如果下层下溢引发上层下溢，且在极端情况下会传播到树根。这时候的重构可能多达$O(log_2{n})$次。但是从红黑树的角度来说，拓扑结构实际上没有任何的改变，所以还是$O(1)$。</p>
+<h4 id="BB-3：s为红（其孩子均为黑）"><a href="#BB-3：s为红（其孩子均为黑）" class="headerlink" title="BB-3：s为红（其孩子均为黑）"></a>BB-3：s为红（其孩子均为黑）</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/425b860e067a2c0f628f9dafc5623062-1ad98.png" srcset="/img/loading.gif" lazyload alt="BB-3：s为红（其孩子均为黑）" style="zoom:50%;" /></p>
+<p>这种情况下的处理方法：</p>
+<ol>
+<li>zag(p)或zig(p)</li>
+<li>红s转黑</li>
+<li>黑p转红</li>
+</ol>
+<p>虽然此时黑高度依然异常，但r有了一个新的黑兄弟s`。所以可以转化为之前的三种情况，而且：</p>
+<ul>
+<li>p已经转红，接下类绝不会是情况BB-2B，而只能是BB-1或BB-2R</li>
+</ul>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>每一次删除操作，在每一高度至多只会花费常数时间，即删除操作可以在$O(log_2{n})$​​时间内完成</li>
+<li>其中，至多做：<ol>
+<li>$O(log_2{n})$次重染色</li>
+<li>一次”3+4“重构</li>
+<li>一次单旋</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e6e495226206433e48c6e6c35126f4e6-c5a66.png" srcset="/img/loading.gif" lazyload alt="总结" style="zoom:50%;" /></p>
+<h4 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">void</span> RedBlack&lt;T&gt;::<span class="hljs-built_in">solveDoubleBlack</span> ( BinNodePosi&lt;T&gt; r ) &#123;<br>   BinNodePosi&lt;T&gt; p = r ? r-&gt;parent : _hot; <span class="hljs-keyword">if</span> ( !p ) <span class="hljs-keyword">return</span>; <span class="hljs-comment">//r的父亲</span><br>   BinNodePosi&lt;T&gt; s = ( r == p-&gt;lc ) ? p-&gt;rc : p-&gt;lc; <span class="hljs-comment">//r的兄弟</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsBlack</span> ( s ) ) &#123; <span class="hljs-comment">//兄弟s为黑</span><br>      BinNodePosi&lt;T&gt; t = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//s的红孩子（若左、右孩子皆红，左者优先；皆黑时为NULL）</span><br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsRed</span> ( s-&gt;rc ) ) t = s-&gt;rc; <span class="hljs-comment">//右子</span><br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsRed</span> ( s-&gt;lc ) ) t = s-&gt;lc; <span class="hljs-comment">//左子</span><br>      <span class="hljs-keyword">if</span> ( t ) &#123; <span class="hljs-comment">//黑s有红孩子：BB-1</span><br>         <span class="hljs-comment">//*DSA*/printf(&quot;  case BB-1: Child (&quot;); print(s-&gt;lc); printf(&quot;) of BLACK sibling (&quot;); print(s); printf(&quot;) is RED\n&quot;);</span><br>         RBColor oldColor = p-&gt;color; <span class="hljs-comment">//备份原子树根节点p颜色，并对t及其父亲、祖父</span><br>      <span class="hljs-comment">// 以下，通过旋转重平衡，并将新子树的左、右孩子染黑</span><br>         BinNodePosi&lt;T&gt; b = <span class="hljs-built_in">FromParentTo</span> ( *p ) = <span class="hljs-built_in">rotateAt</span> ( t ); <span class="hljs-comment">//旋转</span><br>         <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">HasLChild</span> ( *b ) ) &#123; b-&gt;lc-&gt;color = RB_BLACK; <span class="hljs-built_in">updateHeight</span> ( b-&gt;lc ); &#125; <span class="hljs-comment">//左子</span><br>         <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">HasRChild</span> ( *b ) ) &#123; b-&gt;rc-&gt;color = RB_BLACK; <span class="hljs-built_in">updateHeight</span> ( b-&gt;rc ); &#125; <span class="hljs-comment">//右子</span><br>         b-&gt;color = oldColor; <span class="hljs-built_in">updateHeight</span> ( b ); <span class="hljs-comment">//新子树根节点继承原根节点的颜色</span><br>         <span class="hljs-comment">//*DSA*/printBinTree(b, 0, 0);</span><br>      &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">//黑s无红孩子</span><br>         s-&gt;color = RB_RED; s-&gt;height--; <span class="hljs-comment">//s转红</span><br>         <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsRed</span> ( p ) ) &#123; <span class="hljs-comment">//BB-2R</span><br>            <span class="hljs-comment">//*DSA*/printf(&quot;  case BB-2R: Both children (&quot;); print(s-&gt;lc); printf(&quot;) and (&quot;); print(s-&gt;rc); printf(&quot;) of BLACK sibling (&quot;); print(s); printf(&quot;) are BLACK, and parent (&quot;); print(p); printf(&quot;) is RED\n&quot;); //s孩子均黑，p红</span><br>            p-&gt;color = RB_BLACK; <span class="hljs-comment">//p转黑，但黑高度不变</span><br>            <span class="hljs-comment">//*DSA*/printBinTree(p, 0, 0);</span><br>         &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">//BB-2B</span><br>            <span class="hljs-comment">//*DSA*/printf(&quot;  case BB-2R: Both children (&quot;); print(s-&gt;lc); printf(&quot;) and (&quot;); print(s-&gt;rc); printf(&quot;) of BLACK sibling (&quot;); print(s); printf(&quot;) are BLACK, and parent (&quot;); print(p); printf(&quot;) is BLACK\n&quot;); //s孩子均黑，p黑</span><br>            p-&gt;height--; <span class="hljs-comment">//p保持黑，但黑高度下降</span><br>            <span class="hljs-comment">//*DSA*/printBinTree(p, 0, 0);</span><br>            <span class="hljs-built_in">solveDoubleBlack</span> ( p ); <span class="hljs-comment">//递归上溯</span><br>         &#125;<br>      &#125;<br>   &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">//兄弟s为红：BB-3</span><br>      <span class="hljs-comment">//*DSA*/printf(&quot;  case BB-3: sibling (&quot;); print(s); printf(&quot; is RED\n&quot;); //s红（双子俱黑）</span><br>      s-&gt;color = RB_BLACK; p-&gt;color = RB_RED; <span class="hljs-comment">//s转黑，p转红</span><br>      BinNodePosi&lt;T&gt; t = <span class="hljs-built_in">IsLChild</span> ( *s ) ? s-&gt;lc : s-&gt;rc; <span class="hljs-comment">//取t与其父s同侧</span><br>      _hot = p; <span class="hljs-built_in">FromParentTo</span> ( *p ) = <span class="hljs-built_in">rotateAt</span> ( t ); <span class="hljs-comment">//对t及其父亲、祖父做平衡调整</span><br>      <span class="hljs-comment">//*DSA*/printBinTree&lt;T&gt;(s, 0, 0);</span><br>      <span class="hljs-built_in">solveDoubleBlack</span> ( r ); <span class="hljs-comment">//继续修正r处双黑——此时的p已转红，故后续只能是BB-1或BB-2R</span><br>   &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="删除算法"><a href="#删除算法" class="headerlink" title="删除算法"></a>删除算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">bool</span> RedBlack&lt;T&gt;::<span class="hljs-built_in">remove</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//从红黑树中删除关键码e</span><br>   BinNodePosi&lt;T&gt; &amp; x = <span class="hljs-built_in">search</span> ( e ); <span class="hljs-keyword">if</span> ( !x ) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">//确认目标存在（留意_hot的设置）</span><br>   BinNodePosi&lt;T&gt; r = <span class="hljs-built_in">removeAt</span> ( x, _hot ); <span class="hljs-keyword">if</span> ( ! ( --_size ) ) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">//实施删除</span><br><span class="hljs-comment">// assert: _hot某一孩子刚被删除，且被r所指节点（可能是NULL）接替。以下检查是否失衡，并做必要调整</span><br>   <span class="hljs-keyword">if</span> ( ! _hot ) <span class="hljs-comment">//若刚被删除的是根节点，则将其置黑，并更新黑高度</span><br>      &#123; _root-&gt;color = RB_BLACK; <span class="hljs-built_in">updateHeight</span> ( _root ); <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; &#125;<br><span class="hljs-comment">// assert: 以下，原x（现r）必非根，_hot必非空</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">BlackHeightUpdated</span> ( *_hot ) ) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">//若所有祖先的黑深度依然平衡，则无需调整</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsRed</span> ( r ) ) <span class="hljs-comment">//否则，若r为红，则只需令其转黑</span><br>      &#123; r-&gt;color = RB_BLACK; r-&gt;height++; <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; &#125;<br><span class="hljs-comment">// assert: 以下，原x（现r）均为黑色</span><br>   <span class="hljs-comment">//*DSA*/printBinTree(_hot, 0, 0);</span><br>   <span class="hljs-built_in">solveDoubleBlack</span> ( r ); <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">//经双黑调整后返回</span><br>&#125; <span class="hljs-comment">//若目标节点存在且被删除，返回true；否则返回false</span><br></code></pre></div></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BA%A2%E9%BB%91%E6%A0%91/">红黑树</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/25/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">面向对象设计原则</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/16/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Windows%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84git%E9%85%8D%E7%BD%AE/">
+                        <span class="hidden-mobile">Windows环境下的git配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

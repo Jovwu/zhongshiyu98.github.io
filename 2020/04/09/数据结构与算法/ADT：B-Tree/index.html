@@ -1,0 +1,678 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="多级存储系统中使用B-树，可针对外部查找，大大减少I/O次数...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>B树 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="B树">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-09 10:00" pubdate>
+        2020年4月9日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      52
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">B树</h1>
+            
+            <div class="markdown-body">
+              <h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><h3 id="多路平衡"><a href="#多路平衡" class="headerlink" title="多路平衡"></a>多路平衡</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/340dd4eacd8e6a2f6c230c3a1a9c02c4-de10a.png" srcset="/img/loading.gif" lazyload alt="多路平衡"></p>
+<h3 id="与AVL树"><a href="#与AVL树" class="headerlink" title="与AVL树"></a>与AVL树</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/ed374cd8facd216134f7baf028ac9605-9971d.png" srcset="/img/loading.gif" lazyload alt="与AVL树"></p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li>所谓m阶B-树，即m路平衡搜索树$(m\ge2)$</li>
+<li>所有叶节点的深度统一相等</li>
+<li>外部节点的深度统一相等<ul>
+<li>外节点：叶节点那些数值为空，并不存在的孩子。所以叶节点的深度统一，也就代表外节点的深度统一</li>
+<li>外部节点有时候指向更低层次的B树。借助这个能力，可以将存放于不同存储级别上的B树串接起来，构成更大的B树</li>
+<li>一棵B-树有N个内部节点，那么它有N+1个外部节点</li>
+</ul>
+</li>
+<li>树高h = <strong>外部节点</strong>的深度</li>
+<li>树的超级节点是用向量来存储</li>
+<li>为了与I/O操作的延迟相匹配，每一个节点的大小应该尽可能的设计为与一次IO对换的页面大小相匹配</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a772b722df1b715b198085dc2fbc0566-dc641.png" srcset="/img/loading.gif" lazyload alt="定义"></p>
+<h4 id="阶次"><a href="#阶次" class="headerlink" title="阶次"></a>阶次</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/87c5f3d6d2b3ee78e0c651564dff1450-953cf.png" srcset="/img/loading.gif" lazyload alt="阶次"></p>
+<ul>
+<li>阶次m给出了超级节点的上限和下限</li>
+<li>内部节点各有：<ul>
+<li>不超过$m-1$个关键码：$K_1&lt;k_2&lt;…&lt;k_n$</li>
+<li>不超过$m$个分支：$A_0,A_1,A_2,…,A_n$</li>
+</ul>
+</li>
+<li>内部节点的分支数$n+1$也不能太少，具体地：<ul>
+<li>树根：$2\le n+1$</li>
+<li>其余：$\lceil m/2 \rceil\le n+1$</li>
+</ul>
+</li>
+<li>所以B树又被称为$(\lceil m/2 \rceil,m)$-树<ul>
+<li>比如$m=5$时，被称为$(3,5)$-树</li>
+</ul>
+</li>
+</ul>
+<h3 id="BTNode"><a href="#BTNode" class="headerlink" title="BTNode"></a>BTNode</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">BTNode</span>;</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">using</span> BTNodePosi = BTNode&lt;T&gt;*; <span class="hljs-comment">//B-树节点位置</span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">BTNode</span> &#123;</span> <span class="hljs-comment">//B-树节点模板类</span><br>   BTNodePosi&lt;T&gt; parent; <span class="hljs-comment">//父节点</span><br>   Vector&lt;T&gt; key; <span class="hljs-comment">//关键码向量</span><br>   Vector&lt;BTNodePosi&lt;T&gt;&gt; child; <span class="hljs-comment">//孩子向量（其长度总比key多一）</span><br><span class="hljs-comment">// 构造函数（注意：BTNode只能作为根节点创建，而且初始时有0个关键码和1个空孩子指针）</span><br>   <span class="hljs-built_in">BTNode</span>() &#123; parent = <span class="hljs-literal">NULL</span>; child.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span> ); &#125;<br>   <span class="hljs-built_in">BTNode</span> ( T e, BTNodePosi&lt;T&gt; lc = <span class="hljs-literal">NULL</span>, BTNodePosi&lt;T&gt; rc = <span class="hljs-literal">NULL</span> ) &#123;<br>      parent = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//作为根节点，而且初始时</span><br>      key.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">0</span>, e ); <span class="hljs-comment">//只有一个关键码，以及</span><br>      child.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">0</span>, lc ); child.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">1</span>, rc ); <span class="hljs-comment">//两个孩子</span><br>      <span class="hljs-keyword">if</span> ( lc ) lc-&gt;parent = <span class="hljs-keyword">this</span>; <span class="hljs-keyword">if</span> ( rc ) rc-&gt;parent = <span class="hljs-keyword">this</span>;<br>   &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<h3 id="BTree"><a href="#BTree" class="headerlink" title="BTree"></a>BTree</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BTree</span> &#123;</span> <span class="hljs-comment">//B-树模板类</span><br><span class="hljs-keyword">protected</span>:<br>   <span class="hljs-keyword">int</span> _size; <span class="hljs-comment">//存放的关键码总数</span><br>   <span class="hljs-keyword">int</span> _order; <span class="hljs-comment">//B-树的阶次，至少为3——创建时指定，一般不能修改</span><br>   BTNodePosi&lt;T&gt; _root; <span class="hljs-comment">//根节点</span><br>   BTNodePosi&lt;T&gt; _hot; <span class="hljs-comment">//BTree::search()最后访问的非空（除非树空）的节点位置</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">solveOverflow</span> <span class="hljs-params">( BTNodePosi&lt;T&gt; )</span></span>; <span class="hljs-comment">//因插入而上溢之后的分裂处理</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">solveUnderflow</span> <span class="hljs-params">( BTNodePosi&lt;T&gt; )</span></span>; <span class="hljs-comment">//因删除而下溢之后的合并处理</span><br><span class="hljs-keyword">public</span>:<br>   <span class="hljs-built_in">BTree</span> ( <span class="hljs-keyword">int</span> order = <span class="hljs-number">3</span> ) : _order ( order ), _size ( <span class="hljs-number">0</span> ) <span class="hljs-comment">//构造函数：默认为最低的3阶</span><br>   &#123; _root = <span class="hljs-keyword">new</span> BTNode&lt;T&gt;(); &#125;<br>   ~<span class="hljs-built_in">BTree</span>() &#123; <span class="hljs-keyword">if</span> ( _root ) <span class="hljs-built_in">release</span> ( _root ); &#125; <span class="hljs-comment">//析构函数：释放所有节点</span><br>   <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-keyword">const</span> <span class="hljs-title">order</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> _order; &#125; <span class="hljs-comment">//阶次</span><br>   <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-keyword">const</span> <span class="hljs-title">size</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> _size; &#125; <span class="hljs-comment">//规模</span><br>   <span class="hljs-function">BTNodePosi&lt;T&gt; &amp; <span class="hljs-title">root</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> _root; &#125; <span class="hljs-comment">//树根</span><br>   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">empty</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> !_root; &#125; <span class="hljs-comment">//判空</span><br>   <span class="hljs-function">BTNodePosi&lt;T&gt; <span class="hljs-title">search</span> <span class="hljs-params">( <span class="hljs-keyword">const</span> T&amp; e )</span></span>; <span class="hljs-comment">//查找</span><br>   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">insert</span> <span class="hljs-params">( <span class="hljs-keyword">const</span> T&amp; e )</span></span>; <span class="hljs-comment">//插入</span><br>   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">remove</span> <span class="hljs-params">( <span class="hljs-keyword">const</span> T&amp; e )</span></span>; <span class="hljs-comment">//删除</span><br>&#125;; <span class="hljs-comment">//BTree</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><h4 id="查找过程"><a href="#查找过程" class="headerlink" title="查找过程"></a>查找过程</h4><ul>
+<li>B树的查找，只需载入必需的节点，尽可能地减少I/O操作。</li>
+<li>所谓B树的查找，无非是由一系列在内存中的顺序查找，以及一系列的I/O操作相间隔组成的一个操作序列。</li>
+<li>对于B树的失败查找，必然都失败于最底层叶节点所下属的某个外部节点处。即失败查找必终止于外部节点。</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6a0bc1ef29f1e11e4039c4fb0522144d-908b0.png" srcset="/img/loading.gif" lazyload alt="查找"></p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; BTNodePosi&lt;T&gt; BTree&lt;T&gt;::<span class="hljs-built_in">search</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//在B-树中查找关键码e</span><br>   BTNodePosi&lt;T&gt; v = _root; _hot = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//从根节点出发</span><br>   <span class="hljs-keyword">while</span> ( v ) &#123; <span class="hljs-comment">//逐层查找</span><br>      Rank r = v-&gt;key.<span class="hljs-built_in">search</span> ( e ); <span class="hljs-comment">//在当前节点中，找到不大于e的最大关键码</span><br>      <span class="hljs-keyword">if</span> ( ( <span class="hljs-number">0</span> &lt;= r ) &amp;&amp; ( e == v-&gt;key[r] ) ) <span class="hljs-keyword">return</span> v; <span class="hljs-comment">//成功：在当前节点中命中目标关键码</span><br>      _hot = v; v = v-&gt;child[r + <span class="hljs-number">1</span>]; <span class="hljs-comment">//否则，转入对应子树（_hot指向其父）——需做I/O，最费时间</span><br>   &#125; <span class="hljs-comment">//这里在向量内是二分查找，但对通常的_order可直接顺序查找</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//失败：最终抵达外部节点</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="复杂度（待证明）"><a href="#复杂度（待证明）" class="headerlink" title="复杂度（待证明）"></a>复杂度（待证明）</h4><ul>
+<li>由于实际上的m一般取几百，即跟I/O交换的页面相匹配。在这种数量的情况下，向量的二分查找还不如顺序查找</li>
+<li>渐进意义上的复杂度为$O(log_2{n})$</li>
+<li>B树的意义不在于降低搜索的渐进时间复杂度，而是更加关注于常系数意义下的优化。</li>
+<li>当关键码的总数固定时，B树高度的上下浮动范围是非常有限的。</li>
+</ul>
+<h5 id="最大树高"><a href="#最大树高" class="headerlink" title="最大树高"></a>最大树高</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/35a9ea72051f72e69a8b3e8fdaf62338-5c30e.png" srcset="/img/loading.gif" lazyload alt="最大树高"></p>
+<h5 id="最小树高"><a href="#最小树高" class="headerlink" title="最小树高"></a>最小树高</h5><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/fa761a94cc606bb4b47ded0c58a5999b-721d0.png" srcset="/img/loading.gif" lazyload alt="最小树高"></p>
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><h4 id="算法框架"><a href="#算法框架" class="headerlink" title="算法框架"></a>算法框架</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">bool</span> BTree&lt;T&gt;::<span class="hljs-built_in">insert</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//将关键码e插入B树中</span><br>   BTNodePosi&lt;T&gt; v = <span class="hljs-built_in">search</span> ( e ); <br>   <span class="hljs-keyword">if</span> ( v ) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">//确认目标节点不存在（树中查找）</span><br>   Rank r = _hot-&gt;key.<span class="hljs-built_in">search</span> ( e ); <span class="hljs-comment">//在节点_hot的有序关键码向量中查找合适的插入位置（向量查找）</span><br>   _hot-&gt;key.<span class="hljs-built_in">insert</span> ( r + <span class="hljs-number">1</span>, e ); <span class="hljs-comment">//将新关键码插至对应的位置</span><br>   _hot-&gt;child.<span class="hljs-built_in">insert</span> ( r + <span class="hljs-number">2</span>, <span class="hljs-literal">NULL</span> ); <span class="hljs-comment">//创建一个空子树指针或者直接在向量最末端插入也可 以</span><br>   _size++; <span class="hljs-comment">//更新全树规模</span><br>   <span class="hljs-built_in">solveOverflow</span> ( _hot ); <span class="hljs-comment">//如有必要，需做分裂</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">//插入成功</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="上溢"><a href="#上溢" class="headerlink" title="上溢"></a>上溢</h4><ul>
+<li><p>注意父节点同样可能发生上溢，并逐层向上传播；纵然最坏情况，亦不过到根</p>
+</li>
+<li><p>当父节点本已饱和，则在接纳被提升的关键码之后，也将上溢。此时，接着套用前法，继续分裂。</p>
+</li>
+<li><p>在一层中的分裂操作只需一次，每一次分裂本身，只不过是一个常数的操作。若分裂向上传播，也不过树高h。<strong>所以整体而言，整个插入算法所需要的时间应该线性正比于B树的高度</strong>，即</p>
+<script type="math/tex; mode=display">
+O(1) *h=o(h)</script></li>
+<li><p>对于B树的增长情况只有一种可能，就是当上溢到达树根时，插入的节点作为单独的树根而存在。但是这种最坏情况的发生概率非常的小。<strong>即B树高度的增加一定伴随着分裂到根</strong>。</p>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0bac8188643a6e0c9e826f2cf5ff94c4-c1fb4.png" srcset="/img/loading.gif" lazyload alt="分裂"></p>
+<h5 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h5><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//关键码插入后若节点上溢，则做节点分裂处理</span><br><span class="hljs-keyword">void</span> BTree&lt;T&gt;::<span class="hljs-built_in">solveOverflow</span> ( BTNodePosi&lt;T&gt; v ) &#123;<br>   <span class="hljs-keyword">if</span> ( _order &gt;= v-&gt;child.<span class="hljs-built_in">size</span>() ) <span class="hljs-keyword">return</span>; <span class="hljs-comment">//递归基：当前节点并未上溢</span><br>   Rank s = _order / <span class="hljs-number">2</span>; <span class="hljs-comment">//轴点（此时应有_order = key.size() = child.size() - 1）</span><br>   BTNodePosi&lt;T&gt; u = <span class="hljs-keyword">new</span> BTNode&lt;T&gt;(); <span class="hljs-comment">//注意：新节点已有一个空孩子</span><br>   <span class="hljs-keyword">for</span> ( Rank j = <span class="hljs-number">0</span>; j &lt; _order - s - <span class="hljs-number">1</span>; j++ ) &#123; <span class="hljs-comment">//v右侧_order-s-1个孩子及关键码分裂为右侧节点u</span><br>      u-&gt;child.<span class="hljs-built_in">insert</span> ( j, v-&gt;child.<span class="hljs-built_in">remove</span> ( s + <span class="hljs-number">1</span> ) ); <span class="hljs-comment">//逐个移动效率低</span><br>      u-&gt;key.<span class="hljs-built_in">insert</span> ( j, v-&gt;key.<span class="hljs-built_in">remove</span> ( s + <span class="hljs-number">1</span> ) ); <span class="hljs-comment">//此策略可改进</span><br>   &#125;<br>   u-&gt;child[_order - s - <span class="hljs-number">1</span>] = v-&gt;child.<span class="hljs-built_in">remove</span> ( s + <span class="hljs-number">1</span> ); <span class="hljs-comment">//移动v最靠右的孩子</span><br>   <span class="hljs-keyword">if</span> ( u-&gt;child[<span class="hljs-number">0</span>] ) <span class="hljs-comment">//若u的孩子们非空，则</span><br>      <span class="hljs-keyword">for</span> ( Rank j = <span class="hljs-number">0</span>; j &lt; _order - s; j++ ) <span class="hljs-comment">//令它们的父节点统一</span><br>         u-&gt;child[j]-&gt;parent = u; <span class="hljs-comment">//指向u</span><br>   BTNodePosi&lt;T&gt; p = v-&gt;parent; <span class="hljs-comment">//v当前的父节点p</span><br>   <span class="hljs-keyword">if</span> ( !p ) &#123; _root = p = <span class="hljs-keyword">new</span> BTNode&lt;T&gt;(); p-&gt;child[<span class="hljs-number">0</span>] = v; v-&gt;parent = p; &#125; <span class="hljs-comment">//若p空则创建之</span><br>   Rank r = <span class="hljs-number">1</span> + p-&gt;key.<span class="hljs-built_in">search</span> ( v-&gt;key[<span class="hljs-number">0</span>] ); <span class="hljs-comment">//p中指向v的指针的秩</span><br>   p-&gt;key.<span class="hljs-built_in">insert</span> ( r, v-&gt;key.<span class="hljs-built_in">remove</span> ( s ) ); <span class="hljs-comment">//轴点关键码上升</span><br>   p-&gt;child.<span class="hljs-built_in">insert</span> ( r + <span class="hljs-number">1</span>, u );  u-&gt;parent = p; <span class="hljs-comment">//新节点u与父节点p互联</span><br>   <span class="hljs-built_in">solveOverflow</span> ( p ); <span class="hljs-comment">//上升一层，如有必要则继续分裂——至多递归O(logn)层</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><h4 id="算法框架-1"><a href="#算法框架-1" class="headerlink" title="算法框架"></a>算法框架</h4><p>删除关键码e：</p>
+<ul>
+<li>若删除的关键码e所处的超级节点v不是叶节点，那么需要找e的直接后继：进入v的右子树中，然后沿着最左侧的分支向下，找到最后一个超级节点u中的最后一个关键码，这个关键码就是e的直接后继。将这两个关键码互换，就是<code>v-&gt;key[r] = u-&gt;key[0]</code>，然后<code>v=u</code>，<code>r=0</code>。这样操作之后，就等效于待删除的关键码e来自于名为v的某一个叶节点中，且v中秩为r的关键码就是待删除者。</li>
+<li>在损失了一个关键码后，当前的节点v，有可能会突破B树关于分支数所设定的下限。这种情况被称为下溢。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">bool</span> BTree&lt;T&gt;::<span class="hljs-built_in">remove</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//从BTree树中删除关键码e</span><br>   BTNodePosi&lt;T&gt; v = <span class="hljs-built_in">search</span> ( e ); <span class="hljs-keyword">if</span> ( !v ) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">//确认目标关键码存在</span><br>   Rank r = v-&gt;key.<span class="hljs-built_in">search</span> ( e ); <span class="hljs-comment">//确定目标关键码在节点v中的秩（由上，肯定合法）</span><br>   <span class="hljs-keyword">if</span> ( v-&gt;child[<span class="hljs-number">0</span>] ) &#123; <span class="hljs-comment">//若v非叶子，则e的后继必属于某叶节点</span><br>      BTNodePosi&lt;T&gt; u = v-&gt;child[r+<span class="hljs-number">1</span>]; <span class="hljs-comment">//在右子树中一直向左，即可</span><br>      <span class="hljs-keyword">while</span> ( u-&gt;child[<span class="hljs-number">0</span>] ) u = u-&gt;child[<span class="hljs-number">0</span>]; <span class="hljs-comment">//找出e的后继</span><br>      v-&gt;key[r] = u-&gt;key[<span class="hljs-number">0</span>]; v = u; r = <span class="hljs-number">0</span>; <span class="hljs-comment">//并与之交换位置</span><br>   &#125; <span class="hljs-comment">//至此，v必然位于最底层，且其中第r个关键码就是待删除者</span><br>   v-&gt;key.<span class="hljs-built_in">remove</span> ( r ); v-&gt;child.<span class="hljs-built_in">remove</span> ( r + <span class="hljs-number">1</span> ); _size--; <span class="hljs-comment">//删除e，以及其下两个外部节点之一</span><br>   <span class="hljs-built_in">solveUnderflow</span> ( v ); <span class="hljs-comment">//如有必要，需做旋转或合并</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="下溢"><a href="#下溢" class="headerlink" title="下溢"></a>下溢</h4><h5 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h5><p>节点v下溢时，必恰好包含：$\lceil m/2 \rceil-2$个关键码和$\lceil m/2 \rceil-1$个分支。</p>
+<p>当节点v的左右兄弟可以借出一个节点的时候：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/34fc2e87600c3734b51b5bd2ec41023a-c4278.png" srcset="/img/loading.gif" lazyload alt="旋转"></p>
+<p>若发生旋转，不仅原下溢节点会得到修复，其余所涉及的节点，无论兄弟还是父亲，都不会因此继而发生下溢。因此这种解决方案是彻底的，整个删除操作至此顺利结束。</p>
+<h5 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h5><p>L和R或者不存在，或者所含的关键码均不足$\lceil m/2 \rceil$个时（注：L和R仍必有其一，且恰含$\lceil m/2 \rceil-1$个关键码）：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20c9f857a2a86107512905d1f01e0620-1409a.png" srcset="/img/loading.gif" lazyload alt="合并"></p>
+<p>合并操作可能继续向上蔓延，直到树根。若树根节点只含有唯一的一个关键码，在借出这个关键码之后，树根会变为空节点。在这种最坏情况下，树高会减1。</p>
+<h5 id="算法-2"><a href="#算法-2" class="headerlink" title="算法"></a>算法</h5><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//关键码删除后若节点下溢，则做节点旋转或合并处理</span><br><span class="hljs-keyword">void</span> BTree&lt;T&gt;::<span class="hljs-built_in">solveUnderflow</span> ( BTNodePosi&lt;T&gt; v ) &#123;<br>   <span class="hljs-keyword">if</span> ( ( _order + <span class="hljs-number">1</span> ) / <span class="hljs-number">2</span> &lt;= v-&gt;child.<span class="hljs-built_in">size</span>() ) <span class="hljs-keyword">return</span>; <span class="hljs-comment">//递归基：当前节点并未下溢</span><br>   BTNodePosi&lt;T&gt; p = v-&gt;parent;<br>   <span class="hljs-keyword">if</span> ( !p ) &#123; <span class="hljs-comment">//递归基：已到根节点，没有孩子的下限</span><br>      <span class="hljs-keyword">if</span> ( !v-&gt;key.<span class="hljs-built_in">size</span>() &amp;&amp; v-&gt;child[<span class="hljs-number">0</span>] ) &#123;<br>         <span class="hljs-comment">//但倘若作为树根的v已不含关键码，却有（唯一的）非空孩子，则</span><br>         <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot;collapse\n&quot;</span> );<br>         _root = v-&gt;child[<span class="hljs-number">0</span>]; _root-&gt;parent = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//这个节点可被跳过</span><br>         v-&gt;child[<span class="hljs-number">0</span>] = <span class="hljs-literal">NULL</span>; <span class="hljs-built_in">release</span> ( v ); <span class="hljs-comment">//并因不再有用而被销毁</span><br>      &#125; <span class="hljs-comment">//整树高度降低一层</span><br>      <span class="hljs-keyword">return</span>;<br>   &#125;<br>   Rank r = <span class="hljs-number">0</span>; <span class="hljs-keyword">while</span> ( p-&gt;child[r] != v ) r++;<br>   <span class="hljs-comment">//确定v是p的第r个孩子——此时v可能不含关键码，故不能通过关键码查找</span><br>   <span class="hljs-comment">//另外，在实现了孩子指针的判等器之后，也可直接调用Vector::find()定位</span><br>   <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot;\nrank = %d&quot;</span>, r );<br><span class="hljs-comment">// 情况1：向左兄弟借关键码</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-number">0</span> &lt; r ) &#123; <span class="hljs-comment">//若v不是p的第一个孩子，则</span><br>      BTNodePosi&lt;T&gt; ls = p-&gt;child[r - <span class="hljs-number">1</span>]; <span class="hljs-comment">//左兄弟必存在</span><br>      <span class="hljs-keyword">if</span> ( ( _order + <span class="hljs-number">1</span> ) / <span class="hljs-number">2</span> &lt; ls-&gt;child.<span class="hljs-built_in">size</span>() ) &#123; <span class="hljs-comment">//若该兄弟足够“胖”，则</span><br>         <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot; ... case 1\n&quot;</span> );<br>         v-&gt;key.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">0</span>, p-&gt;key[r - <span class="hljs-number">1</span>] ); <span class="hljs-comment">//p借出一个关键码给v（作为最小关键码）</span><br>         p-&gt;key[r - <span class="hljs-number">1</span>] = ls-&gt;key.<span class="hljs-built_in">remove</span> ( ls-&gt;key.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> ); <span class="hljs-comment">//ls的最大关键码转入p</span><br>         v-&gt;child.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">0</span>, ls-&gt;child.<span class="hljs-built_in">remove</span> ( ls-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> ) );<br>         <span class="hljs-comment">//同时ls的最右侧孩子过继给v</span><br>         <span class="hljs-keyword">if</span> ( v-&gt;child[<span class="hljs-number">0</span>] ) v-&gt;child[<span class="hljs-number">0</span>]-&gt;parent = v; <span class="hljs-comment">//作为v的最左侧孩子</span><br>         <span class="hljs-keyword">return</span>; <span class="hljs-comment">//至此，通过右旋已完成当前层（以及所有层）的下溢处理</span><br>      &#125;<br>   &#125; <span class="hljs-comment">//至此，左兄弟要么为空，要么太“瘦”</span><br><span class="hljs-comment">// 情况2：向右兄弟借关键码</span><br>   <span class="hljs-keyword">if</span> ( p-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> &gt; r ) &#123; <span class="hljs-comment">//若v不是p的最后一个孩子，则</span><br>      BTNodePosi&lt;T&gt; rs = p-&gt;child[r + <span class="hljs-number">1</span>]; <span class="hljs-comment">//右兄弟必存在</span><br>      <span class="hljs-keyword">if</span> ( ( _order + <span class="hljs-number">1</span> ) / <span class="hljs-number">2</span> &lt; rs-&gt;child.<span class="hljs-built_in">size</span>() ) &#123; <span class="hljs-comment">//若该兄弟足够“胖”，则</span><br>         <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot; ... case 2\n&quot;</span> );<br>         v-&gt;key.<span class="hljs-built_in">insert</span> ( v-&gt;key.<span class="hljs-built_in">size</span>(), p-&gt;key[r] ); <span class="hljs-comment">//p借出一个关键码给v（作为最大关键码）</span><br>         p-&gt;key[r] = rs-&gt;key.<span class="hljs-built_in">remove</span> ( <span class="hljs-number">0</span> ); <span class="hljs-comment">//rs的最小关键码转入p</span><br>         v-&gt;child.<span class="hljs-built_in">insert</span> ( v-&gt;child.<span class="hljs-built_in">size</span>(), rs-&gt;child.<span class="hljs-built_in">remove</span> ( <span class="hljs-number">0</span> ) );<br>         <span class="hljs-comment">//同时rs的最左侧孩子过继给v</span><br>         <span class="hljs-keyword">if</span> ( v-&gt;child[v-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>] ) <span class="hljs-comment">//作为v的最右侧孩子</span><br>            v-&gt;child[v-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>]-&gt;parent = v;<br>         <span class="hljs-keyword">return</span>; <span class="hljs-comment">//至此，通过左旋已完成当前层（以及所有层）的下溢处理</span><br>      &#125;<br>   &#125; <span class="hljs-comment">//至此，右兄弟要么为空，要么太“瘦”</span><br><span class="hljs-comment">// 情况3：左、右兄弟要么为空（但不可能同时），要么都太“瘦”——合并</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-number">0</span> &lt; r ) &#123; <span class="hljs-comment">//与左兄弟合并</span><br>      <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot; ... case 3L\n&quot;</span> );<br>      BTNodePosi&lt;T&gt; ls = p-&gt;child[r - <span class="hljs-number">1</span>]; <span class="hljs-comment">//左兄弟必存在</span><br>      ls-&gt;key.<span class="hljs-built_in">insert</span> ( ls-&gt;key.<span class="hljs-built_in">size</span>(), p-&gt;key.<span class="hljs-built_in">remove</span> ( r - <span class="hljs-number">1</span> ) ); p-&gt;child.<span class="hljs-built_in">remove</span> ( r );<br>      <span class="hljs-comment">//p的第r - 1个关键码转入ls，v不再是p的第r个孩子</span><br>      ls-&gt;child.<span class="hljs-built_in">insert</span> ( ls-&gt;child.<span class="hljs-built_in">size</span>(), v-&gt;child.<span class="hljs-built_in">remove</span> ( <span class="hljs-number">0</span> ) );<br>      <span class="hljs-keyword">if</span> ( ls-&gt;child[ls-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>] ) <span class="hljs-comment">//v的最左侧孩子过继给ls做最右侧孩子</span><br>         ls-&gt;child[ls-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>]-&gt;parent = ls;<br>      <span class="hljs-keyword">while</span> ( !v-&gt;key.<span class="hljs-built_in">empty</span>() ) &#123; <span class="hljs-comment">//v剩余的关键码和孩子，依次转入ls</span><br>         ls-&gt;key.<span class="hljs-built_in">insert</span> ( ls-&gt;key.<span class="hljs-built_in">size</span>(), v-&gt;key.<span class="hljs-built_in">remove</span> ( <span class="hljs-number">0</span> ) );<br>         ls-&gt;child.<span class="hljs-built_in">insert</span> ( ls-&gt;child.<span class="hljs-built_in">size</span>(), v-&gt;child.<span class="hljs-built_in">remove</span> ( <span class="hljs-number">0</span> ) );<br>         <span class="hljs-keyword">if</span> ( ls-&gt;child[ls-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>] ) ls-&gt;child[ls-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>]-&gt;parent = ls;<br>      &#125;<br>      <span class="hljs-built_in">release</span> ( v ); <span class="hljs-comment">//释放v</span><br>   &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">//与右兄弟合并</span><br>      <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot; ... case 3R\n&quot;</span> );<br>      BTNodePosi&lt;T&gt; rs = p-&gt;child[r + <span class="hljs-number">1</span>]; <span class="hljs-comment">//右兄弟必存在</span><br>      rs-&gt;key.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">0</span>, p-&gt;key.<span class="hljs-built_in">remove</span> ( r ) ); p-&gt;child.<span class="hljs-built_in">remove</span> ( r );<br>      <span class="hljs-comment">//p的第r个关键码转入rs，v不再是p的第r个孩子</span><br>      rs-&gt;child.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">0</span>, v-&gt;child.<span class="hljs-built_in">remove</span> ( v-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> ) );<br>      <span class="hljs-keyword">if</span> ( rs-&gt;child[<span class="hljs-number">0</span>] ) rs-&gt;child[<span class="hljs-number">0</span>]-&gt;parent = rs; <span class="hljs-comment">//v的最右侧孩子过继给rs做最左侧孩子</span><br>      <span class="hljs-keyword">while</span> ( !v-&gt;key.<span class="hljs-built_in">empty</span>() ) &#123; <span class="hljs-comment">//v剩余的关键码和孩子，依次转入rs</span><br>         rs-&gt;key.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">0</span>, v-&gt;key.<span class="hljs-built_in">remove</span> ( v-&gt;key.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> ) );<br>         rs-&gt;child.<span class="hljs-built_in">insert</span> ( <span class="hljs-number">0</span>, v-&gt;child.<span class="hljs-built_in">remove</span> ( v-&gt;child.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> ) );<br>         <span class="hljs-keyword">if</span> ( rs-&gt;child[<span class="hljs-number">0</span>] ) rs-&gt;child[<span class="hljs-number">0</span>]-&gt;parent = rs;<br>      &#125;<br>      <span class="hljs-built_in">release</span> ( v ); <span class="hljs-comment">//释放v</span><br>   &#125;<br>   <span class="hljs-built_in">solveUnderflow</span> ( p ); <span class="hljs-comment">//上升一层，如有必要则继续分裂——至多递归O(logn)层</span><br>   <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h5 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h5><p>借助旋转和合并这两种手段，足以处理每一次新发生的下溢。即便会继续发生下溢，它的高度相对于此前的那次上溢，也必然会有所提升。整个过程具有单调性。</p>
+<p>因此，整个调整的过程或者在中途停止，或者充其量抵达树根。所以整个修复下溢的过程，累计迭代步数也不超过$O(h)$。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>所谓对B树的访问，无非是有一系列的外存操作和内存操作交替的组成。有多少次外存操作，就有多少次内存操作。因此为了整个访问的高效率，一个基本的原则就是应该使外存操作的代价与内存操作的代价大致相当。</p>
+</li>
+<li><p>在B树中的操作，有两个方向：</p>
+<ul>
+<li>水平方向：它对应的是在每个节点的内部所做的搜索。这种搜索是在内存中进行的。</li>
+<li>垂直方向：它对应的是磁盘操作</li>
+</ul>
+<p>也就是说，在树中每下降一层，都要付出一次IO操作的代价。这种代价相对于内存操作来说，至少高出5个数量级。</p>
+</li>
+<li><p>B树会自己适应这种形态</p>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8d2cf2ec36ef3a4493cbedf26ae8f5f1-e732d.png" srcset="/img/loading.gif" lazyload alt="总结"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%A0%91/">树</a>
+                    
+                      <a class="hover-with-bg" href="/tags/B%E6%A0%91/">B树</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/16/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Windows%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84git%E9%85%8D%E7%BD%AE/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Windows环境下的git配置</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/05/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E4%BC%B8%E5%B1%95%E6%A0%91/">
+                        <span class="hidden-mobile">伸展树</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

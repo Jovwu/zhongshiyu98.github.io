@@ -1,0 +1,650 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="几种排序算法...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>排序 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="排序">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-11 10:00" pubdate>
+        2020年5月11日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      19
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">排序</h1>
+            
+            <div class="markdown-body">
+              <h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/148a31f713059a4740a31f968d85ecd3-acb31.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<ul>
+<li>快速排序基于的思想是分而治之。</li>
+<li>快速排序的核心，就是如何快速的确定轴点。但是在原始序列中，轴点未必存在。 对此可知：<ul>
+<li>快速排序的必要条件：轴点必定已然就位</li>
+<li>特别地：在有序序列中，所有元素皆为轴点，反之亦然</li>
+<li>所以，快速排序就是将所有元素逐个转换为轴点的过程</li>
+<li>通过适当交换，可使任意元素转换为轴点</li>
+</ul>
+</li>
+</ul>
+<h3 id="单调性和不变性"><a href="#单调性和不变性" class="headerlink" title="单调性和不变性"></a>单调性和不变性</h3><ul>
+<li><p>将首元素作为候选轴点</p>
+</li>
+<li><p>$L\le pivot \le G$​；$U=[lo,hi]$​中，$[lo]$​和$[hi]$​​交替空闲。</p>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/39aece574515f0e81c9dbaeb593bc3b1-74d9f.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/4f6fea55f2afb37b5b7dcd646416a714-dd0b3.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" /></p>
+<p>由此可见，虽然只需要$O(1)$​​​的辅助空间，但是由于<strong>lo/hi</strong>的移动方向<strong>相反</strong>，<strong>左/右侧</strong>的<strong>大/小</strong>重复元素可能<strong>前/后</strong>颠倒，所以快速排序是不稳定的。</p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//轴点构造算法：通过调整元素位置构造区间[lo, hi)的轴点，并返回其秩</span><br>Rank Vector&lt;T&gt;::<span class="hljs-built_in">partition</span> ( Rank lo, Rank hi ) &#123; <span class="hljs-comment">//LUG版本：基本形式</span><br>   <span class="hljs-built_in">swap</span> ( _elem[lo], _elem[ lo + <span class="hljs-built_in">rand</span>() % ( hi - lo ) ] ); <span class="hljs-comment">//任选一个元素与首元素交换</span><br>   hi--; T pivot = _elem[lo]; <span class="hljs-comment">//以首元素为候选轴点——经以上交换，等效于随机选取</span><br>   <span class="hljs-keyword">while</span> ( lo &lt; hi ) &#123; <span class="hljs-comment">//从向量的两端交替地向中间扫描</span><br>      <span class="hljs-keyword">while</span> ( ( lo &lt; hi ) &amp;&amp; ( pivot &lt;= _elem[hi] ) ) <span class="hljs-comment">//在不小于pivot的前提下</span><br>         hi--; <span class="hljs-comment">//向左拓展右端子向量</span><br>      _elem[lo] = _elem[hi]; <span class="hljs-comment">//小于pivot者归入左侧子序列</span><br>      <span class="hljs-keyword">while</span> ( ( lo &lt; hi ) &amp;&amp; ( _elem[lo] &lt;= pivot ) ) <span class="hljs-comment">//在不大于pivot的前提下</span><br>         lo++; <span class="hljs-comment">//向右拓展左端子向量</span><br>      _elem[hi] = _elem[lo]; <span class="hljs-comment">//大于pivot者归入右侧子序列</span><br>   &#125; <span class="hljs-comment">//assert: lo == hi</span><br>   _elem[lo] = pivot; <span class="hljs-comment">//将备份的轴点记录置于前、后子向量之间</span><br>   <span class="hljs-keyword">return</span> lo; <span class="hljs-comment">//返回轴点的秩</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h3><p><strong>最好情况：</strong>每次划分都（接近）平均，轴点总是（接近）中央，即</p>
+<script type="math/tex; mode=display">
+T(n)=2*T((n-1)/2)+O(n)=O(nlog_2{n})</script><p><strong>最坏情况：</strong>每次划分都极不均衡。比如，轴点总是最小/大元素，即</p>
+<script type="math/tex; mode=display">
+T(n)=T(n-1)+T(0)+O(n)=O(n^2)</script><p>最坏情况下，复杂度与与起泡排序相当。</p>
+<p>即便采用随机选取、(Unix)三者去中之类的策略，也只能<strong>降低</strong>最坏情况的<strong>概率</strong>，而<strong>无法杜绝</strong>。</p>
+<p><strong>平均情况：</strong>$O(log_2{n})=O(1.39*log_2{n})$</p>
+<ul>
+<li>这样小的常系数，也保证了快速排序算法在<strong>通常情况</strong>下的优异性能。</li>
+</ul>
+<h2 id="快速排序变种"><a href="#快速排序变种" class="headerlink" title="快速排序变种"></a>快速排序变种</h2><h3 id="单调性"><a href="#单调性" class="headerlink" title="单调性"></a>单调性</h3><ul>
+<li><p>依然将首元素作为候选轴点</p>
+</li>
+<li><p>$[k]$​不小于轴点？直接G扩展：G滚动后移，L拓展。即</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++">pivot &lt;= S[k] ? k++ : <span class="hljs-built_in">swap</span>(S[++mi],S[k++])<br></code></pre></div></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/2ebc70932cd3cb5fdc0505e7fffcbedd-fbeda.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" /></p>
+<h3 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">//轴点构造算法：通过调整元素位置构造区间[lo, hi)的轴点，并返回其秩</span><br>Rank Vector&lt;T&gt;::<span class="hljs-built_in">partition</span> ( Rank lo, Rank hi ) &#123; <span class="hljs-comment">//LGU版</span><br>   <span class="hljs-built_in">swap</span> ( _elem[lo], _elem[ lo + <span class="hljs-built_in">rand</span>() % ( hi - lo ) ] ); <span class="hljs-comment">//任选一个元素与首元素交换</span><br>   T pivot = _elem[lo]; <span class="hljs-comment">//以首元素为候选轴点——经以上交换，等效于随机选取</span><br>   <span class="hljs-keyword">int</span> mi = lo;<br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> k = lo + <span class="hljs-number">1</span>; k &lt; hi; k++ ) <span class="hljs-comment">//自左向右扫描</span><br>      <span class="hljs-keyword">if</span> ( _elem[k] &lt; pivot ) <span class="hljs-comment">//若当前元素_elem[k]小于pivot，则</span><br>         <span class="hljs-built_in">swap</span> ( _elem[++mi], _elem[k] ); <span class="hljs-comment">//将_elem[k]交换至原mi之后，使L子序列向右扩展</span><br>   <span class="hljs-built_in">swap</span> ( _elem[lo], _elem[mi] ); <span class="hljs-comment">//候选轴点归位</span><br>   <span class="hljs-keyword">return</span> mi; <span class="hljs-comment">//返回轴点的秩</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/b7a40b64d0eb40a8bd4e406fe53317eb-ee722.png" srcset="/img/loading.gif" lazyload alt="实例" style="zoom:33%;" /></p>
+<p>由此可见该算法也具有不稳定性。</p>
+<h3 id="复杂度-1"><a href="#复杂度-1" class="headerlink" title="复杂度"></a>复杂度</h3><p>每一个元素只需要花费常数时间，所以这个新的快速排序算法总体只需要$O(n)$。​</p>
+<h2 id="选取：众数"><a href="#选取：众数" class="headerlink" title="选取：众数"></a>选取：众数</h2><p>在无序向量中，若有一半以上的元素同为m，则称之为众数。</p>
+<ul>
+<li>必要性：众数若存在，则必为中位数。因为众数所对应的那个区间，必然会覆盖中位数。所以只有中位数才是众数的唯一可能候选。</li>
+<li>频繁数：众数若存在，则必是频繁数。</li>
+</ul>
+<p>摩尔投票算法是基于这个事实：每次从序列里选择两个不相同的数字删除掉（或称为“抵消”），最后剩下一个数字或几个相同的数字，就是出现次数大于总数一半的那个。</p>
+<blockquote>
+<p>核心就是<strong>对拼消耗</strong>。</p>
+<p>玩一个诸侯争霸的游戏，假设你方人口超过总人口一半以上，并且能保证每个人口出去干仗都能一对一同归于尽。最后还有人活下来的国家就是胜利。</p>
+<p>那就大混战呗，最差所有人都联合起来对付你（对应你每次选择作为计数器的数都是众数），或者其他国家也会相互攻击（会选择其他数作为计数器的数），但是只要你们不要内斗，最后肯定你赢。</p>
+</blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/49973163">如何理解摩尔投票算法？</a></p>
+<h3 id="算法-2"><a href="#算法-2" class="headerlink" title="算法"></a>算法</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-function">T <span class="hljs-title">majEleCandidate</span> <span class="hljs-params">( Vector&lt;T&gt; A )</span> </span>&#123; <span class="hljs-comment">//选出具备必要条件的众数候选者</span><br>   T maj; <span class="hljs-comment">//众数候选者</span><br><span class="hljs-comment">// 线性扫描：借助计数器c，记录maj与其它元素的数量差额</span><br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> c = <span class="hljs-number">0</span>, i = <span class="hljs-number">0</span>; i &lt; A.<span class="hljs-built_in">size</span>(); i++ )<br>      <span class="hljs-keyword">if</span> ( <span class="hljs-number">0</span> == c ) &#123; <span class="hljs-comment">//每当c归零，都意味着此时的前缀P可以剪除</span><br>         maj = A[i]; c = <span class="hljs-number">1</span>; <span class="hljs-comment">//众数候选者改为新的当前元素</span><br>      &#125; <span class="hljs-keyword">else</span> <span class="hljs-comment">//否则</span><br>         maj == A[i] ? c++ : c--; <span class="hljs-comment">//相应地更新差额计数器</span><br>   <span class="hljs-keyword">return</span> maj; <span class="hljs-comment">//至此，原向量的众数若存在，则只能是maj —— 尽管反之不然</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h2 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h2><ul>
+<li>希尔排序在对矩阵逐列排序时，所使用的算法本身未必需要十分高效，而更重要的是应该具有输入敏感的特性。所以更倾向于使用插入排序。</li>
+<li>当步长集合中，其中的各项并非互素，因此每一轮的排序都有大量的精力浪费于对前一轮排序工作的重复之上。所以，步长集合中，相邻项需要尽可能的互素。</li>
+<li><p>任何一个原先已是g-ordered的序列，在此后经过h-sorting之后，依然保持是g-ordered。也就是说相对于任何一个固定间隔而言的有序性，在希尔排序的过程中，将会不断的保持，并且持续的积累下来。</p>
+</li>
+<li><p>如果是一个序列是g-ordered同时也是h-ordered，那么这个序列也满足(g+h)-ordered，同时也满足(ng+mh)-ordered。由此可得到一个结论，凡是间距可以表示为<strong>线性组合</strong>的任何一对元素必然是顺序的。</p>
+</li>
+<li>邮资问题：在g和h两种面值的钞票组合中，它们只能组成大于$(g-1)(h-1)-1$​的面值。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">快速排序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">希尔排序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%91%A9%E5%B0%94%E6%8A%95%E7%A5%A8%E6%B3%95/">摩尔投票法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%EF%BC%9A%E9%97%A8%E9%9D%A2%E6%A8%A1%E5%BC%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">门面模式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AF%B9%E8%B1%A1%E6%80%A7%E8%83%BD%EF%BC%9A%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/">
+                        <span class="hidden-mobile">享元模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

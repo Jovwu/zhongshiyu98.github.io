@@ -1,0 +1,717 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="散列的应用就是常见的哈希表...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>散列 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="散列">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-25 10:00" pubdate>
+        2020年4月25日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">散列</h1>
+            
+            <div class="markdown-body">
+              <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/c5836ab5a77fcdbfef6cf3e024b5dc5a-39fda.png" srcset="/img/loading.gif" lazyload alt="原理" style="zoom:50%;" /></p>
+<p>若存放总数设置为N：</p>
+<ul>
+<li>桶bucket：直接存放或间接指向一个词条</li>
+<li>桶数组bucket array/散列表hash table，容量为M<ul>
+<li>M与N同阶</li>
+<li>空间效率取决于M与N的比值，这个比值也称为空间装填因子</li>
+<li>$N&lt;M&lt;&lt;R$</li>
+<li>空间 = $O(N+M)$​ = $O(N)$​</li>
+</ul>
+</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6e3ce35c8c4af9bd39adfa30428405d8-e610d.png" srcset="/img/loading.gif" lazyload alt="实例" style="zoom:50%;" /></p>
+<h3 id="散列冲突"><a href="#散列冲突" class="headerlink" title="散列冲突"></a>散列冲突</h3><p>散列冲突：<code>key1 != key2</code>，但是<code>hash(key1) = hash(key2)</code></p>
+<ul>
+<li>将散列表长度<strong>变长</strong>能降低散列冲突的概率，但是这种冲突几乎是不能杜绝的</li>
+</ul>
+<h2 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h2><p>对于散列函数$hash()：S-&gt;A$​​，不可能是单射。原因：</p>
+<script type="math/tex; mode=display">
+|S| = R>>M = |A|</script><p>所以只能采用近似的单射。</p>
+<p>所以需要：</p>
+<ul>
+<li>精心设计散列表及散列函数，尽可能降低冲突的概率</li>
+<li>执行可行的预案，以便在发生冲突时，能够尽快予以排解</li>
+</ul>
+<h2 id="评价标准与设计原则"><a href="#评价标准与设计原则" class="headerlink" title="评价标准与设计原则"></a>评价标准与设计原则</h2><ul>
+<li>确定determinism：同一关键码总是被映射至同一地址</li>
+<li>快速efficiency：expercted-$O(1)$</li>
+<li>满射surjection：尽可能充分地覆盖整个散列空间</li>
+<li>均匀uniformity：关键码映射到散列表各位置的概率尽量接近，可有效避免聚集clustering现象</li>
+</ul>
+<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><h4 id="除余法"><a href="#除余法" class="headerlink" title="除余法"></a>除余法</h4><script type="math/tex; mode=display">
+hash(key) = key % M</script><ul>
+<li><p>若取$M=2^k$，其效果相当于截取key的最后k位（bit），前面的$n-k$​位对地址没有影响。</p>
+</li>
+<li><p>若取$M\ne2^k$​，缺陷有所改善。特别是M为素数时，数据对散列表的覆盖最充分，分布最均匀。​</p>
+</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>不动点：无论表长<strong>M</strong>取值如何，总有$hash(0)\equiv0$​​。</li>
+<li>零阶均匀：$[0,R)$​的关键码，平均分配至<strong>M</strong>个桶；但相邻关键码的散列地址也必相邻。</li>
+</ul>
+<h4 id="MAD法"><a href="#MAD法" class="headerlink" title="MAD法"></a>MAD法</h4><ul>
+<li>一阶均匀：邻近的关键码，散列地址不再邻近。</li>
+</ul>
+<p>取M为素数，$a&gt;0，b&gt;0，a \% M \ne 0$​​：（a视为步长，b视为偏移）</p>
+<script type="math/tex; mode=display">
+hash(key) = (a*key+b)\%M</script><h4 id="数字分析"><a href="#数字分析" class="headerlink" title="数字分析"></a>数字分析</h4><p>抽取key中的某几位，构成地址。比如，取十进制表示的奇数位：</p>
+<script type="math/tex; mode=display">
+hash(^1{2}^3{4}^5{6}^7{8}^9) = 1 3 5 7 9</script><h4 id="平方取中"><a href="#平方取中" class="headerlink" title="平方取中"></a>平方取中</h4><p>取$key^2$的中间若干位，构成地址</p>
+<script type="math/tex; mode=display">
+hash(123) = 512//保留key^2 = 123^2 = 15129的中间3位</script><h4 id="折叠法"><a href="#折叠法" class="headerlink" title="折叠法"></a>折叠法</h4><p>将key分割成等宽的若干段，取其总和作为地址</p>
+<script type="math/tex; mode=display">
+hash(123^{456^{789}}) = 1368//注释：123+456+789</script><h4 id="位异或法XOR"><a href="#位异或法XOR" class="headerlink" title="位异或法XOR"></a>位异或法XOR</h4><p>将key分割成等宽的二进制段，经异或运算得到地址</p>
+<script type="math/tex; mode=display">
+hash(111^{011^{011}})=110_b</script><h2 id="散列码"><a href="#散列码" class="headerlink" title="散列码"></a>散列码</h2><p>原始数据的关键码不一定是整数，因此需要先做一个预处理，将其转化为整数，称作散列码<strong>hashcode</strong>。</p>
+<h3 id="多项式法：字符串处理"><a href="#多项式法：字符串处理" class="headerlink" title="多项式法：字符串处理"></a>多项式法：字符串处理</h3><script type="math/tex; mode=display">
+hash(s=x_0x_1...x_{n-1}) = x_0*a^{n-1}+x_1*a^{n-2}+...+x_{n-2}*a^1+x_{n-1}</script><p>比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">size_t</span> <span class="hljs-title">hashCode</span><span class="hljs-params">(<span class="hljs-keyword">char</span> s[])</span></span>&#123;<br>	<span class="hljs-keyword">int</span> h = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">size_t</span> n = <span class="hljs-built_in">strlen</span>(s),i= <span class="hljs-number">0</span>;i &lt; n;i++)<br>	&#123; h = (h&lt;&lt;<span class="hljs-number">5</span>)|(h&gt;&gt;<span class="hljs-number">27</span>); h += (<span class="hljs-keyword">int</span>)s[i];&#125;<br>	<span class="hljs-keyword">return</span> (<span class="hljs-keyword">size_t</span>)h;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h2 id="排解冲突"><a href="#排解冲突" class="headerlink" title="排解冲突"></a>排解冲突</h2><h3 id="多槽位"><a href="#多槽位" class="headerlink" title="多槽位"></a>多槽位</h3><p>将桶单元细分为若干槽位，存放（与同一单元）冲突的词条。只要槽位数目不多，依然可以保证$O(1)$的时间效率。</p>
+<p>但是需要为每个桶配备多少个槽，才能保证$O(1)$​呢？这种情况难以预测，因为预留过多，会造成空间浪费；而无论预留多少，极端情况下仍有可能不够。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0e3d4d09a656484cff71bbbbd195fe32-d0955.png" srcset="/img/loading.gif" lazyload alt="多槽位" style="zoom:50%;" /></p>
+<h3 id="独立链"><a href="#独立链" class="headerlink" title="独立链"></a>独立链</h3><p>每个桶存放一个指针，冲突的词条，组织成<strong>列表</strong>。</p>
+<p>优点：</p>
+<ul>
+<li>无需为每个桶预备多个槽位</li>
+<li>任意多次的冲突都可以解决</li>
+<li>删除操作实现简单、统一</li>
+</ul>
+<p>但是指针需要额外空间，节点需要动态申请、更重要的是空间未必连续分布，<strong>系统缓存</strong>几乎失效。对于大规模数据集，会有大量的IO操作。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8c6487003da4a666598b0786141b6cbc-7b7dc.png" srcset="/img/loading.gif" lazyload alt="独立链" style="zoom:50%;" /></p>
+<h3 id="线性试探（开放定址）"><a href="#线性试探（开放定址）" class="headerlink" title="线性试探（开放定址）"></a>线性试探（开放定址）</h3><p>为每个桶都事先约定若干备用桶，它们构成一个查找链（一段连续的地址空间，没有任何的空桶缝隙）。</p>
+<p>优点：</p>
+<ul>
+<li>无需附加的（指针、链表或溢出区等）空间</li>
+<li>查找链具有局部性，可充分利用<strong>系统缓存</strong>，有效减少IO</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>大部分试探的位置都集中于某一个相对很小的局部</li>
+</ul>
+<h4 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h4><p>沿着查找链，逐个转向下一桶单元，直到：</p>
+<ul>
+<li>命中成功</li>
+<li>抵达一个空桶（已遍历所有冲突的词条），失败</li>
+</ul>
+<p>整个过程视为：$[hash(key)+1]\%M-&gt;[hash(key)+2]\%M-&gt;[hash(key)+3]\%M…$​</p>
+<p>但是，操作时间大于$O(1)$​​。原因是冲突增多，以往的冲突，会导致后续的冲突。</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/05d5b4472d3f292c22932c626c59354c-42619.png" srcset="/img/loading.gif" lazyload alt="开放定址" style="zoom:50%;" /></p>
+<h4 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h4><p>将待删除的元素做删除标记即可，并不是真的将它从桶中删除。否则查找链将被切断。之后，若有：</p>
+<ul>
+<li>查找操作，那么将越过这个标记，从下一个位置继续查找</li>
+<li>插入操作，那么将清除这个标记，将新的元素插入到该位置</li>
+</ul>
+<h3 id="平方试探"><a href="#平方试探" class="headerlink" title="平方试探"></a>平方试探</h3><p>为了解决开放定址中，大部分试探的位置都集中于某一个相对很小的局部的缺点。所以平方试探将以平方数作为距离（距离将按照<strong>算数级数</strong>递增），确定下一个试探桶单元。</p>
+<p>整个操作可视为：$[hash(key)+1^2]\%M-&gt;[hash(key)+2^2]\%M-&gt;[hash(key)+3^2]\%M…$</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/633d5d2911b0f7f596649d40e5b43d46-e694a.png" srcset="/img/loading.gif" lazyload alt="平方试探" style="zoom:50%;" /></p>
+<p>虽然很大程度上缓解了数据聚集现象，但是破坏数据访问的局部性。若涉及外存，IO将激增。</p>
+<p>不过因为缓存页面的大小对于散列表的长度来说，相对较大，所以这种现象还不算很严重。除非运气不好，连续冲突的次数很大才会造成IO读取。</p>
+<p>所以可以说，平方探测所增加的试探位置间距是适度的。</p>
+<p><strong>平方试探的缺点：</strong>只要散列表中有空桶，那么这种试探方式将永远不会发现空桶的存在。</p>
+<h4 id="装填因子"><a href="#装填因子" class="headerlink" title="装填因子"></a>装填因子</h4><p><strong>例子1：</strong></p>
+<p>${0,1,2,3,4,5,…}^2 \%12 = {0,1,4,9}$​</p>
+<p><img src="C:\Users\15606\AppData\Roaming\Typora\typora-user-images\image-20210723172208572.png" srcset="/img/loading.gif" lazyload alt="image-20210723172208572" style="zoom:50%;" /></p>
+<p><strong>结论：M若为素数，$n^2\%M$可能的取值必然少于$\lceil M/2 \rceil$​种​</strong>。</p>
+<p><strong>例子2：</strong></p>
+<p>${0,1,2,3,4,5,…}^2 \%11 = {0,1,4,9,5,3}$</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8c553134a36d7ca2d0cedefb8194a09d-38a9e.png" srcset="/img/loading.gif" lazyload alt="**例子2：**" style="zoom:50%;" /></p>
+<p><strong>结论：M若为素数，$n^2\%M$可能的取值恰好会有$\lceil M/2 \rceil$种。此时，恰由查找链的前$\lceil M/2 \rceil$​项取遍。</strong></p>
+<p><strong>定理：若M是素数，且装填因子$\le0.5$​​，就一定能找出；否则，不见得。</strong></p>
+<p><strong>所以，只要将散列表的长度M取做素数，同时将装填因子控制在50%以下，那么就能保证，在起始于任何位置的平方探测序列中，前面的$\lceil M/2 \rceil$位置中，必然是彼此互异的。</strong></p>
+<h3 id="双向平方试探"><a href="#双向平方试探" class="headerlink" title="双向平方试探"></a>双向平方试探</h3><p>自冲突位置起，依次向后试探：$[hash(key)+1^2]\%M-&gt;[hash(key)-1^2]\%M-&gt;[hash(key)+2^2]\%M-&gt;[hash(key)-2^2]\%M…$</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/be4ee0d6ab86eed5e51d1a2b1d311082-d3b3f.png" srcset="/img/loading.gif" lazyload alt="双向平方试探" style="zoom:50%;" /></p>
+<p>正向和逆向的子查找链，各包含$\lceil M/2 \rceil$个互异的桶。​</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/c66cba93eab4bb06aed06d6fb3712e99-8e639.png" srcset="/img/loading.gif" lazyload alt="双向平方试探" style="zoom:50%;" /></p>
+<p>根据上图可知，对于双向平方试探法而言，采用某些素数表长可以行之有效，但是采用另外一些素数的表长却非常糟糕。</p>
+<p><strong>根据双平方定理，可得到结论：表长取做素数$M=4*k+3$​，即M取模4余3的素数，必然可以保证查找链的前M项均互异。</strong></p>
+<h2 id="桶-计数排序"><a href="#桶-计数排序" class="headerlink" title="桶/计数排序"></a>桶/计数排序</h2><p>这类算法的性能取决于：</p>
+<ul>
+<li>待排序序列的长度n</li>
+<li>待排序元素的取值范围M </li>
+</ul>
+<p>所以M的范围越有限，这类算法的优势就越明显。  </p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/375b5097e34d4ea1bc1b68c693300eb6-37442.png" srcset="/img/loading.gif" lazyload alt="桶/计数排序" style="zoom:50%;" /></p>
+<p><strong>QA:</strong></p>
+<ul>
+<li>对[0, 11)中的整数{ 10, 4, 2, 9, 3, 1, 2, 2, 4, 9, 8, 5, 9, 10, 7, 6, 9 }用计数排序，得到的accum[]表为：<ul>
+<li>{0, 1, 4, 5, 7, 8, 9, 10, 11, 15, 17}</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%93%88%E5%B8%8C%E8%A1%A8/">哈希表</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%A1%B6%E6%8E%92%E5%BA%8F/">桶排序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">计数排序</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%84%E4%BB%B6%E5%8D%8F%E4%BD%9C%EF%BC%9A%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">策略模式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/25/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">
+                        <span class="hidden-mobile">面向对象设计原则</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

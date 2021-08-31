@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="序列结构和树结构是图的一种特例，即图更为一般化。图的任何两个节点之间都允许存在邻接关系...">
+  <meta name="author" content="zhong shiyu">
+  <meta name="keywords" content="">
+  
+  <title>图 - rushcpp的笔记博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/night-owl.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+
+<body>
+  <header style="height: 30vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>rushcpp</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="图">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-21 10:00" pubdate>
+        2020年3月21日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      71
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">图</h1>
+            
+            <div class="markdown-body">
+              <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="邻接-关联"><a href="#邻接-关联" class="headerlink" title="邻接+关联"></a>邻接+关联</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/2e7703f8aba252f1fcbbbf602823f70e-b53763.png" srcset="/img/loading.gif" lazyload alt="邻接+关联"></p>
+<ul>
+<li><p>顶点集V（有限集），边集E</p>
+</li>
+<li><p>存在两两关系：以连边来表示</p>
+</li>
+<li><p>邻接关系：存在连边的任何两个点，这两个点被称为彼此邻接（V~V）</p>
+</li>
+<li><p>关联关系：参与定义邻接关系的每一个顶点，与这个邻接关系之间的关系，被称为关联关系（V~E）</p>
+</li>
+<li><p>序列结构和树结构是图的一种特例，即图更为一般化</p>
+</li>
+<li>任何两个节点之间都允许存在邻接关系</li>
+</ul>
+<h3 id="无向-有向"><a href="#无向-有向" class="headerlink" title="无向+有向"></a>无向+有向</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/fb9debaddcf0bf04c81051583ac4c1d6-e5e8c5.png" srcset="/img/loading.gif" lazyload alt="无向+有向"></p>
+<ul>
+<li><p>a：无向图</p>
+<ul>
+<li>若邻接顶点u和v的次序无所谓，则（u，v）为无向边</li>
+<li>所有均无方向的图，即无向图</li>
+</ul>
+</li>
+<li><p>b：有向图</p>
+<ul>
+<li>有向图中均为有向边，u、v分别称作边（u，v）的尾和头</li>
+</ul>
+</li>
+<li>c：混合图<ul>
+<li>不仅有无向边，也有有向边</li>
+</ul>
+</li>
+</ul>
+<h3 id="路径-环路"><a href="#路径-环路" class="headerlink" title="路径+环路"></a>路径+环路</h3><ul>
+<li>简单路径：在一条通路中不含重复节点<ul>
+<li>简单环路：路径的终点和起点重合</li>
+</ul>
+</li>
+<li>欧拉环路：经过所有的边一次，而且恰好一次的环路</li>
+<li>哈密尔顿环路：经过所有的顶点一次，而且恰好一次的环路</li>
+</ul>
+<h2 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h2><h3 id="Graph模板类"><a href="#Graph模板类" class="headerlink" title="Graph模板类"></a>Graph模板类</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/******************************************************************************************</span><br><span class="hljs-comment"> * Data Structures in C++</span><br><span class="hljs-comment"> * ISBN: 7-302-33064-6 &amp; 7-302-33065-3 &amp; 7-302-29652-2 &amp; 7-302-26883-3</span><br><span class="hljs-comment"> * Junhui DENG, deng@tsinghua.edu.cn</span><br><span class="hljs-comment"> * Computer Science &amp; Technology, Tsinghua University</span><br><span class="hljs-comment"> * Copyright (c) 2003-2020. All rights reserved.</span><br><span class="hljs-comment"> ******************************************************************************************/</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> once</span><br><br><span class="hljs-keyword">using</span> VStatus = <span class="hljs-keyword">enum</span> &#123; UNDISCOVERED, DISCOVERED, VISITED &#125;; <span class="hljs-comment">//顶点状态</span><br><span class="hljs-keyword">using</span> EType = <span class="hljs-keyword">enum</span> &#123; UNDETERMINED, TREE, CROSS, FORWARD, BACKWARD &#125;; <span class="hljs-comment">//边在遍历树中所属的类型</span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv, <span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-comment">//顶点类型、边类型</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Graph</span> &#123;</span> <span class="hljs-comment">//图Graph模板类</span><br><span class="hljs-keyword">private</span>:<br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">reset</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-comment">//所有顶点、边的辅助信息复位</span><br>      <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++ ) &#123; <span class="hljs-comment">//所有顶点的</span><br>         <span class="hljs-built_in">status</span> ( i ) = UNDISCOVERED; <span class="hljs-built_in">dTime</span> ( i ) = <span class="hljs-built_in">fTime</span> ( i ) = <span class="hljs-number">-1</span>; <span class="hljs-comment">//状态，时间标签</span><br>         <span class="hljs-built_in">parent</span> ( i ) = <span class="hljs-number">-1</span>; <span class="hljs-built_in">priority</span> ( i ) = INT_MAX; <span class="hljs-comment">//（在遍历树中的）父节点，优先级数</span><br>         <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++ ) <span class="hljs-comment">//所有边的</span><br>            <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">exists</span> ( i, j ) ) <span class="hljs-built_in">type</span> ( i, j ) = UNDETERMINED; <span class="hljs-comment">//类型</span><br>      &#125;<br>   &#125;<br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">BFS</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&amp; )</span></span>; <span class="hljs-comment">//（连通域）广度优先搜索算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DFS</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&amp; )</span></span>; <span class="hljs-comment">//（连通域）深度优先搜索算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">BCC</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&amp;, Stack&lt;<span class="hljs-keyword">int</span>&gt;&amp; )</span></span>; <span class="hljs-comment">//（连通域）基于DFS的双连通分量分解算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">TSort</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&amp;, Stack&lt;Tv&gt;* )</span></span>; <span class="hljs-comment">//（连通域）基于DFS的拓扑排序算法</span><br>   <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> PU&gt; <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PFS</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, PU )</span></span>; <span class="hljs-comment">//（连通域）优先级搜索框架</span><br><span class="hljs-keyword">public</span>:<br><span class="hljs-comment">// 顶点</span><br>   <span class="hljs-keyword">int</span> n; <span class="hljs-comment">//顶点总数</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">insert</span> <span class="hljs-params">( Tv <span class="hljs-keyword">const</span>&amp; )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//插入顶点，返回编号</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> Tv <span class="hljs-title">remove</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//删除顶点及其关联边，返回该顶点信息</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> Tv&amp; <span class="hljs-title">vertex</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v的数据（该顶点的确存在）</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">inDegree</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v的入度（该顶点的确存在）</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">outDegree</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v的出度（该顶点的确存在）</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">firstNbr</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v的首个邻接顶点</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">nextNbr</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v的（相对于顶点j的）下一邻接顶点</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> VStatus&amp; <span class="hljs-title">status</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v的状态</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">dTime</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v的时间标签dTime</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">fTime</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v的时间标签fTime</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">parent</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v在遍历树中的父亲</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">priority</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//顶点v在遍历树中的优先级数</span><br><span class="hljs-comment">// 边：这里约定，无向边均统一转化为方向互逆的一对有向边，从而将无向图视作有向图的特例</span><br>   <span class="hljs-keyword">int</span> e; <span class="hljs-comment">//边总数</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">exists</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//边(v, u)是否存在</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span> <span class="hljs-params">( Te <span class="hljs-keyword">const</span>&amp;, <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//在顶点v和u之间插入权重为w的边e</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> Te <span class="hljs-title">remove</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//删除顶点v和u之间的边e，返回该边信息</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> EType &amp; <span class="hljs-title">type</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//边(v, u)的类型</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> Te&amp; <span class="hljs-title">edge</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//边(v, u)的数据（该边的确存在）</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">weight</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span> )</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">//边(v, u)的权重</span><br><span class="hljs-comment">// 算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bfs</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span></span>; <span class="hljs-comment">//广度优先搜索算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span></span>; <span class="hljs-comment">//深度优先搜索算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bcc</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span></span>; <span class="hljs-comment">//基于DFS的双连通分量分解算法</span><br>   <span class="hljs-function">Stack&lt;Tv&gt;* <span class="hljs-title">tSort</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span></span>; <span class="hljs-comment">//基于DFS的拓扑排序算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">prim</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span></span>; <span class="hljs-comment">//最小支撑树Prim算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dijkstra</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> )</span></span>; <span class="hljs-comment">//最短路径Dijkstra算法</span><br>   <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> PU&gt; <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">pfs</span> <span class="hljs-params">( <span class="hljs-keyword">int</span>, PU )</span></span>; <span class="hljs-comment">//优先级搜索框架</span><br>&#125;;<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;Graph_implementation.h&quot;</span></span><br></code></pre></div></td></tr></table></figure>
+<h3 id="邻接矩阵与关联矩阵"><a href="#邻接矩阵与关联矩阵" class="headerlink" title="邻接矩阵与关联矩阵"></a>邻接矩阵与关联矩阵</h3><h4 id="邻接矩阵-1"><a href="#邻接矩阵-1" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/7cd1d83f27412a3fa01164e489575f4a-f8c96.png" srcset="/img/loading.gif" lazyload alt="邻接矩阵"></p>
+<ul>
+<li>图有<strong>n</strong>个顶点，就构造一个$n*n$的矩阵</li>
+<li>第<strong>i</strong>行第<strong>j</strong>列的那个单元中，存储<strong>顶点i</strong>和<strong>顶点j</strong>的邻接关系。比如<strong>1</strong>代表邻接，<strong>0</strong>代表不邻接</li>
+<li>如果是<strong>无向图</strong>，那么对应的邻接矩阵应该是对称的。也就是说第<strong>i</strong>行第<strong>j</strong>列的元素和第<strong>j</strong>行第<strong>i</strong>列的元素雷同。在对角线上的元素，为<strong>自环</strong>。</li>
+<li>如果是带权图，那么矩阵单元内只需要存储整型的$w$。</li>
+</ul>
+<h4 id="关联矩阵"><a href="#关联矩阵" class="headerlink" title="关联矩阵"></a>关联矩阵</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/8e3e1ccfed164227df68afdf3dc481d9-d6690.png" srcset="/img/loading.gif" lazyload alt="关联矩阵"></p>
+<ul>
+<li>图有<strong>n</strong>个顶点，<strong>e</strong>条边，就构造一个<strong>n</strong>行<strong>e</strong>列的矩阵。</li>
+<li>矩阵单元内存储着对应的点和边之间的关联关系。如果存在关联关系，就存<strong>1</strong>；否则就存<strong>0</strong></li>
+<li>关联矩阵的每一列中，应该恰好只有两个单元的数值为<strong>1</strong>，其余的都是<strong>0</strong></li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/1c38542f9eafdd1a230f4689079c1ddf-ecd0d.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<ul>
+<li>双向边在矩阵内都会有多余的表示</li>
+</ul>
+<h3 id="顶点与边"><a href="#顶点与边" class="headerlink" title="顶点与边"></a>顶点与边</h3><h4 id="顶点的封装"><a href="#顶点的封装" class="headerlink" title="顶点的封装"></a>顶点的封装</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Vertex</span> &#123;</span> <span class="hljs-comment">//顶点对象（为简化起见，并未严格封装）</span><br>   Tv data; <span class="hljs-keyword">int</span> inDegree, outDegree; VStatus status; <span class="hljs-comment">//数据、出入度数、状态</span><br>   <span class="hljs-keyword">int</span> dTime, fTime; <span class="hljs-comment">//时间标签</span><br>   <span class="hljs-keyword">int</span> parent; <span class="hljs-keyword">int</span> priority; <span class="hljs-comment">//在遍历树中的父节点、优先级数</span><br>   <span class="hljs-built_in">Vertex</span> ( Tv <span class="hljs-keyword">const</span>&amp; d = ( Tv ) <span class="hljs-number">0</span> ) : <span class="hljs-comment">//构造新顶点</span><br>      <span class="hljs-built_in">data</span> ( d ), <span class="hljs-built_in">inDegree</span> ( <span class="hljs-number">0</span> ), <span class="hljs-built_in">outDegree</span> ( <span class="hljs-number">0</span> ), <span class="hljs-built_in">status</span> ( UNDISCOVERED ),<br>      <span class="hljs-built_in">dTime</span> ( <span class="hljs-number">-1</span> ), <span class="hljs-built_in">fTime</span> ( <span class="hljs-number">-1</span> ), <span class="hljs-built_in">parent</span> ( <span class="hljs-number">-1</span> ), <span class="hljs-built_in">priority</span> ( INT_MAX ) &#123;&#125; <span class="hljs-comment">//暂不考虑权重溢出</span><br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<h4 id="边的封装"><a href="#边的封装" class="headerlink" title="边的封装"></a>边的封装</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Edge</span> &#123;</span> <span class="hljs-comment">//边对象（为简化起见，并未严格封装）</span><br>   Te data; <span class="hljs-keyword">int</span> weight; EType type; <span class="hljs-comment">//数据、权重、类型</span><br>   <span class="hljs-built_in">Edge</span> ( Te <span class="hljs-keyword">const</span>&amp; d, <span class="hljs-keyword">int</span> w ) : <span class="hljs-built_in">data</span> ( d ), <span class="hljs-built_in">weight</span> ( w ), <span class="hljs-built_in">type</span> ( UNDETERMINED ) &#123;&#125; <span class="hljs-comment">//构造</span><br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<h3 id="基于邻接矩阵的图结构"><a href="#基于邻接矩阵的图结构" class="headerlink" title="基于邻接矩阵的图结构"></a>基于邻接矩阵的图结构</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/967cf4db4ebc50f178954ee4fc9b5397-fe2d9.png" srcset="/img/loading.gif" lazyload alt="基于邻接矩阵的图结构"></p>
+<h3 id="对顶点的静态操作"><a href="#对顶点的静态操作" class="headerlink" title="对顶点的静态操作"></a>对顶点的静态操作</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">virtual</span> Tv&amp; <span class="hljs-title">vertex</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> V[i].data; &#125; <span class="hljs-comment">//数据</span><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">inDegree</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> V[i].inDegree; &#125; <span class="hljs-comment">//入度</span><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">outDegree</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> V[i].outDegree; &#125; <span class="hljs-comment">//出度</span><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">firstNbr</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">nextNbr</span> ( i, n ); &#125; <span class="hljs-comment">//首个邻接顶点</span><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">nextNbr</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j )</span> <span class="hljs-comment">//相对于顶点j的下一邻接顶点（改用邻接表可提高效率）</span></span><br><span class="hljs-function"></span>&#123; <span class="hljs-keyword">while</span> ( ( <span class="hljs-number">-1</span> &lt; j ) &amp;&amp; ( !<span class="hljs-built_in">exists</span> ( i, --j ) ) ); <span class="hljs-keyword">return</span> j; &#125; <span class="hljs-comment">//逆向线性试探</span><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> VStatus&amp; <span class="hljs-title">status</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> V[i].status; &#125; <span class="hljs-comment">//状态</span><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">dTime</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> V[i].dTime; &#125; <span class="hljs-comment">//时间标签dTime</span><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">fTime</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> V[i].fTime; &#125; <span class="hljs-comment">//时间标签fTime</span><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">parent</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> V[i].parent; &#125; <span class="hljs-comment">//在遍历树中的父亲</span><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">priority</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> V[i].priority; &#125; <span class="hljs-comment">//在遍历树中的优先级数</span><br></code></pre></div></td></tr></table></figure>
+<h4 id="查找顶点的邻居"><a href="#查找顶点的邻居" class="headerlink" title="查找顶点的邻居"></a>查找顶点的邻居</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">firstNbr</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">nextNbr</span> ( i, n ); &#125; <span class="hljs-comment">//首个邻接顶点</span><br><br><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">nextNbr</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j )</span> <span class="hljs-comment">//相对于顶点j的下一邻接顶点（改用邻接表可提高效率）</span></span><br><span class="hljs-function"></span>&#123; <span class="hljs-keyword">while</span> ( ( <span class="hljs-number">-1</span> &lt; j ) &amp;&amp; ( !<span class="hljs-built_in">exists</span> ( i, --j ) ) ); <span class="hljs-keyword">return</span> j; &#125; <span class="hljs-comment">//逆向线性试探</span><br></code></pre></div></td></tr></table></figure>
+<ul>
+<li>n为行向量的长度，n可视为一个假想的哨兵</li>
+</ul>
+<h3 id="对边的操作"><a href="#对边的操作" class="headerlink" title="对边的操作"></a>对边的操作</h3><h4 id="边的存在"><a href="#边的存在" class="headerlink" title="边的存在"></a>边的存在</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">exists</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j )</span> <span class="hljs-comment">//边(i, j)是否存在</span></span><br><span class="hljs-function">   </span>&#123; <span class="hljs-keyword">return</span> ( <span class="hljs-number">0</span> &lt;= i ) &amp;&amp; ( i &lt; n ) &amp;&amp; ( <span class="hljs-number">0</span> &lt;= j ) &amp;&amp; ( j &lt; n ) &amp;&amp; E[i][j] != <span class="hljs-literal">NULL</span>; &#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="边的信息"><a href="#边的信息" class="headerlink" title="边的信息"></a>边的信息</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">//边的基本操作：查询顶点i与j之间的联边（0 &lt;= i, j &lt; n且exists(i, j)）</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> EType &amp; <span class="hljs-title">type</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j )</span> </span>&#123; <span class="hljs-keyword">return</span> E[i][j]-&gt;type; &#125; <span class="hljs-comment">//边(i, j)的类型</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> Te&amp; <span class="hljs-title">edge</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j )</span> </span>&#123; <span class="hljs-keyword">return</span> E[i][j]-&gt;data; &#125; <span class="hljs-comment">//边(i, j)的数据</span><br>   <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span>&amp; <span class="hljs-title">weight</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j )</span> </span>&#123; <span class="hljs-keyword">return</span> E[i][j]-&gt;weight; &#125; <span class="hljs-comment">//边(i, j)的权重</span><br></code></pre></div></td></tr></table></figure>
+<h4 id="边的插入"><a href="#边的插入" class="headerlink" title="边的插入"></a>边的插入</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span> <span class="hljs-params">( Te <span class="hljs-keyword">const</span>&amp; edge, <span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j )</span> </span>&#123; <span class="hljs-comment">//插入权重为w的边e = (i, j)</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">exists</span> ( i, j ) ) <span class="hljs-keyword">return</span>; <span class="hljs-comment">//确保该边尚不存在</span><br>   E[i][j] = <span class="hljs-keyword">new</span> Edge&lt;Te&gt; ( edge, w ); <span class="hljs-comment">//创建新边</span><br>   e++; V[i].outDegree++; V[j].inDegree++; <span class="hljs-comment">//更新边计数与关联顶点的度数</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="边的删除"><a href="#边的删除" class="headerlink" title="边的删除"></a>边的删除</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">virtual</span> Te <span class="hljs-title">remove</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j )</span> </span>&#123; <span class="hljs-comment">//删除顶点i和j之间的联边（exists(i, j)）</span><br>      Te eBak = <span class="hljs-built_in">edge</span> ( i, j ); <span class="hljs-keyword">delete</span> E[i][j]; E[i][j] = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//备份后删除边记录</span><br>      e--; V[i].outDegree--; V[j].inDegree--; <span class="hljs-comment">//更新边计数与关联顶点的度数</span><br>      <span class="hljs-keyword">return</span> eBak; <span class="hljs-comment">//返回被删除边的信息</span><br>   &#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="对顶点的动态操作"><a href="#对顶点的动态操作" class="headerlink" title="对顶点的动态操作"></a>对顶点的动态操作</h3><h4 id="顶点的插入"><a href="#顶点的插入" class="headerlink" title="顶点的插入"></a>顶点的插入</h4><ol>
+<li>首先将邻接矩阵中，已有的各行分别向后扩展一个单元（即增加一列）。</li>
+<li>在邻接矩阵中增加对应的一行，即增加一行行向量。</li>
+<li>在第一级的边表中，增加一个相应的单元，用来记录新引入的行向量（第二步）。</li>
+<li>在顶点向量中加入一个新的对应元素。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">insert</span> <span class="hljs-params">( Tv <span class="hljs-keyword">const</span>&amp; vertex )</span> </span>&#123; <span class="hljs-comment">//插入顶点，返回编号</span><br>      <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++ ) E[j].<span class="hljs-built_in">insert</span> ( <span class="hljs-literal">NULL</span> ); n++; <span class="hljs-comment">//各顶点预留一条潜在的关联边</span><br>      E.<span class="hljs-built_in">insert</span> ( Vector&lt;Edge&lt;Te&gt;*&gt; ( n, n, ( Edge&lt;Te&gt;* ) <span class="hljs-literal">NULL</span> ) ); <span class="hljs-comment">//创建新顶点对应的边向量</span><br>      <span class="hljs-keyword">return</span> V.<span class="hljs-built_in">insert</span> ( Vertex&lt;Tv&gt; ( vertex ) ); <span class="hljs-comment">//顶点向量增加一个顶点</span><br>   &#125;<br></code></pre></div></td></tr></table></figure>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e4795d5a0303e6e2f38daf765003c4fc-8239d.png" srcset="/img/loading.gif" lazyload alt="顶点的插入"></p>
+<h4 id="顶点的删除"><a href="#顶点的删除" class="headerlink" title="顶点的删除"></a>顶点的删除</h4><p>即顶点插入的逆过程</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">virtual</span> Tv <span class="hljs-title">remove</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> i )</span> </span>&#123; <span class="hljs-comment">//删除第i个顶点及其关联边（0 &lt;= i &lt; n）</span><br>      <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++ ) <span class="hljs-comment">//所有出边</span><br>         <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">exists</span> ( i, j ) ) &#123; <span class="hljs-keyword">delete</span> E[i][j]; V[j].inDegree--; e--; &#125; <span class="hljs-comment">//逐条删除</span><br>      E.<span class="hljs-built_in">remove</span> ( i ); n--; <span class="hljs-comment">//删除第i行</span><br>      Tv vBak = <span class="hljs-built_in">vertex</span> ( i ); V.<span class="hljs-built_in">remove</span> ( i ); <span class="hljs-comment">//删除顶点i</span><br>      <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++ ) <span class="hljs-comment">//所有入边</span><br>         <span class="hljs-keyword">if</span> ( Edge&lt;Te&gt; * x = E[j].<span class="hljs-built_in">remove</span> ( i ) ) &#123; <span class="hljs-keyword">delete</span> x; V[j].outDegree--; e--; &#125; <span class="hljs-comment">//逐条删除</span><br>      <span class="hljs-keyword">return</span> vBak; <span class="hljs-comment">//返回被删除顶点的信息</span><br>   &#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h4><ul>
+<li>判断两点之间是否存在联边：$O(1)$</li>
+<li>获取顶点的（出/入）度数：$O(1)$</li>
+<li>添加、删除边后更新度数：$O(1)$</li>
+</ul>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>直观，易于理解和实现</li>
+<li>适用范围广泛：<ul>
+<li>digraph</li>
+<li>network</li>
+<li>cyclic</li>
+<li>dense graph</li>
+</ul>
+</li>
+<li>扩展性：得益于Vector良好的空间控制策略，空间溢出等情况可以”透明地“予以处理</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p><strong>平面图：可嵌入于平面的图，相邻的边不会交叉</strong></p>
+<p>欧拉公式中，v：顶点数；e：边数；f：区域面片的总数；c：连通域的总数。</p>
+<script type="math/tex; mode=display">
+v - e + f - c = 1</script><p>对于平面图来说，它的边数不会超过顶点数n。但是一个邻接矩阵的空间占用达到了$n^2$。此时的空间利用率约等于$1/n$，空间利用率极低。</p>
+<h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/d4dd35ad73f0f19d1d2a7314fc671537-9880e.png" srcset="/img/loading.gif" lazyload alt="策略"></p>
+<ul>
+<li><p>按照与起点S的距离，将所有的顶点划分为等价类</p>
+</li>
+<li><p>在同一等价类的内部，各顶点的边都不会被采纳</p>
+</li>
+<li><p>只有连接相邻等价类的某些边，才会被采纳</p>
+</li>
+<li><p>即避开环路，将原先的图构成一个极大的无环图，也就是树。这棵树中涵盖了图的所有顶点，所以也叫支撑树</p>
+</li>
+<li>这样的遍历过程类似于树的层次遍历</li>
+<li>每个顶点与s之间的那条通路，恰好就是在原图中，这两个顶点之间的那条最短通路</li>
+</ul>
+<h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv, <span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-comment">//广度优先搜索BFS算法（全图）</span><br><span class="hljs-keyword">void</span> Graph&lt;Tv, Te&gt;::<span class="hljs-built_in">bfs</span> ( <span class="hljs-keyword">int</span> s ) &#123; <span class="hljs-comment">//assert: 0 &lt;= s &lt; n</span><br>   <span class="hljs-built_in">reset</span>(); <span class="hljs-keyword">int</span> clock = <span class="hljs-number">0</span>; <span class="hljs-keyword">int</span> v = s; <span class="hljs-comment">//初始化</span><br>   <span class="hljs-keyword">do</span> <span class="hljs-comment">//逐一检查所有顶点</span><br>      <span class="hljs-keyword">if</span> ( UNDISCOVERED == <span class="hljs-built_in">status</span> ( v ) ) <span class="hljs-comment">//一旦遇到尚未发现的顶点</span><br>         <span class="hljs-built_in">BFS</span> ( v, clock ); <span class="hljs-comment">//即从该顶点出发启动一次BFS</span><br>   <span class="hljs-keyword">while</span> ( s != ( v = ( ++v % n ) ) ); <span class="hljs-comment">//按序号检查，故不漏不重</span><br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv, <span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-comment">//广度优先搜索BFS算法（单个连通域）</span><br><span class="hljs-keyword">void</span> Graph&lt;Tv, Te&gt;::<span class="hljs-built_in">BFS</span> ( <span class="hljs-keyword">int</span> v, <span class="hljs-keyword">int</span>&amp; clock ) &#123; <span class="hljs-comment">//assert: 0 &lt;= v &lt; n</span><br>   Queue&lt;<span class="hljs-keyword">int</span>&gt; Q; <span class="hljs-comment">//引入辅助队列</span><br>   <span class="hljs-built_in">status</span> ( v ) = DISCOVERED; Q.<span class="hljs-built_in">enqueue</span> ( v ); <span class="hljs-comment">//初始化起点</span><br>   <span class="hljs-keyword">while</span> ( !Q.<span class="hljs-built_in">empty</span>() ) &#123; <span class="hljs-comment">//在Q变空之前，不断</span><br>      <span class="hljs-keyword">int</span> v = Q.<span class="hljs-built_in">dequeue</span>(); <span class="hljs-built_in">dTime</span> ( v ) = ++clock; <span class="hljs-comment">//取出队首顶点v</span><br>      <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> u = <span class="hljs-built_in">firstNbr</span> ( v ); <span class="hljs-number">-1</span> &lt; u; u = <span class="hljs-built_in">nextNbr</span> ( v, u ) ) <span class="hljs-comment">//枚举v的所有邻居u</span><br>         <span class="hljs-keyword">if</span> ( UNDISCOVERED == <span class="hljs-built_in">status</span> ( u ) ) &#123; <span class="hljs-comment">//若u尚未被发现，则</span><br>            <span class="hljs-built_in">status</span> ( u ) = DISCOVERED; Q.<span class="hljs-built_in">enqueue</span> ( u ); <span class="hljs-comment">//发现该顶点</span><br>            <span class="hljs-built_in">type</span> ( v, u ) = TREE; <span class="hljs-built_in">parent</span> ( u ) = v; <span class="hljs-comment">//引入树边拓展支撑树</span><br>         &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">//若u已被发现，或者甚至已访问完毕，则</span><br>            <span class="hljs-built_in">type</span> ( v, u ) = CROSS; <span class="hljs-comment">//将(v, u)归类于跨边</span><br>         &#125;<br>      <span class="hljs-built_in">status</span> ( v ) = VISITED; <span class="hljs-comment">//至此，当前顶点访问完毕</span><br>   &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="算法细节"><a href="#算法细节" class="headerlink" title="算法细节"></a>算法细节</h4><p>在算法开始时，将除了开始顶点的其余顶点的状态设置<code>UNDISCOVERED</code>，开始顶点的状态设置<code>DISCOVERED</code>并入队。为每条边的状态设置为<code>UNDETERMINED</code>。</p>
+<p>当前顶点v找到的邻居u的状态：</p>
+<ul>
+<li>如果为<code>UNDISCOVERED</code>，即未被发现的状态，那么将u的状态设置为<code>DISCOVERED</code>，再将u入队。并且采纳v和u的边，同时将边的状态设置为<code>TREE</code>。<ul>
+<li>TREE 边的数量总是等于顶点数减去连通分量的数量</li>
+</ul>
+</li>
+<li><p>如果为<code>DISCOVERED</code>，即已经被发现的状态，说明顶点u此时在队列中，或者已出队。那么将v和u的边的状态设置为<code>CROSS</code>。</p>
+</li>
+<li><p>除了开始顶点，其余顶点皆会通过某种处理方式忽略掉父亲</p>
+</li>
+<li>整个遍历的最终产物是一棵遍历支撑树</li>
+<li>顶点v所属的那个连通域，可以被悉数的遍历</li>
+</ul>
+<h3 id="实例（无向图）"><a href="#实例（无向图）" class="headerlink" title="实例（无向图）"></a>实例（无向图）</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6b398d528b0f0bc2b3fa4a5803ade1b8-69eab.png" srcset="/img/loading.gif" lazyload alt="实例1"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/f35f98ae5bd756781af06ec6697fed09-eeed8.png" srcset="/img/loading.gif" lazyload alt="实例（无向图）"></p>
+<h3 id="多连通域的搜索"><a href="#多连通域的搜索" class="headerlink" title="多连通域的搜索"></a>多连通域的搜索</h3><p>对每个连通域启动并只启动一次广域优先搜索，因此所有花费在搜索上的时间，累计也不过对全图的一次遍历</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/fa37dcb6ecedd1cae1721cefce5b832f-1f3cd.png" srcset="/img/loading.gif" lazyload alt="多连通"></p>
+<h3 id="复杂度-1"><a href="#复杂度-1" class="headerlink" title="复杂度"></a>复杂度</h3><p>由于邻接矩阵采用的Vector在物理上连续，所以访问邻接矩阵中的元素实际上是在高速缓存中，速度会非常的快。因为这个原因，理论上分析的复杂度$O(n^2)$会变为$O(n+e)$。</p>
+<h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><h3 id="策略-1"><a href="#策略-1" class="headerlink" title="策略"></a>策略</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/bed59779b197dc31a8413c1b7083499b-e9e79.png" srcset="/img/loading.gif" lazyload alt="策略"></p>
+<h3 id="算法实现-1"><a href="#算法实现-1" class="headerlink" title="算法实现"></a>算法实现</h3><h4 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv, <span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-comment">//深度优先搜索DFS算法（全图）</span><br><span class="hljs-keyword">void</span> Graph&lt;Tv, Te&gt;::<span class="hljs-built_in">dfs</span> ( <span class="hljs-keyword">int</span> s ) &#123; <span class="hljs-comment">//assert: 0 &lt;= s &lt; n</span><br>   <span class="hljs-built_in">reset</span>(); <span class="hljs-keyword">int</span> clock = <span class="hljs-number">0</span>; <span class="hljs-keyword">int</span> v = s; <span class="hljs-comment">//初始化</span><br>   <span class="hljs-keyword">do</span> <span class="hljs-comment">//逐一检查所有顶点</span><br>      <span class="hljs-keyword">if</span> ( UNDISCOVERED == <span class="hljs-built_in">status</span> ( v ) ) <span class="hljs-comment">//一旦遇到尚未发现的顶点</span><br>         <span class="hljs-built_in">DFS</span> ( v, clock ); <span class="hljs-comment">//即从该顶点出发启动一次DFS</span><br>   <span class="hljs-keyword">while</span> ( s != ( v = ( ++v % n ) ) ); <span class="hljs-comment">//按序号检查，故不漏不重</span><br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv, <span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-comment">//深度优先搜索DFS算法（单个连通域）</span><br><span class="hljs-keyword">void</span> Graph&lt;Tv, Te&gt;::<span class="hljs-built_in">DFS</span> ( <span class="hljs-keyword">int</span> v, <span class="hljs-keyword">int</span>&amp; clock ) &#123; <span class="hljs-comment">//assert: 0 &lt;= v &lt; n</span><br>   <span class="hljs-built_in">dTime</span> ( v ) = ++clock; <span class="hljs-built_in">status</span> ( v ) = DISCOVERED; <span class="hljs-comment">//发现当前顶点v</span><br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> u = <span class="hljs-built_in">firstNbr</span> ( v ); <span class="hljs-number">-1</span> &lt; u; u = <span class="hljs-built_in">nextNbr</span> ( v, u ) ) <span class="hljs-comment">//枚举v的所有邻居u</span><br>      <span class="hljs-built_in"><span class="hljs-keyword">switch</span></span> ( <span class="hljs-built_in">status</span> ( u ) ) &#123; <span class="hljs-comment">//并视其状态分别处理</span><br>         <span class="hljs-keyword">case</span> UNDISCOVERED: <span class="hljs-comment">//u尚未发现，意味着支撑树可在此拓展</span><br>            <span class="hljs-built_in">type</span> ( v, u ) = TREE; <span class="hljs-built_in">parent</span> ( u ) = v; <span class="hljs-built_in">DFS</span> ( u, clock ); <span class="hljs-keyword">break</span>;<br>         <span class="hljs-keyword">case</span> DISCOVERED: <span class="hljs-comment">//u已被发现但尚未访问完毕，应属被后代指向的祖先</span><br>            <span class="hljs-built_in">type</span> ( v, u ) = BACKWARD; <span class="hljs-keyword">break</span>;<br>         <span class="hljs-keyword">default</span>: <span class="hljs-comment">//u已访问完毕（VISITED，有向图），则视承袭关系分为前向边或跨边</span><br>            <span class="hljs-built_in">type</span> ( v, u ) = ( <span class="hljs-built_in">dTime</span> ( v ) &lt; <span class="hljs-built_in">dTime</span> ( u ) ) ? FORWARD : CROSS; <span class="hljs-keyword">break</span>;<br>      &#125;<br>   <span class="hljs-built_in">status</span> ( v ) = VISITED; <span class="hljs-built_in">fTime</span> ( v ) = ++clock; <span class="hljs-comment">//至此，当前顶点v方告访问完毕</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="算法细节-1"><a href="#算法细节-1" class="headerlink" title="算法细节"></a>算法细节</h4><p>当前顶点v找到的邻居u的状态：</p>
+<ul>
+<li><code>UNDISCOVERED</code>：意味着可以从当前顶点u继续拓展，将v通往u的这条边引入到遍历树中，即设置这条边的状态为<code>TREE</code>，将顶点u的父亲设置为v，并将控制权交给顶点u。然后按照策略递归的执行<code>DFS</code>。</li>
+<li><code>DISCOVERED</code>：将v到u的边的状态设置为<code>BACKWARD</code>，即<strong>回向边</strong>。<ul>
+<li>回向边：试图从一个后代去回连到它的祖先。一旦发现了一条回向边，就说明至少出现了一条回路。</li>
+</ul>
+</li>
+<li>default：此时代表u已经被访问完毕，也就是处于最终的<code>VISITED</code>状态，此时判断v和u的<code>dTime</code>大小<ul>
+<li>如果是v更早被发现，就将v到u的边设置为<code>FORWARD</code>，也就是前向边<ul>
+<li>前向边：由遍历树中的祖先节点向前，指向它的后代</li>
+</ul>
+</li>
+<li>如果是u更早被发现，就将v到u的边设置为<code>CROSS</code>，也就是交叉边或跨越边。<ul>
+<li>跨越边：他们的祖先没有直系血缘关系，即他们是姑表亲</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><h4 id="无向图"><a href="#无向图" class="headerlink" title="无向图"></a>无向图</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0f8256565d0cf5cf275c8f33b90745c1-2816c.png" srcset="/img/loading.gif" lazyload alt="无向图"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5ff759952019ed4d149a1082189f7df8-00981.png" srcset="/img/loading.gif" lazyload alt="无向图"></p>
+<h4 id="有向图及多可达域"><a href="#有向图及多可达域" class="headerlink" title="有向图及多可达域"></a>有向图及多可达域</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e68472203257620196b4919c2c82956b-002ba.png" srcset="/img/loading.gif" lazyload alt="有向图"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/405f29d8657dd134bf458822bbb3b891-b75e1.png" srcset="/img/loading.gif" lazyload alt="有向图"></p>
+<p>从顶点a出发，遍历了它的<strong>可达区域</strong>。</p>
+<p>为了遍历所有的顶点，可以采用BFS中的迭代策略：</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/2f3adca2b70ace359dd4dc9fed1c3c82-e7dad.png" srcset="/img/loading.gif" lazyload alt="迭代策略"></p>
+<h3 id="括号引理（嵌套引理）"><a href="#括号引理（嵌套引理）" class="headerlink" title="括号引理（嵌套引理）"></a>括号引理（嵌套引理）</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0c3b130c7be6b4dd6e810062ce304ff2-07bde.png" srcset="/img/loading.gif" lazyload alt="括号引理（嵌套引理"></p>
+<ul>
+<li><p>祖先的活跃期必然包含后代的活跃期</p>
+</li>
+<li><p>如果两个顶点没有血缘关系，那么这两个顶点的活跃期彼此互不相交</p>
+</li>
+</ul>
+<p><strong>作用：</strong>借助时间标签，可以在O(1)的时间内获得两个顶点是否有血缘关系</p>
+<h2 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h2><h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/61f762263aea08abab4bf1cc95cda661-6c114.png" srcset="/img/loading.gif" lazyload alt="应用"></p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/cd01999f3f36b23847d4a46d7b95e62f-a2461.png" srcset="/img/loading.gif" lazyload alt="排序"></p>
+<h3 id="零入度算法"><a href="#零入度算法" class="headerlink" title="零入度算法"></a>零入度算法</h3><h4 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h4><ul>
+<li>每次找到一个零入度的顶点，并从图中删除，入队。同时删除连接的边</li>
+</ul>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/5a7e61e9f9abea8eec970b4046163eb4-abeb9.png" srcset="/img/loading.gif" lazyload alt="构思"></p>
+<p>这种方法有几个缺点：</p>
+<ul>
+<li>每次都要查找零入度的点</li>
+<li>对于顶点和边的删除，会对图的结构进行破坏</li>
+</ul>
+<h4 id="算法-2"><a href="#算法-2" class="headerlink" title="算法"></a>算法</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/bbeca65c6a82ebf6eff27fff966f8f9a-65626.png" srcset="/img/loading.gif" lazyload alt="算法"></p>
+<h4 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/fbe4f6da3dcb9ddc5b2b580fee700786-2addc.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<h3 id="零出度算法"><a href="#零出度算法" class="headerlink" title="零出度算法"></a>零出度算法</h3><h4 id="构思-1"><a href="#构思-1" class="headerlink" title="构思"></a>构思</h4><p>与DFS类似：</p>
+<ul>
+<li>从随机的一个点开始运用DFS</li>
+<li>只要遇到一条backtrack，就将当前的顶点入栈</li>
+</ul>
+<p>重复以上过程，直到所有的顶点被遍历</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/307edaf0240f09806df066278051f081-d8221.png" srcset="/img/loading.gif" lazyload alt="构思"></p>
+<h4 id="算法-3"><a href="#算法-3" class="headerlink" title="算法"></a>算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv, <span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-comment">//基于DFS的拓扑排序算法</span><br>Stack&lt;Tv&gt;* Graph&lt;Tv, Te&gt;::<span class="hljs-built_in">tSort</span> ( <span class="hljs-keyword">int</span> s ) &#123; <span class="hljs-comment">//assert: 0 &lt;= s &lt; n</span><br>   <span class="hljs-built_in">reset</span>(); <span class="hljs-keyword">int</span> clock = <span class="hljs-number">0</span>; <span class="hljs-keyword">int</span> v = s;<br>   Stack&lt;Tv&gt;* S = <span class="hljs-keyword">new</span> Stack&lt;Tv&gt;; <span class="hljs-comment">//用栈记录排序顶点</span><br>   <span class="hljs-keyword">do</span> &#123;<br>      <span class="hljs-keyword">if</span> ( UNDISCOVERED == <span class="hljs-built_in">status</span> ( v ) )<br>         <span class="hljs-keyword">if</span> ( !<span class="hljs-built_in">TSort</span> ( v, clock, S ) ) &#123; <span class="hljs-comment">//clock并非必需</span><br>            <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">print</span> ( S );<br>            <span class="hljs-keyword">while</span> ( !S-&gt;<span class="hljs-built_in">empty</span>() ) <span class="hljs-comment">//任一连通域（亦即整图）非DAG</span><br>               S-&gt;<span class="hljs-built_in">pop</span>(); <span class="hljs-keyword">break</span>; <span class="hljs-comment">//则不必继续计算，故直接返回</span><br>         &#125;<br>   &#125; <span class="hljs-keyword">while</span> ( s != ( v = ( ++v % n ) ) );<br>   <span class="hljs-keyword">return</span> S; <span class="hljs-comment">//若输入为DAG，则S内各顶点自顶向底排序；否则（不存在拓扑排序），S空</span><br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv, <span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-comment">//基于DFS的拓扑排序算法（单趟）</span><br><span class="hljs-keyword">bool</span> Graph&lt;Tv, Te&gt;::<span class="hljs-built_in">TSort</span> ( <span class="hljs-keyword">int</span> v, <span class="hljs-keyword">int</span>&amp; clock, Stack&lt;Tv&gt;* S ) &#123; <span class="hljs-comment">//assert: 0 &lt;= v &lt; n</span><br>   <span class="hljs-built_in">dTime</span> ( v ) = ++clock; <span class="hljs-built_in">status</span> ( v ) = DISCOVERED; <span class="hljs-comment">//发现顶点v</span><br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> u = <span class="hljs-built_in">firstNbr</span> ( v ); <span class="hljs-number">-1</span> &lt; u; u = <span class="hljs-built_in">nextNbr</span> ( v, u ) ) <span class="hljs-comment">//枚举v的所有邻居u</span><br>      <span class="hljs-built_in"><span class="hljs-keyword">switch</span></span> ( <span class="hljs-built_in">status</span> ( u ) ) &#123; <span class="hljs-comment">//并视u的状态分别处理</span><br>         <span class="hljs-keyword">case</span> UNDISCOVERED:<br>            <span class="hljs-built_in">parent</span> ( u ) = v; <span class="hljs-built_in">type</span> ( v, u ) = TREE;<br>            <span class="hljs-keyword">if</span> ( !<span class="hljs-built_in">TSort</span> ( u, clock, S ) ) <span class="hljs-comment">//从顶点u处出发深入搜索</span><br>               <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">//若u及其后代不能拓扑排序（则全图亦必如此），故返回并报告</span><br>            <span class="hljs-keyword">break</span>;<br>         <span class="hljs-keyword">case</span> DISCOVERED:<br>            <span class="hljs-built_in">type</span> ( v, u ) = BACKWARD; <span class="hljs-comment">//一旦发现后向边（非DAG），则</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">//不必深入，故返回并报告</span><br>         <span class="hljs-keyword">default</span>: <span class="hljs-comment">//VISITED (digraphs only)</span><br>            <span class="hljs-built_in">type</span> ( v, u ) = ( <span class="hljs-built_in">dTime</span> ( v ) &lt; <span class="hljs-built_in">dTime</span> ( u ) ) ? FORWARD : CROSS;<br>            <span class="hljs-keyword">break</span>;<br>      &#125;<br>   <span class="hljs-built_in">status</span> ( v ) = VISITED; S-&gt;<span class="hljs-built_in">push</span> ( <span class="hljs-built_in">vertex</span> ( v ) ); <span class="hljs-comment">//顶点被标记为VISITED时，随即入栈</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">//v及其后代可以拓扑排序</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/a4c86fb6b609e89a5e25e8d2a8e29fa3-0f046.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<h2 id="图应用：双连通分量"><a href="#图应用：双连通分量" class="headerlink" title="图应用：双连通分量"></a>图应用：双连通分量</h2><h3 id="准则"><a href="#准则" class="headerlink" title="准则"></a>准则</h3><h4 id="BCC"><a href="#BCC" class="headerlink" title="BCC"></a>BCC</h4><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/e1bebd4cd64a57312a5d0901ae4da8ef-0c8f5.png" srcset="/img/loading.gif" lazyload alt="BCC"></p>
+<ul>
+<li><p>图中的一个点摘除之后，图中的连通域的数量会有所增加，那么这个点就是关节点。</p>
+</li>
+<li><p>任何一张连通的无向图，都存在着若干个关键点。而且以这些关键点为界，可以把图分割成几个若干个自洽的双连通的部分。</p>
+</li>
+</ul>
+<h4 id="叶子与非叶子"><a href="#叶子与非叶子" class="headerlink" title="叶子与非叶子"></a>叶子与非叶子</h4><p>DFS所构成的连通图中：</p>
+<ul>
+<li><p>叶子不会是关节点</p>
+</li>
+<li><p>根不一定是关节点，因为根在DFS中是随机选的</p>
+<ul>
+<li>如果根有1度，那么它不是关节点</li>
+<li>如果根的度数大于1度，那么它是关节点</li>
+</ul>
+</li>
+<li>内部节点V的子树中，某一个孩子向上通过回边能达到的更高的祖先：<ul>
+<li>比V的辈分大，那么V不是关节点</li>
+<li>如果就是V，那么V就是关节点</li>
+</ul>
+</li>
+</ul>
+<p>所以可以同过一个指标，来判断更高的祖先，这个指标为$hca(v)$</p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/0b0f82fe849f20f1e427670761548b22-31c48.png" srcset="/img/loading.gif" lazyload alt="非叶子"></p>
+<h3 id="算法-4"><a href="#算法-4" class="headerlink" title="算法"></a>算法</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv, <span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-keyword">void</span> Graph&lt;Tv, Te&gt;::<span class="hljs-built_in">bcc</span> ( <span class="hljs-keyword">int</span> s ) &#123; <span class="hljs-comment">//基于DFS的BCC分解算法</span><br>   <span class="hljs-built_in">reset</span>(); <span class="hljs-keyword">int</span> clock = <span class="hljs-number">0</span>; <span class="hljs-keyword">int</span> v = s; Stack&lt;<span class="hljs-keyword">int</span>&gt; S; <span class="hljs-comment">//栈S用以记录已访问的顶点</span><br>   <span class="hljs-function"><span class="hljs-keyword">do</span></span><br><span class="hljs-function">      <span class="hljs-title">if</span> <span class="hljs-params">( UNDISCOVERED == status ( v ) )</span> </span>&#123; <span class="hljs-comment">//一旦发现未发现的顶点（新连通分量）</span><br>         <span class="hljs-built_in">BCC</span> ( v, clock, S ); <span class="hljs-comment">//即从该顶点出发启动一次BCC</span><br>         S.<span class="hljs-built_in">pop</span>(); <span class="hljs-comment">//遍历返回后，弹出栈中最后一个顶点——当前连通域的起点</span><br>      &#125;<br>   <span class="hljs-keyword">while</span> ( s != ( v = ( ++v % n ) ) );<br>&#125;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> hca(x) (fTime(x)) <span class="hljs-comment">//利用此处闲置的fTime[]充当hca[]</span></span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Tv, <span class="hljs-keyword">typename</span> Te&gt; <span class="hljs-comment">//顶点类型、边类型</span><br><span class="hljs-keyword">void</span> Graph&lt;Tv, Te&gt;::<span class="hljs-built_in">BCC</span> ( <span class="hljs-keyword">int</span> v, <span class="hljs-keyword">int</span>&amp; clock, Stack&lt;<span class="hljs-keyword">int</span>&gt;&amp; S ) &#123; <span class="hljs-comment">//assert: 0 &lt;= v &lt; n</span><br>   <span class="hljs-built_in">hca</span> ( v ) = <span class="hljs-built_in">dTime</span> ( v ) = ++clock; <span class="hljs-built_in">status</span> ( v ) = DISCOVERED; S.<span class="hljs-built_in">push</span> ( v ); <span class="hljs-comment">//v被发现并入栈</span><br>   <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">int</span> u = <span class="hljs-built_in">firstNbr</span> ( v ); <span class="hljs-number">-1</span> &lt; u; u = <span class="hljs-built_in">nextNbr</span> ( v, u ) ) <span class="hljs-comment">//枚举v的所有邻居u</span><br>      <span class="hljs-built_in"><span class="hljs-keyword">switch</span></span> ( <span class="hljs-built_in">status</span> ( u ) ) &#123; <span class="hljs-comment">//并视u的状态分别处理</span><br>         <span class="hljs-keyword">case</span> UNDISCOVERED:<br>            <span class="hljs-built_in">parent</span> ( u ) = v; <span class="hljs-built_in">type</span> ( v, u ) = TREE; <span class="hljs-built_in">BCC</span> ( u, clock, S ); <span class="hljs-comment">//从顶点u处深入</span><br>            <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">hca</span> ( u ) &lt; <span class="hljs-built_in">dTime</span> ( v ) ) <span class="hljs-comment">//遍历返回后，若发现u（通过后向边）可指向v的真祖先</span><br>               <span class="hljs-built_in">hca</span> ( v ) = <span class="hljs-built_in">min</span> ( <span class="hljs-built_in">hca</span> ( v ), <span class="hljs-built_in">hca</span> ( u ) ); <span class="hljs-comment">//则v亦必如此</span><br>            <span class="hljs-keyword">else</span> <span class="hljs-comment">//否则，以v为关节点（u以下即是一个BCC，且其中顶点此时正集中于栈S的顶部）</span><br>               <span class="hljs-comment">/*DSA*/</span>&#123;<br>               <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot;BCC rooted at %c:&quot;</span>, <span class="hljs-built_in">vertex</span> ( v ) );<br>               <span class="hljs-comment">/*DSA*/</span>Stack&lt;<span class="hljs-keyword">int</span>&gt; temp; <span class="hljs-keyword">do</span> &#123; temp.<span class="hljs-built_in">push</span> ( S.<span class="hljs-built_in">pop</span>() ); <span class="hljs-built_in">print</span> ( <span class="hljs-built_in">vertex</span> ( temp.<span class="hljs-built_in">top</span>() ) ); &#125; <span class="hljs-keyword">while</span> ( u != temp.<span class="hljs-built_in">top</span>() ); <span class="hljs-built_in">print</span>( <span class="hljs-built_in">vertex</span> ( <span class="hljs-built_in">parent</span>(u) ) ); <span class="hljs-keyword">while</span> ( !temp.<span class="hljs-built_in">empty</span>() ) S.<span class="hljs-built_in">push</span> ( temp.<span class="hljs-built_in">pop</span>() );<br>               <span class="hljs-keyword">while</span> ( u != S.<span class="hljs-built_in">pop</span>() ); <span class="hljs-comment">//弹出当前BCC中（除v外）的所有节点，可视需要做进一步处理</span><br>               <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">printf</span> ( <span class="hljs-string">&quot;\n&quot;</span> );<br>               <span class="hljs-comment">/*DSA*/</span>&#125;<br>            <span class="hljs-keyword">break</span>;<br>         <span class="hljs-keyword">case</span> DISCOVERED:<br>            <span class="hljs-built_in">type</span> ( v, u ) = BACKWARD; <span class="hljs-comment">//标记(v, u)，并按照“越小越高”的准则</span><br>            <span class="hljs-keyword">if</span> ( u != <span class="hljs-built_in">parent</span> ( v ) ) <span class="hljs-built_in">hca</span> ( v ) = <span class="hljs-built_in">min</span> ( <span class="hljs-built_in">hca</span> ( v ), <span class="hljs-built_in">dTime</span> ( u ) ); <span class="hljs-comment">//更新hca[v]</span><br>            <span class="hljs-keyword">break</span>;<br>         <span class="hljs-keyword">default</span>: <span class="hljs-comment">//VISITED (digraphs only)</span><br>            <span class="hljs-built_in">type</span> ( v, u ) = ( <span class="hljs-built_in">dTime</span> ( v ) &lt; <span class="hljs-built_in">dTime</span> ( u ) ) ? FORWARD : CROSS;<br>            <span class="hljs-keyword">break</span>;<br>      &#125;<br>   <span class="hljs-built_in">status</span> ( v ) = VISITED; <span class="hljs-comment">//对v的访问结束</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/4dc655b5ca30071900dbee4f3e5c8c91-47ac8.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+<p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6398f73b0fbc09e587aa2230760a1749-bb3c4.png" srcset="/img/loading.gif" lazyload alt="实例"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">深度优先搜索</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">广度优先搜索</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%BE/">图</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/">拓扑排序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8F%8C%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F/">双连通分量</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-info">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">二叉搜索树</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E6%A0%91/">
+                        <span class="hidden-mobile">树</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'preferred-color-scheme';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'zhongshiyu98/commit-utterances');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        闽ICP备2021005512号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+
+
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+        var grt= new Date("07/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if(String(mnum).length ==1 ){
+                  mnum = "0" + mnum;
+        }
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if(String(snum).length ==1 ){
+                  snum = "0" + snum;
+        }
+        document.getElementById("timeDate").innerHTML = "🚀 已经&nbsp"+dnum+"&nbsp天";  //此次自定义显示内容
+        document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }  //此次自定义显示内容
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+
+</footer>
+
+
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>
