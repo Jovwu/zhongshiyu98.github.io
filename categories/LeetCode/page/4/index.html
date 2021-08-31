@@ -37,6 +37,10 @@
 
 <!-- 自定义样式保持在最底部 -->
 
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/bynotes/texiao/source/css/shubiao.css#.css">
+
+
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
@@ -83,35 +87,39 @@
           
           
           
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                笔记
               </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
             </li>
           
         
@@ -207,12 +215,6 @@
     </a>
   
     
-    <a href="/2021/12/09/LeetCode/162.%20%E5%AF%BB%E6%89%BE%E5%B3%B0%E5%80%BC/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">162. 寻找峰值</span>
-      <time style="float: right;">12-09</time>
-    </a>
-  
-    
     <a href="/2021/12/09/LeetCode/167.%20%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C%20II%20-%20%E8%BE%93%E5%85%A5%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84/" class="list-group-item list-group-item-action">
       <span class="archive-post-title">167. 两数之和 II - 输入有序数组</span>
       <time style="float: right;">12-09</time>
@@ -225,20 +227,26 @@
     </a>
   
     
+    <a href="/2021/12/09/LeetCode/162.%20%E5%AF%BB%E6%89%BE%E5%B3%B0%E5%80%BC/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">162. 寻找峰值</span>
+      <time style="float: right;">12-09</time>
+    </a>
+  
+    
     <a href="/2021/12/09/LeetCode/18.%20%E5%9B%9B%E6%95%B0%E4%B9%8B%E5%92%8C/" class="list-group-item list-group-item-action">
       <span class="archive-post-title">18. 四数之和</span>
       <time style="float: right;">12-09</time>
     </a>
   
     
-    <a href="/2021/12/09/LeetCode/190.%20%E9%A2%A0%E5%80%92%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">190. 颠倒二进制位</span>
+    <a href="/2021/12/09/LeetCode/19.%20%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%AC%20N%20%E4%B8%AA%E7%BB%93%E7%82%B9/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">19. 删除链表的倒数第 N 个结点</span>
       <time style="float: right;">12-09</time>
     </a>
   
     
-    <a href="/2021/12/09/LeetCode/19.%20%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%AC%20N%20%E4%B8%AA%E7%BB%93%E7%82%B9/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">19. 删除链表的倒数第 N 个结点</span>
+    <a href="/2021/12/09/LeetCode/190.%20%E9%A2%A0%E5%80%92%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">190. 颠倒二进制位</span>
       <time style="float: right;">12-09</time>
     </a>
   
@@ -296,7 +304,7 @@
 
   <footer class="text-center mt-5 py-3">
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
   </div>
   
 
@@ -424,6 +432,11 @@
 
 
 
+
+
+  
+<script src="/js/custom.js"></script>
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/boom.js"></script>
 
 
 
