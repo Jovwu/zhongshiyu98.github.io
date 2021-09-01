@@ -109,9 +109,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>哈希表</tag>
+      
+      <tag>递归</tag>
       
       <tag>字符串</tag>
       
@@ -380,9 +380,9 @@
     
     <tags>
       
-      <tag>迭代</tag>
-      
       <tag>数组</tag>
+      
+      <tag>迭代</tag>
       
       <tag>双指针</tag>
       
@@ -451,35 +451,6 @@
   
   
   <entry>
-    <title>剑指 Offer 13. 机器人的运动范围</title>
-    <link href="/2021/07/17/LeetCode/%E5%89%91%E6%8C%87%20Offer%2013.%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4/"/>
-    <url>/2021/07/17/LeetCode/%E5%89%91%E6%8C%87%20Offer%2013.%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4/</url>
-    
-    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/">本题链接</a></p><h2 id="回溯-dfs"><a href="#回溯-dfs" class="headerlink" title="回溯+dfs"></a>回溯+dfs</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><br>    <span class="hljs-keyword">int</span> m_bak,n_bak,k_bak;<br>    <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">movingCount</span><span class="hljs-params">(<span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> k)</span> </span>&#123;<br><br>        <span class="hljs-keyword">if</span>(!m || !n) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>        m_bak = m;n_bak = n;k_bak = k;<br><br>        vector&lt;vector&lt;<span class="hljs-keyword">bool</span>&gt;&gt; <span class="hljs-built_in">state</span>(m,vector&lt;<span class="hljs-keyword">bool</span>&gt;(n,<span class="hljs-literal">false</span>));<span class="hljs-comment">//是否已被遍历</span><br>        <br>        <span class="hljs-built_in">dfs</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,state);<br><br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br><br>    <br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span>&amp; r,<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span>&amp; c,vector&lt;vector&lt;<span class="hljs-keyword">bool</span>&gt;&gt;&amp; state)</span></span>&#123;<br><br>        <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">isLegal</span>(r,c,state)) <span class="hljs-keyword">return</span>;<span class="hljs-comment">//如果不合法</span><br><br>        state[r][c] = <span class="hljs-literal">true</span>;<span class="hljs-comment">//设置自己已被遍历</span><br>        ++res;<br>        <br>        <span class="hljs-comment">//dfs(r - 1,c,state);//上</span><br>        <span class="hljs-built_in">dfs</span>(r + <span class="hljs-number">1</span>,c,state);<span class="hljs-comment">//下</span><br>        <span class="hljs-comment">//dfs(r,c - 1,state);//左</span><br>        <span class="hljs-built_in">dfs</span>(r,c + <span class="hljs-number">1</span>,state);<span class="hljs-comment">//右</span><br>        <br>        <span class="hljs-comment">//state[r][c] = false;//设置自己未被遍历</span><br>    &#125;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isLegal</span><span class="hljs-params">(<span class="hljs-keyword">int</span> r,<span class="hljs-keyword">int</span> c,<span class="hljs-keyword">const</span> vector&lt;vector&lt;<span class="hljs-keyword">bool</span>&gt;&gt;&amp; state)</span></span>&#123;<br><br>        <span class="hljs-keyword">if</span>(<span class="hljs-number">0</span> &lt;= r &amp;&amp; r &lt; m_bak &amp;&amp; <span class="hljs-number">0</span> &lt;= c &amp;&amp; c &lt; n_bak)&#123;<span class="hljs-comment">//如果点在合法范围内</span><br>            <br>            <span class="hljs-keyword">if</span>(state[r][c]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<span class="hljs-comment">//若该点已经被遍历过</span><br><br>            <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">while</span>(r &gt; <span class="hljs-number">0</span>)&#123;<br>                sum += r % <span class="hljs-number">10</span>;<br>                r = r / <span class="hljs-number">10</span>;<br>            &#125;<br>            <span class="hljs-keyword">while</span>(c &gt; <span class="hljs-number">0</span>)&#123;<br>                sum += c % <span class="hljs-number">10</span>;<br>                c = c / <span class="hljs-number">10</span>;<br>            &#125;<br><br>            <span class="hljs-comment">//若数位之和小于等于给定的K,返回真</span><br>            <span class="hljs-keyword">return</span> sum &lt;= k_bak ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;<br><br>        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>对每个节点做DFS即可，比较重要的是机器人的行走方向可以优化，具体见<a href="https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/solution/ji-qi-ren-de-yun-dong-fan-wei-by-leetcode-solution/">官方解析</a></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>LeetCode</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>深度优先搜索</tag>
-      
-      <tag>回溯法</tag>
-      
-      <tag>剑指Offer</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>剑指 Offer 12. 矩阵中的路径</title>
     <link href="/2021/07/17/LeetCode/%E5%89%91%E6%8C%87%20Offer%2012.%20%E7%9F%A9%E9%98%B5%E4%B8%AD%E7%9A%84%E8%B7%AF%E5%BE%84/"/>
     <url>/2021/07/17/LeetCode/%E5%89%91%E6%8C%87%20Offer%2012.%20%E7%9F%A9%E9%98%B5%E4%B8%AD%E7%9A%84%E8%B7%AF%E5%BE%84/</url>
@@ -497,6 +468,35 @@
     <tags>
       
       <tag>矩阵</tag>
+      
+      <tag>回溯法</tag>
+      
+      <tag>剑指Offer</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>剑指 Offer 13. 机器人的运动范围</title>
+    <link href="/2021/07/17/LeetCode/%E5%89%91%E6%8C%87%20Offer%2013.%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4/"/>
+    <url>/2021/07/17/LeetCode/%E5%89%91%E6%8C%87%20Offer%2013.%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/">本题链接</a></p><h2 id="回溯-dfs"><a href="#回溯-dfs" class="headerlink" title="回溯+dfs"></a>回溯+dfs</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><br>    <span class="hljs-keyword">int</span> m_bak,n_bak,k_bak;<br>    <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">movingCount</span><span class="hljs-params">(<span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> k)</span> </span>&#123;<br><br>        <span class="hljs-keyword">if</span>(!m || !n) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>        m_bak = m;n_bak = n;k_bak = k;<br><br>        vector&lt;vector&lt;<span class="hljs-keyword">bool</span>&gt;&gt; <span class="hljs-built_in">state</span>(m,vector&lt;<span class="hljs-keyword">bool</span>&gt;(n,<span class="hljs-literal">false</span>));<span class="hljs-comment">//是否已被遍历</span><br>        <br>        <span class="hljs-built_in">dfs</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,state);<br><br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br><br>    <br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span>&amp; r,<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span>&amp; c,vector&lt;vector&lt;<span class="hljs-keyword">bool</span>&gt;&gt;&amp; state)</span></span>&#123;<br><br>        <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">isLegal</span>(r,c,state)) <span class="hljs-keyword">return</span>;<span class="hljs-comment">//如果不合法</span><br><br>        state[r][c] = <span class="hljs-literal">true</span>;<span class="hljs-comment">//设置自己已被遍历</span><br>        ++res;<br>        <br>        <span class="hljs-comment">//dfs(r - 1,c,state);//上</span><br>        <span class="hljs-built_in">dfs</span>(r + <span class="hljs-number">1</span>,c,state);<span class="hljs-comment">//下</span><br>        <span class="hljs-comment">//dfs(r,c - 1,state);//左</span><br>        <span class="hljs-built_in">dfs</span>(r,c + <span class="hljs-number">1</span>,state);<span class="hljs-comment">//右</span><br>        <br>        <span class="hljs-comment">//state[r][c] = false;//设置自己未被遍历</span><br>    &#125;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isLegal</span><span class="hljs-params">(<span class="hljs-keyword">int</span> r,<span class="hljs-keyword">int</span> c,<span class="hljs-keyword">const</span> vector&lt;vector&lt;<span class="hljs-keyword">bool</span>&gt;&gt;&amp; state)</span></span>&#123;<br><br>        <span class="hljs-keyword">if</span>(<span class="hljs-number">0</span> &lt;= r &amp;&amp; r &lt; m_bak &amp;&amp; <span class="hljs-number">0</span> &lt;= c &amp;&amp; c &lt; n_bak)&#123;<span class="hljs-comment">//如果点在合法范围内</span><br>            <br>            <span class="hljs-keyword">if</span>(state[r][c]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<span class="hljs-comment">//若该点已经被遍历过</span><br><br>            <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">while</span>(r &gt; <span class="hljs-number">0</span>)&#123;<br>                sum += r % <span class="hljs-number">10</span>;<br>                r = r / <span class="hljs-number">10</span>;<br>            &#125;<br>            <span class="hljs-keyword">while</span>(c &gt; <span class="hljs-number">0</span>)&#123;<br>                sum += c % <span class="hljs-number">10</span>;<br>                c = c / <span class="hljs-number">10</span>;<br>            &#125;<br><br>            <span class="hljs-comment">//若数位之和小于等于给定的K,返回真</span><br>            <span class="hljs-keyword">return</span> sum &lt;= k_bak ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;<br><br>        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>对每个节点做DFS即可，比较重要的是机器人的行走方向可以优化，具体见<a href="https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/solution/ji-qi-ren-de-yun-dong-fan-wei-by-leetcode-solution/">官方解析</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度优先搜索</tag>
       
       <tag>回溯法</tag>
       
@@ -1179,13 +1179,13 @@
     
     <tags>
       
+      <tag>哈希表</tag>
+      
       <tag>迭代</tag>
       
       <tag>递归</tag>
       
       <tag>二叉树</tag>
-      
-      <tag>哈希表</tag>
       
       <tag>栈</tag>
       
@@ -1655,31 +1655,6 @@
   
   
   <entry>
-    <title>使用SSR实现局域网代理</title>
-    <link href="/2021/03/01/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E4%BD%BF%E7%94%A8SSR%E5%AE%9E%E7%8E%B0%E5%B1%80%E5%9F%9F%E7%BD%91%E4%BB%A3%E7%90%86/"/>
-    <url>/2021/03/01/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E4%BD%BF%E7%94%A8SSR%E5%AE%9E%E7%8E%B0%E5%B1%80%E5%9F%9F%E7%BD%91%E4%BB%A3%E7%90%86/</url>
-    
-    <content type="html"><![CDATA[<h2 id="代理服务器"><a href="#代理服务器" class="headerlink" title="代理服务器"></a>代理服务器</h2><h3 id="1-设置路由器"><a href="#1-设置路由器" class="headerlink" title="1. 设置路由器"></a>1. 设置路由器</h3><p>既然要实现局域网代理，那么首先，需要给作为代理服务器的设备设置静态IP地址。</p><p>我的代理服务器静态IP地址设置为192.168.3.9，在此举出以便于下文编写。</p><h4 id="1-1-从路由器关闭DHCP-不推荐"><a href="#1-1-从路由器关闭DHCP-不推荐" class="headerlink" title="1.1 从路由器关闭DHCP(不推荐)"></a>1.1 从路由器关闭DHCP(不推荐)</h4><p>打开路由器的设置页面，以华为路由器为例，找到DHCP相关设置，并关闭DHCP。</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301091942.png" alt="关闭DHCP"></p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301091909.png" alt="提示"></p><p>该方法不推荐使用，原因如上图</p><h4 id="1-2-从路由器添加静态IP地址"><a href="#1-2-从路由器添加静态IP地址" class="headerlink" title="1.2 从路由器添加静态IP地址"></a>1.2 从路由器添加静态IP地址</h4><p>在路由器的DHCP页面找到添加静态IP地址的选项</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301092234.png" alt="添加"></p><p>选择需要作为代理服务器的设备即可</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301092321.png" alt="静态IP地址绑定"></p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301092447.png" alt="完成"></p><h4 id="1-3-直接在代理服务器上设置静态IP地址"><a href="#1-3-直接在代理服务器上设置静态IP地址" class="headerlink" title="1.3 直接在代理服务器上设置静态IP地址"></a>1.3 直接在代理服务器上设置静态IP地址</h4><p>打开代理服务器上的”<strong>网络连接</strong>“，找到连接到路由器的网卡，右键点击呼出上下文，选择属性并进入，IP地址相关不再赘述。</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301092813.png" alt="设置静态IP"></p><h3 id="2-设置SSR"><a href="#2-设置SSR" class="headerlink" title="2. 设置SSR"></a>2. 设置SSR</h3><p>在Surface上右键小飞机-&gt;更多-&gt;选项设置</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301080311.png" alt="设置SSR"></p><p>勾选”<strong>允许来自局域网的连接</strong>“即可</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301080602.png" alt="选项设置"></p><h2 id="Windows客户端"><a href="#Windows客户端" class="headerlink" title="Windows客户端"></a>Windows客户端</h2><h4 id="1-PAC文件"><a href="#1-PAC文件" class="headerlink" title="1. PAC文件"></a>1. PAC文件</h4><p>右键小飞机找到PAC文件地址并复制</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210303210609.png" alt="PAC文件地址"></p><h4 id="2-设置windows代理"><a href="#2-设置windows代理" class="headerlink" title="2. 设置windows代理"></a>2. 设置windows代理</h4><p>在<strong>客户端</strong>，依次打开控制面板-&gt;网络和Internet-&gt;代理，在自动设置代理里面的脚本地址中填入刚才复制的PAC地址，其中，IP地址需要更换成代理服务器的地址</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210303211509.png" alt=""></p><h2 id="随记"><a href="#随记" class="headerlink" title="随记"></a>随记</h2><h3 id="1-自动代理和手动代理的区别"><a href="#1-自动代理和手动代理的区别" class="headerlink" title="1. 自动代理和手动代理的区别"></a>1. 自动代理和手动代理的区别</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301091636.png" alt="自动代理和手动代理"></p><ol><li>自动代理：需要配置PAC(proxy auto-config)脚本文件，根据PAC文件流量会自动选择走代理还是直连。<a href="https://www.barretlee.com/blog/2016/08/25/pac-file/">详解代理自动配置 PAC</a></li><li>手动代理：除了指定的地址不走代理，流量会经代理访问剩余地址</li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>环境搭建</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>局域网</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>206. 反转链表</title>
     <link href="/2021/03/01/LeetCode/206.%20%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/"/>
     <url>/2021/03/01/LeetCode/206.%20%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/</url>
@@ -1701,6 +1676,31 @@
       <tag>递归</tag>
       
       <tag>链表</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>使用SSR实现局域网代理</title>
+    <link href="/2021/03/01/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E4%BD%BF%E7%94%A8SSR%E5%AE%9E%E7%8E%B0%E5%B1%80%E5%9F%9F%E7%BD%91%E4%BB%A3%E7%90%86/"/>
+    <url>/2021/03/01/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E4%BD%BF%E7%94%A8SSR%E5%AE%9E%E7%8E%B0%E5%B1%80%E5%9F%9F%E7%BD%91%E4%BB%A3%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<h2 id="代理服务器"><a href="#代理服务器" class="headerlink" title="代理服务器"></a>代理服务器</h2><h3 id="1-设置路由器"><a href="#1-设置路由器" class="headerlink" title="1. 设置路由器"></a>1. 设置路由器</h3><p>既然要实现局域网代理，那么首先，需要给作为代理服务器的设备设置静态IP地址。</p><p>我的代理服务器静态IP地址设置为192.168.3.9，在此举出以便于下文编写。</p><h4 id="1-1-从路由器关闭DHCP-不推荐"><a href="#1-1-从路由器关闭DHCP-不推荐" class="headerlink" title="1.1 从路由器关闭DHCP(不推荐)"></a>1.1 从路由器关闭DHCP(不推荐)</h4><p>打开路由器的设置页面，以华为路由器为例，找到DHCP相关设置，并关闭DHCP。</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301091942.png" alt="关闭DHCP"></p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301091909.png" alt="提示"></p><p>该方法不推荐使用，原因如上图</p><h4 id="1-2-从路由器添加静态IP地址"><a href="#1-2-从路由器添加静态IP地址" class="headerlink" title="1.2 从路由器添加静态IP地址"></a>1.2 从路由器添加静态IP地址</h4><p>在路由器的DHCP页面找到添加静态IP地址的选项</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301092234.png" alt="添加"></p><p>选择需要作为代理服务器的设备即可</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301092321.png" alt="静态IP地址绑定"></p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301092447.png" alt="完成"></p><h4 id="1-3-直接在代理服务器上设置静态IP地址"><a href="#1-3-直接在代理服务器上设置静态IP地址" class="headerlink" title="1.3 直接在代理服务器上设置静态IP地址"></a>1.3 直接在代理服务器上设置静态IP地址</h4><p>打开代理服务器上的”<strong>网络连接</strong>“，找到连接到路由器的网卡，右键点击呼出上下文，选择属性并进入，IP地址相关不再赘述。</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301092813.png" alt="设置静态IP"></p><h3 id="2-设置SSR"><a href="#2-设置SSR" class="headerlink" title="2. 设置SSR"></a>2. 设置SSR</h3><p>在Surface上右键小飞机-&gt;更多-&gt;选项设置</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301080311.png" alt="设置SSR"></p><p>勾选”<strong>允许来自局域网的连接</strong>“即可</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301080602.png" alt="选项设置"></p><h2 id="Windows客户端"><a href="#Windows客户端" class="headerlink" title="Windows客户端"></a>Windows客户端</h2><h4 id="1-PAC文件"><a href="#1-PAC文件" class="headerlink" title="1. PAC文件"></a>1. PAC文件</h4><p>右键小飞机找到PAC文件地址并复制</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210303210609.png" alt="PAC文件地址"></p><h4 id="2-设置windows代理"><a href="#2-设置windows代理" class="headerlink" title="2. 设置windows代理"></a>2. 设置windows代理</h4><p>在<strong>客户端</strong>，依次打开控制面板-&gt;网络和Internet-&gt;代理，在自动设置代理里面的脚本地址中填入刚才复制的PAC地址，其中，IP地址需要更换成代理服务器的地址</p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210303211509.png" alt=""></p><h2 id="随记"><a href="#随记" class="headerlink" title="随记"></a>随记</h2><h3 id="1-自动代理和手动代理的区别"><a href="#1-自动代理和手动代理的区别" class="headerlink" title="1. 自动代理和手动代理的区别"></a>1. 自动代理和手动代理的区别</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210301091636.png" alt="自动代理和手动代理"></p><ol><li>自动代理：需要配置PAC(proxy auto-config)脚本文件，根据PAC文件流量会自动选择走代理还是直连。<a href="https://www.barretlee.com/blog/2016/08/25/pac-file/">详解代理自动配置 PAC</a></li><li>手动代理：除了指定的地址不走代理，流量会经代理访问剩余地址</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>环境搭建</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>局域网</tag>
       
     </tags>
     
@@ -1752,9 +1752,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>数组</tag>
+      
+      <tag>递归</tag>
       
       <tag>回溯法</tag>
       
@@ -1783,11 +1783,11 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>哈希表</tag>
       
       <tag>数组</tag>
+      
+      <tag>递归</tag>
       
       <tag>回溯法</tag>
       
@@ -1816,9 +1816,9 @@
     
     <tags>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
       <tag>染色法</tag>
       
@@ -2113,9 +2113,9 @@
       
       <tag>深度优先搜索</tag>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
       <tag>拓扑排序</tag>
       
@@ -3461,11 +3461,11 @@
     
     <tags>
       
+      <tag>哈希表</tag>
+      
       <tag>迭代</tag>
       
       <tag>二叉树</tag>
-      
-      <tag>哈希表</tag>
       
     </tags>
     
@@ -3623,9 +3623,9 @@
     
     <tags>
       
-      <tag>最短路Floyd算法</tag>
-      
       <tag>图</tag>
+      
+      <tag>最短路Floyd算法</tag>
       
     </tags>
     
@@ -4106,11 +4106,11 @@
     
     <tags>
       
+      <tag>哈希表</tag>
+      
       <tag>递归</tag>
       
       <tag>二叉树</tag>
-      
-      <tag>哈希表</tag>
       
     </tags>
     
@@ -4376,11 +4376,11 @@
     
     <tags>
       
+      <tag>哈希表</tag>
+      
       <tag>递归</tag>
       
       <tag>二叉树</tag>
-      
-      <tag>哈希表</tag>
       
       <tag>栈</tag>
       
@@ -4411,9 +4411,9 @@
       
       <tag>深度优先搜索</tag>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
       <tag>拓扑排序</tag>
       
@@ -4440,11 +4440,11 @@
     
     <tags>
       
+      <tag>哈希表</tag>
+      
       <tag>递归</tag>
       
       <tag>二叉树</tag>
-      
-      <tag>哈希表</tag>
       
     </tags>
     
@@ -4783,9 +4783,9 @@
       
       <tag>递归</tag>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
     </tags>
     
@@ -5477,11 +5477,11 @@
   
   
   <entry>
-    <title>代理模式</title>
-    <link href="/2020/05/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%EF%BC%9A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
-    <url>/2020/05/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%EF%BC%9A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</url>
+    <title>中介者模式</title>
+    <link href="/2020/05/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%EF%BC%9A%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
+    <url>/2020/05/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%EF%BC%9A%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
     
-    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在面向对象系统中，有些对象由于某种原因（比如对象创建的开销很大，或者某些操作需要安全控制，或者需要进程外的访问等），直接访问会给使用者、或者系统结构带来很多麻烦。</li><li>如何在不失透明操作对象的同时来管理/控制这些对象特有的复杂性？增加一层间接层是软件开发中常见的解决方式</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>为其他对象提供一种代理以控制（隔离，使用接口）对这个对象的访问 </p><p>——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><strong>使用代理模式之前：</strong></p><p>直接使用功能类</p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ISubject</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-comment">//功能类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RealSubject</span>:</span> <span class="hljs-keyword">public</span> ISubject&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//....</span><br>    &#125;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ClientApp</span>&#123;</span><br>    <br>    ISubject* subject;<br>    <br><span class="hljs-keyword">public</span>:<br>    <br>    <span class="hljs-built_in">ClientApp</span>()&#123;<br>        subject=<span class="hljs-keyword">new</span> <span class="hljs-built_in">RealSubject</span>();<span class="hljs-comment">//直接使用</span><br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DoTask</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//...</span><br>        subject-&gt;<span class="hljs-built_in">process</span>();<br>        <br>        <span class="hljs-comment">//....</span><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><p><strong>使用代理模式之后：</strong></p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ISubject</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><br><span class="hljs-comment">//Proxy的设计，添加了一层间接层</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SubjectProxy</span>:</span> <span class="hljs-keyword">public</span> ISubject&#123;<br>    <br>    <br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//对RealSubject的一种间接访问，在其中可以进行安全控制等.</span><br>        <span class="hljs-comment">//....</span><br>    &#125;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ClientApp</span>&#123;</span><br>    <br>    ISubject* subject;<br>    <br><span class="hljs-keyword">public</span>:<br>    <br>    <span class="hljs-built_in">ClientApp</span>()&#123;<br>        subject=<span class="hljs-keyword">new</span> <span class="hljs-built_in">SubjectProxy</span>();<br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DoTask</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//...</span><br>        subject-&gt;<span class="hljs-built_in">process</span>();<br>        <br>        <span class="hljs-comment">//....</span><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/70792f3a5d1deb63a5ead7eca014ebc9-550f9.png" alt="结构"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>”增加一层间接层“是软件系统中对许多复杂问题的一种常见解决方法。在面向对象系统中，直接使用某些对象会带来很多问题，作为间接层的Proxy对象便是解决这一问题的常用手段。</li><li>具体Proxy设计模式的实现方法、实现粒度都相差很大，有些可能对单个对象做细粒度的控制，如copy-on-write技术，有些可能对组件模块提供抽象代理层，在架构层次对对象做proxy。</li><li><strong>Proxy并不一定要求保持接口完整的一致性，只要能够实现间接控制，有时候损及一些透明性是可以接受的。</strong></li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在软件构建过程中，经常会出现多个对象相互关联交互的情况，对象之间常常会维持一种复杂的引用关系，如果遇到一些需求的更改，这种直接的引用关系将面临不断的变化。</li><li>在这种情况下，我们可以使用一个”中介对象“来管理对象间的关联关系，避免互相交互的对象之间的紧耦合引用关系，从而更好地抵御变化。</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>用一个中介对象来封装（封装变化）一系列的对象交互。中介者使各对象不需要显示的互相引用（编译时依赖-&gt;运行时依赖），从而使其耦合松散（管理变化），而且可以独立地改变它们之间的交互。——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/c847ecd4609b6c48b916c0e25874ff44-15be6.png" alt="实例"></p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6c5c6f834db0f241439220930281478b-39b5b.png" alt="实例"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>与门面模式的区别：<ul><li>门面模式：系统内部和系统外部的隔离</li><li>中介者模式：系统内部的隔离</li></ul></li><li>将多个对象间复杂的关联关系解耦，Mediator模式将多个对象间的控制逻辑进行集中管理，变“多个对象互相关联”为“多个对象和一个中介者关联”，简化了系统的维护，抵御了可能的变化。</li><li>随着控制逻辑的复杂化，Mediator模式具体对象的实现可能相当复杂。这时候可以对Mediator模式对象进行分解处理。</li><li>Facade模式是解耦系统间（单项）的对象关联关系；Mediator模式是解耦系统内各个对象之间（双向）的关联关系。</li></ul>]]></content>
     
     
     <categories>
@@ -5502,11 +5502,11 @@
   
   
   <entry>
-    <title>中介者模式</title>
-    <link href="/2020/05/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%EF%BC%9A%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
-    <url>/2020/05/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%EF%BC%9A%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
+    <title>代理模式</title>
+    <link href="/2020/05/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%EF%BC%9A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
+    <url>/2020/05/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%EF%BC%9A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</url>
     
-    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在软件构建过程中，经常会出现多个对象相互关联交互的情况，对象之间常常会维持一种复杂的引用关系，如果遇到一些需求的更改，这种直接的引用关系将面临不断的变化。</li><li>在这种情况下，我们可以使用一个”中介对象“来管理对象间的关联关系，避免互相交互的对象之间的紧耦合引用关系，从而更好地抵御变化。</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>用一个中介对象来封装（封装变化）一系列的对象交互。中介者使各对象不需要显示的互相引用（编译时依赖-&gt;运行时依赖），从而使其耦合松散（管理变化），而且可以独立地改变它们之间的交互。——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/c847ecd4609b6c48b916c0e25874ff44-15be6.png" alt="实例"></p><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6c5c6f834db0f241439220930281478b-39b5b.png" alt="实例"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>与门面模式的区别：<ul><li>门面模式：系统内部和系统外部的隔离</li><li>中介者模式：系统内部的隔离</li></ul></li><li>将多个对象间复杂的关联关系解耦，Mediator模式将多个对象间的控制逻辑进行集中管理，变“多个对象互相关联”为“多个对象和一个中介者关联”，简化了系统的维护，抵御了可能的变化。</li><li>随着控制逻辑的复杂化，Mediator模式具体对象的实现可能相当复杂。这时候可以对Mediator模式对象进行分解处理。</li><li>Facade模式是解耦系统间（单项）的对象关联关系；Mediator模式是解耦系统内各个对象之间（双向）的关联关系。</li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在面向对象系统中，有些对象由于某种原因（比如对象创建的开销很大，或者某些操作需要安全控制，或者需要进程外的访问等），直接访问会给使用者、或者系统结构带来很多麻烦。</li><li>如何在不失透明操作对象的同时来管理/控制这些对象特有的复杂性？增加一层间接层是软件开发中常见的解决方式</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>为其他对象提供一种代理以控制（隔离，使用接口）对这个对象的访问 </p><p>——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><strong>使用代理模式之前：</strong></p><p>直接使用功能类</p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ISubject</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-comment">//功能类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RealSubject</span>:</span> <span class="hljs-keyword">public</span> ISubject&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//....</span><br>    &#125;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ClientApp</span>&#123;</span><br>    <br>    ISubject* subject;<br>    <br><span class="hljs-keyword">public</span>:<br>    <br>    <span class="hljs-built_in">ClientApp</span>()&#123;<br>        subject=<span class="hljs-keyword">new</span> <span class="hljs-built_in">RealSubject</span>();<span class="hljs-comment">//直接使用</span><br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DoTask</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//...</span><br>        subject-&gt;<span class="hljs-built_in">process</span>();<br>        <br>        <span class="hljs-comment">//....</span><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><p><strong>使用代理模式之后：</strong></p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ISubject</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><br><span class="hljs-comment">//Proxy的设计，添加了一层间接层</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SubjectProxy</span>:</span> <span class="hljs-keyword">public</span> ISubject&#123;<br>    <br>    <br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//对RealSubject的一种间接访问，在其中可以进行安全控制等.</span><br>        <span class="hljs-comment">//....</span><br>    &#125;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ClientApp</span>&#123;</span><br>    <br>    ISubject* subject;<br>    <br><span class="hljs-keyword">public</span>:<br>    <br>    <span class="hljs-built_in">ClientApp</span>()&#123;<br>        subject=<span class="hljs-keyword">new</span> <span class="hljs-built_in">SubjectProxy</span>();<br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DoTask</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//...</span><br>        subject-&gt;<span class="hljs-built_in">process</span>();<br>        <br>        <span class="hljs-comment">//....</span><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/70792f3a5d1deb63a5ead7eca014ebc9-550f9.png" alt="结构"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>”增加一层间接层“是软件系统中对许多复杂问题的一种常见解决方法。在面向对象系统中，直接使用某些对象会带来很多问题，作为间接层的Proxy对象便是解决这一问题的常用手段。</li><li>具体Proxy设计模式的实现方法、实现粒度都相差很大，有些可能对单个对象做细粒度的控制，如copy-on-write技术，有些可能对组件模块提供抽象代理层，在架构层次对对象做proxy。</li><li><strong>Proxy并不一定要求保持接口完整的一致性，只要能够实现间接控制，有时候损及一些透明性是可以接受的。</strong></li></ul>]]></content>
     
     
     <categories>
@@ -5581,11 +5581,11 @@
   
   
   <entry>
-    <title>单例模式</title>
-    <link href="/2020/05/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AF%B9%E8%B1%A1%E6%80%A7%E8%83%BD%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
-    <url>/2020/05/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AF%B9%E8%B1%A1%E6%80%A7%E8%83%BD%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
+    <title>享元模式</title>
+    <link href="/2020/05/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AF%B9%E8%B1%A1%E6%80%A7%E8%83%BD%EF%BC%9A%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/"/>
+    <url>/2020/05/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AF%B9%E8%B1%A1%E6%80%A7%E8%83%BD%EF%BC%9A%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</url>
     
-    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在软件系统中，经常有这样一些特殊的类，必须保证它们在系统中只存在一个实例，才能确保它们的逻辑正确性、以及良好的效率。</li><li>如果绕过常规的构造器，提供一种机制来保证一个类只有一个实例？这应该是类设计者的责任，而不是使用者的责任。也就是说不应该规范使用者的使用方式，而是让类设计者在设计的时候就需要考虑。</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>保证一个类仅有一个实例，并提供一个该实例的全局访问点。</p><p>——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><strong>运用单例模式：</strong></p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span>&#123;</span><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-built_in">Singleton</span>();<br>    <span class="hljs-built_in">Singleton</span>(<span class="hljs-keyword">const</span> Singleton&amp; other);<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> Singleton* <span class="hljs-title">getInstance</span><span class="hljs-params">()</span></span>;<br>    <span class="hljs-keyword">static</span> Singleton* m_instance;<br>&#125;;<br><br>Singleton* Singleton::m_instance=<span class="hljs-literal">nullptr</span>;<br><br><span class="hljs-comment">//线程非安全版本</span><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (m_instance == <span class="hljs-literal">nullptr</span>) &#123;<br>        m_instance = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>();<br>    &#125;<br>    <span class="hljs-keyword">return</span> m_instance;<br>&#125;<br><br><span class="hljs-comment">//线程安全版本，但锁的代价过高</span><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    Lock lock;<br>    <span class="hljs-keyword">if</span> (m_instance == <span class="hljs-literal">nullptr</span>) &#123;<br>        m_instance = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>();<br>    &#125;<br>    <span class="hljs-keyword">return</span> m_instance;<br>&#125;<br><br><span class="hljs-comment">//双检查锁，但由于内存读写reorder不安全</span><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    <br>    <span class="hljs-keyword">if</span>(m_instance==<span class="hljs-literal">nullptr</span>)&#123;<br>        Lock lock;<br>        <span class="hljs-keyword">if</span> (m_instance == <span class="hljs-literal">nullptr</span>) &#123;<br>            m_instance = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>();<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> m_instance;<br>&#125;<br><br><span class="hljs-comment">//C++ 11版本之后的跨平台实现 (volatile)</span><br>std::atomic&lt;Singleton*&gt; Singleton::m_instance;<br>std::mutex Singleton::m_mutex;<br><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    Singleton* tmp = m_instance.<span class="hljs-built_in">load</span>(std::memory_order_relaxed);<br>    std::<span class="hljs-built_in">atomic_thread_fence</span>(std::memory_order_acquire);<span class="hljs-comment">//获取内存fence</span><br>    <span class="hljs-keyword">if</span> (tmp == <span class="hljs-literal">nullptr</span>) &#123;<br>        <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lock</span><span class="hljs-params">(m_mutex)</span></span>;<br>        tmp = m_instance.<span class="hljs-built_in">load</span>(std::memory_order_relaxed);<br>        <span class="hljs-keyword">if</span> (tmp == <span class="hljs-literal">nullptr</span>) &#123;<br>            tmp = <span class="hljs-keyword">new</span> Singleton;<br>            std::<span class="hljs-built_in">atomic_thread_fence</span>(std::memory_order_release);<span class="hljs-comment">//释放内存fence</span><br>            m_instance.<span class="hljs-built_in">store</span>(tmp, std::memory_order_relaxed);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> tmp;<br>&#125;<br></code></pre></div></td></tr></table></figure><p>这里需要特别注意双检查锁会发生的reorder问题：<br><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">//双检查锁，但由于内存读写reorder不安全</span><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    <br>    <span class="hljs-keyword">if</span>(m_instance==<span class="hljs-literal">nullptr</span>)&#123;<span class="hljs-comment">//1</span><br>        Lock lock;<br>        <span class="hljs-keyword">if</span> (m_instance == <span class="hljs-literal">nullptr</span>) &#123;<br>            m_instance = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>();<span class="hljs-comment">//2</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> m_instance;<span class="hljs-comment">//3</span><br>&#125;<br></code></pre></div></td></tr></table></figure></p><p>假设此时有两个线程A和B，且没有<code>Singleton</code>实例。</p><p>当A执行到<strong>代码行2</strong>时，由于编译器的优化，<strong>可能</strong>会将<code>new</code>本来的内部执行顺序从<strong>开辟内存-&gt;执行构造-&gt;赋予指针</strong>转变为<strong>开辟内存-&gt;赋予指针-&gt;执行构造</strong>，那么当A执行完<strong>赋予指针</strong>（即此时的<code>m_instance</code>已经被赋予地址了），并处于即将<strong>执行构造</strong>的时刻，B开始了。B执行到<strong>代码行1</strong>时，由于此时<code>m_instance</code>不是<code>nullptr</code>，所以B会直接执行<strong>代码行3</strong>，返回一块什么东西都没有的内存。若此时B中对<code>m_instance</code>进行操作，将会报错。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>构造和拷贝构造设置为私有的</li><li>Singleton模式中的实例构造器可以设置为protected以允许子类派生。</li><li>Singleton模式一般不要支持拷贝构造函数和Clone接口，因为这有可能导致多个对象实例，与Singleton模式的初衷违背。</li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在软件系统采用纯粹对象方案的问题在于大量细粒度的对象会很快充斥在系统中，从而带来很高的运行时代价：主要指内存需求方面的代价。</li><li>如何在避免大量细粒度对象问题的同时，让外部客户程序仍然能够透明地使用面向对象的方式来进行操作？</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>运用共享技术有效地支持大量细粒度的对象</p><p>——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><strong>运用享元模式：</strong></p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Font</span> &#123;</span><br><span class="hljs-keyword">private</span>:<br><br>    <span class="hljs-comment">//unique object key</span><br>    string key;<br>    <br>    <span class="hljs-comment">//object state</span><br>    <span class="hljs-comment">//....</span><br>    <br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Font</span>(<span class="hljs-keyword">const</span> string&amp; key)&#123;<br>        <span class="hljs-comment">//...</span><br>    &#125;<br>&#125;;<br>ß<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FontFactory</span>&#123;</span><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-comment">//使用map存放，可以根据实际情况更换数据结构</span><br>    map&lt;string,Font* &gt; fontPool;<br>    <br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">Font* <span class="hljs-title">GetFont</span><span class="hljs-params">(<span class="hljs-keyword">const</span> string&amp; key)</span></span>&#123;<br><br>        map&lt;string,Font*&gt;::iterator item=fontPool.<span class="hljs-built_in">find</span>(key);<br>        <br>        <span class="hljs-keyword">if</span>(item!=footPool.<span class="hljs-built_in">end</span>())&#123;<span class="hljs-comment">//如果有</span><br>            <span class="hljs-keyword">return</span> fontPool[key];<br>        &#125;<br>        <span class="hljs-keyword">else</span>&#123;<span class="hljs-comment">//如果没有</span><br>            Font* font = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Font</span>(key);<span class="hljs-comment">//创建一个新的对象</span><br>            fontPool[key]= font;<br>            <span class="hljs-keyword">return</span> font;<br>        &#125;<br><br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">clear</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//...</span><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/74b3290484036b5227b72f08956d1b60-8f07f.png" alt="结构"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>用一种共享的方式创建对象，有就返回，没有就创建</li><li>一般来讲，对象的状态尽可能的实现只读的方式</li><li>面向对象很好地解决了抽象性的问题，但是作为一个运行在机器中的程序实体，我们需要考虑对象的代价问题。Flyweight主要解决面向对象的代价问题，一般不触及面向对象的抽象性问题。</li><li>Flyweight采用对象共享的做法来降低系统中对象的个数，从而降低细粒度对象给系统带来的内存压力。在具体实现方面，要注意对象状态的处理。</li><li>对象的数量太大从而导致对象内存开销加大，什么样的数量才算大？这需要我们仔细的根据具体应用情况进行评估，而不能凭空臆断。</li></ul>]]></content>
     
     
     <categories>
@@ -5606,11 +5606,11 @@
   
   
   <entry>
-    <title>享元模式</title>
-    <link href="/2020/05/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AF%B9%E8%B1%A1%E6%80%A7%E8%83%BD%EF%BC%9A%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/"/>
-    <url>/2020/05/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AF%B9%E8%B1%A1%E6%80%A7%E8%83%BD%EF%BC%9A%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</url>
+    <title>单例模式</title>
+    <link href="/2020/05/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AF%B9%E8%B1%A1%E6%80%A7%E8%83%BD%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
+    <url>/2020/05/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AF%B9%E8%B1%A1%E6%80%A7%E8%83%BD%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
     
-    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在软件系统采用纯粹对象方案的问题在于大量细粒度的对象会很快充斥在系统中，从而带来很高的运行时代价：主要指内存需求方面的代价。</li><li>如何在避免大量细粒度对象问题的同时，让外部客户程序仍然能够透明地使用面向对象的方式来进行操作？</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>运用共享技术有效地支持大量细粒度的对象</p><p>——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><strong>运用享元模式：</strong></p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Font</span> &#123;</span><br><span class="hljs-keyword">private</span>:<br><br>    <span class="hljs-comment">//unique object key</span><br>    string key;<br>    <br>    <span class="hljs-comment">//object state</span><br>    <span class="hljs-comment">//....</span><br>    <br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Font</span>(<span class="hljs-keyword">const</span> string&amp; key)&#123;<br>        <span class="hljs-comment">//...</span><br>    &#125;<br>&#125;;<br>ß<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FontFactory</span>&#123;</span><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-comment">//使用map存放，可以根据实际情况更换数据结构</span><br>    map&lt;string,Font* &gt; fontPool;<br>    <br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">Font* <span class="hljs-title">GetFont</span><span class="hljs-params">(<span class="hljs-keyword">const</span> string&amp; key)</span></span>&#123;<br><br>        map&lt;string,Font*&gt;::iterator item=fontPool.<span class="hljs-built_in">find</span>(key);<br>        <br>        <span class="hljs-keyword">if</span>(item!=footPool.<span class="hljs-built_in">end</span>())&#123;<span class="hljs-comment">//如果有</span><br>            <span class="hljs-keyword">return</span> fontPool[key];<br>        &#125;<br>        <span class="hljs-keyword">else</span>&#123;<span class="hljs-comment">//如果没有</span><br>            Font* font = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Font</span>(key);<span class="hljs-comment">//创建一个新的对象</span><br>            fontPool[key]= font;<br>            <span class="hljs-keyword">return</span> font;<br>        &#125;<br><br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">clear</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-comment">//...</span><br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/74b3290484036b5227b72f08956d1b60-8f07f.png" alt="结构"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>用一种共享的方式创建对象，有就返回，没有就创建</li><li>一般来讲，对象的状态尽可能的实现只读的方式</li><li>面向对象很好地解决了抽象性的问题，但是作为一个运行在机器中的程序实体，我们需要考虑对象的代价问题。Flyweight主要解决面向对象的代价问题，一般不触及面向对象的抽象性问题。</li><li>Flyweight采用对象共享的做法来降低系统中对象的个数，从而降低细粒度对象给系统带来的内存压力。在具体实现方面，要注意对象状态的处理。</li><li>对象的数量太大从而导致对象内存开销加大，什么样的数量才算大？这需要我们仔细的根据具体应用情况进行评估，而不能凭空臆断。</li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul><li>在软件系统中，经常有这样一些特殊的类，必须保证它们在系统中只存在一个实例，才能确保它们的逻辑正确性、以及良好的效率。</li><li>如果绕过常规的构造器，提供一种机制来保证一个类只有一个实例？这应该是类设计者的责任，而不是使用者的责任。也就是说不应该规范使用者的使用方式，而是让类设计者在设计的时候就需要考虑。</li></ul><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote><p>保证一个类仅有一个实例，并提供一个该实例的全局访问点。</p><p>——《设计模式》GoF</p></blockquote><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><strong>运用单例模式：</strong></p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span>&#123;</span><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-built_in">Singleton</span>();<br>    <span class="hljs-built_in">Singleton</span>(<span class="hljs-keyword">const</span> Singleton&amp; other);<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> Singleton* <span class="hljs-title">getInstance</span><span class="hljs-params">()</span></span>;<br>    <span class="hljs-keyword">static</span> Singleton* m_instance;<br>&#125;;<br><br>Singleton* Singleton::m_instance=<span class="hljs-literal">nullptr</span>;<br><br><span class="hljs-comment">//线程非安全版本</span><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (m_instance == <span class="hljs-literal">nullptr</span>) &#123;<br>        m_instance = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>();<br>    &#125;<br>    <span class="hljs-keyword">return</span> m_instance;<br>&#125;<br><br><span class="hljs-comment">//线程安全版本，但锁的代价过高</span><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    Lock lock;<br>    <span class="hljs-keyword">if</span> (m_instance == <span class="hljs-literal">nullptr</span>) &#123;<br>        m_instance = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>();<br>    &#125;<br>    <span class="hljs-keyword">return</span> m_instance;<br>&#125;<br><br><span class="hljs-comment">//双检查锁，但由于内存读写reorder不安全</span><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    <br>    <span class="hljs-keyword">if</span>(m_instance==<span class="hljs-literal">nullptr</span>)&#123;<br>        Lock lock;<br>        <span class="hljs-keyword">if</span> (m_instance == <span class="hljs-literal">nullptr</span>) &#123;<br>            m_instance = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>();<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> m_instance;<br>&#125;<br><br><span class="hljs-comment">//C++ 11版本之后的跨平台实现 (volatile)</span><br>std::atomic&lt;Singleton*&gt; Singleton::m_instance;<br>std::mutex Singleton::m_mutex;<br><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    Singleton* tmp = m_instance.<span class="hljs-built_in">load</span>(std::memory_order_relaxed);<br>    std::<span class="hljs-built_in">atomic_thread_fence</span>(std::memory_order_acquire);<span class="hljs-comment">//获取内存fence</span><br>    <span class="hljs-keyword">if</span> (tmp == <span class="hljs-literal">nullptr</span>) &#123;<br>        <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lock</span><span class="hljs-params">(m_mutex)</span></span>;<br>        tmp = m_instance.<span class="hljs-built_in">load</span>(std::memory_order_relaxed);<br>        <span class="hljs-keyword">if</span> (tmp == <span class="hljs-literal">nullptr</span>) &#123;<br>            tmp = <span class="hljs-keyword">new</span> Singleton;<br>            std::<span class="hljs-built_in">atomic_thread_fence</span>(std::memory_order_release);<span class="hljs-comment">//释放内存fence</span><br>            m_instance.<span class="hljs-built_in">store</span>(tmp, std::memory_order_relaxed);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> tmp;<br>&#125;<br></code></pre></div></td></tr></table></figure><p>这里需要特别注意双检查锁会发生的reorder问题：<br><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">//双检查锁，但由于内存读写reorder不安全</span><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::getInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    <br>    <span class="hljs-keyword">if</span>(m_instance==<span class="hljs-literal">nullptr</span>)&#123;<span class="hljs-comment">//1</span><br>        Lock lock;<br>        <span class="hljs-keyword">if</span> (m_instance == <span class="hljs-literal">nullptr</span>) &#123;<br>            m_instance = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>();<span class="hljs-comment">//2</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> m_instance;<span class="hljs-comment">//3</span><br>&#125;<br></code></pre></div></td></tr></table></figure></p><p>假设此时有两个线程A和B，且没有<code>Singleton</code>实例。</p><p>当A执行到<strong>代码行2</strong>时，由于编译器的优化，<strong>可能</strong>会将<code>new</code>本来的内部执行顺序从<strong>开辟内存-&gt;执行构造-&gt;赋予指针</strong>转变为<strong>开辟内存-&gt;赋予指针-&gt;执行构造</strong>，那么当A执行完<strong>赋予指针</strong>（即此时的<code>m_instance</code>已经被赋予地址了），并处于即将<strong>执行构造</strong>的时刻，B开始了。B执行到<strong>代码行1</strong>时，由于此时<code>m_instance</code>不是<code>nullptr</code>，所以B会直接执行<strong>代码行3</strong>，返回一块什么东西都没有的内存。若此时B中对<code>m_instance</code>进行操作，将会报错。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>构造和拷贝构造设置为私有的</li><li>Singleton模式中的实例构造器可以设置为protected以允许子类派生。</li><li>Singleton模式一般不要支持拷贝构造函数和Clone接口，因为这有可能导致多个对象实例，与Singleton模式的初衷违背。</li></ul>]]></content>
     
     
     <categories>
@@ -5685,31 +5685,12 @@
     <link href="/2020/05/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     <url>/2020/05/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</url>
     
-    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="/pdf/OperatingSystem.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="blog.zhongshiyu.xyz/pdf/mindmaster/OperatingSystem.pdf"  title="新窗口打开" target="_blank">进入全屏</a>]]></content>
+    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://blog.zhongshiyu.xyz/pdf/mindmaster/OperatingSystem.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="https://blog.zhongshiyu.xyz/pdf/mindmaster/OperatingSystem.pdf"  title="在新窗口打开" target="_blank">进入全屏</a>]]></content>
     
     
     <categories>
       
       <category>操作系统</category>
-      
-    </categories>
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>汇编</title>
-    <link href="/2020/05/06/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96/"/>
-    <url>/2020/05/06/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96/</url>
-    
-    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/pdf/AssemblyLanguage.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="blog.zhongshiyu.xyz/pdf/mindmaster/AssemblyLanguage.pdf"  title="新窗口打开" target="_blank">进入全屏</a>]]></content>
-    
-    
-    <categories>
-      
-      <category>汇编</category>
       
     </categories>
     
@@ -5748,16 +5729,16 @@
   
   
   <entry>
-    <title>软件项目管理</title>
-    <link href="/2020/05/06/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"/>
-    <url>/2020/05/06/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</url>
+    <title>汇编</title>
+    <link href="/2020/05/06/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96/"/>
+    <url>/2020/05/06/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96/</url>
     
-    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/pdf/SoftwareProjectManagement.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="blog.zhongshiyu.xyz/pdf/mindmaster/SoftwareProjectManagement.pdf"  title="新窗口打开" target="_blank">进入全屏</a>]]></content>
+    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/pdf/AssemblyLanguage.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="https://blog.zhongshiyu.xyz/pdf/mindmaster/AssemblyLanguage.pdf"  title="在新窗口打开" target="_blank">进入全屏</a>]]></content>
     
     
     <categories>
       
-      <category>软件项目管理</category>
+      <category>汇编</category>
       
     </categories>
     
@@ -5811,6 +5792,25 @@
       <tag>对象创建</tag>
       
     </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>软件项目管理</title>
+    <link href="/2020/05/06/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"/>
+    <url>/2020/05/06/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/pdf/SoftwareProjectManagement.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="https://blog.zhongshiyu.xyz/pdf/mindmaster/SoftwareProjectManagement.pdf"  title="在新窗口打开" target="_blank">进入全屏</a>]]></content>
+    
+    
+    <categories>
+      
+      <category>软件项目管理</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -6021,31 +6021,6 @@
   
   
   <entry>
-    <title>Windows环境下的git配置</title>
-    <link href="/2020/04/16/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Windows%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84git%E9%85%8D%E7%BD%AE/"/>
-    <url>/2020/04/16/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Windows%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84git%E9%85%8D%E7%BD%AE/</url>
-    
-    <content type="html"><![CDATA[<h2 id="1-软件的安装"><a href="#1-软件的安装" class="headerlink" title="1.软件的安装"></a>1.软件的安装</h2><h3 id="1-1-软件下载"><a href="#1-1-软件下载" class="headerlink" title="1.1 软件下载"></a>1.1 软件下载</h3><p>下载地址：<a href="http://www.git-scm.com/download/">http://www.git-scm.com/download/</a></p><h3 id="1-2-软件安装"><a href="#1-2-软件安装" class="headerlink" title="1.2 软件安装"></a>1.2 软件安装</h3><p>配置详情：<a href="https://www.cnblogs.com/xueweisuoyong/p/11914045.html">https://www.cnblogs.com/xueweisuoyong/p/11914045.html</a></p><h2 id="2-SSH的配置"><a href="#2-SSH的配置" class="headerlink" title="2.SSH的配置"></a>2.SSH的配置</h2><h3 id="1-1-设置公钥私钥（若已有请跳过）"><a href="#1-1-设置公钥私钥（若已有请跳过）" class="headerlink" title="1.1 设置公钥私钥（若已有请跳过）"></a>1.1 设置公钥私钥（若已有请跳过）</h3><p>打开CMD，输入<strong>ssh-keygen -t rsa -C “你的邮箱地址”</strong>，按照提示输入并完成。</p><h3 id="1-2-设置Git"><a href="#1-2-设置Git" class="headerlink" title="1.2 设置Git"></a>1.2 设置Git</h3><p>打开Git CMD，输入<strong>git config —global user.name “用户名”</strong>，<strong>git config —global user.email “你的邮箱地址”</strong>。</p><h3 id="1-3-设置github"><a href="#1-3-设置github" class="headerlink" title="1.3 设置github"></a>1.3 设置github</h3><p>打开github个人主页，在右上角的头像里选择<strong>Settings</strong>，然后依次<strong>SSH and GPG keys</strong>-&gt;<strong>New SSH key</strong>。其中Title中写一个适当的标题，再将本地电脑<strong>C:\Users.ssh\id_rsa.pub</strong>中的内容复制到Key里面即可。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>环境搭建</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>github</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>红黑树</title>
     <link href="/2020/04/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E7%BA%A2%E9%BB%91%E6%A0%91/"/>
     <url>/2020/04/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E7%BA%A2%E9%BB%91%E6%A0%91/</url>
@@ -6065,6 +6040,31 @@
       <tag>二叉树</tag>
       
       <tag>红黑树</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Windows环境下的git配置</title>
+    <link href="/2020/04/16/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Windows%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84git%E9%85%8D%E7%BD%AE/"/>
+    <url>/2020/04/16/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Windows%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84git%E9%85%8D%E7%BD%AE/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-软件的安装"><a href="#1-软件的安装" class="headerlink" title="1.软件的安装"></a>1.软件的安装</h2><h3 id="1-1-软件下载"><a href="#1-1-软件下载" class="headerlink" title="1.1 软件下载"></a>1.1 软件下载</h3><p>下载地址：<a href="http://www.git-scm.com/download/">http://www.git-scm.com/download/</a></p><h3 id="1-2-软件安装"><a href="#1-2-软件安装" class="headerlink" title="1.2 软件安装"></a>1.2 软件安装</h3><p>配置详情：<a href="https://www.cnblogs.com/xueweisuoyong/p/11914045.html">https://www.cnblogs.com/xueweisuoyong/p/11914045.html</a></p><h2 id="2-SSH的配置"><a href="#2-SSH的配置" class="headerlink" title="2.SSH的配置"></a>2.SSH的配置</h2><h3 id="1-1-设置公钥私钥（若已有请跳过）"><a href="#1-1-设置公钥私钥（若已有请跳过）" class="headerlink" title="1.1 设置公钥私钥（若已有请跳过）"></a>1.1 设置公钥私钥（若已有请跳过）</h3><p>打开CMD，输入<strong>ssh-keygen -t rsa -C “你的邮箱地址”</strong>，按照提示输入并完成。</p><h3 id="1-2-设置Git"><a href="#1-2-设置Git" class="headerlink" title="1.2 设置Git"></a>1.2 设置Git</h3><p>打开Git CMD，输入<strong>git config —global user.name “用户名”</strong>，<strong>git config —global user.email “你的邮箱地址”</strong>。</p><h3 id="1-3-设置github"><a href="#1-3-设置github" class="headerlink" title="1.3 设置github"></a>1.3 设置github</h3><p>打开github个人主页，在右上角的头像里选择<strong>Settings</strong>，然后依次<strong>SSH and GPG keys</strong>-&gt;<strong>New SSH key</strong>。其中Title中写一个适当的标题，再将本地电脑<strong>C:\Users.ssh\id_rsa.pub</strong>中的内容复制到Key里面即可。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>环境搭建</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>github</tag>
       
     </tags>
     
@@ -6199,9 +6199,9 @@
       
       <tag>深度优先搜索</tag>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
       <tag>拓扑排序</tag>
       
