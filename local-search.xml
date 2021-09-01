@@ -49,11 +49,11 @@
     
     <tags>
       
+      <tag>快速排序</tag>
+      
       <tag>数组</tag>
       
       <tag>优先级队列</tag>
-      
-      <tag>快速排序</tag>
       
     </tags>
     
@@ -78,13 +78,13 @@
     
     <tags>
       
-      <tag>数组</tag>
+      <tag>摩尔投票法</tag>
       
       <tag>栈</tag>
       
-      <tag>剑指Offer</tag>
+      <tag>数组</tag>
       
-      <tag>摩尔投票法</tag>
+      <tag>剑指Offer</tag>
       
     </tags>
     
@@ -109,11 +109,11 @@
     
     <tags>
       
+      <tag>字符串</tag>
+      
       <tag>哈希表</tag>
       
       <tag>递归</tag>
-      
-      <tag>字符串</tag>
       
       <tag>回溯法</tag>
       
@@ -144,9 +144,9 @@
       
       <tag>二叉树</tag>
       
-      <tag>中序遍历</tag>
-      
       <tag>二叉搜索树</tag>
+      
+      <tag>中序遍历</tag>
       
       <tag>剑指Offer</tag>
       
@@ -173,9 +173,9 @@
     
     <tags>
       
-      <tag>就地算法</tag>
-      
       <tag>链表</tag>
+      
+      <tag>就地算法</tag>
       
       <tag>剑指Offer</tag>
       
@@ -202,9 +202,9 @@
     
     <tags>
       
-      <tag>双指针</tag>
-      
       <tag>链表</tag>
+      
+      <tag>双指针</tag>
       
       <tag>快慢指针</tag>
       
@@ -231,9 +231,9 @@
     
     <tags>
       
-      <tag>层序遍历</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>层序遍历</tag>
       
       <tag>剑指Offer</tag>
       
@@ -289,9 +289,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>递归</tag>
       
       <tag>剑指Offer</tag>
       
@@ -318,11 +318,11 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>迭代</tag>
       
       <tag>递归</tag>
-      
-      <tag>二叉树</tag>
       
       <tag>双重递归</tag>
       
@@ -583,19 +583,25 @@
     
     <tags>
       
+      <tag>链表</tag>
+      
+      <tag>选择排序</tag>
+      
+      <tag>快速排序</tag>
+      
+      <tag>希尔排序</tag>
+      
+      <tag>桶排序</tag>
+      
+      <tag>计数排序</tag>
+      
+      <tag>队列</tag>
+      
       <tag>图</tag>
       
       <tag>优先级队列</tag>
       
-      <tag>链表</tag>
-      
       <tag>二分查找</tag>
-      
-      <tag>快速排序</tag>
-      
-      <tag>队列</tag>
-      
-      <tag>计数排序</tag>
       
       <tag>归并排序</tag>
       
@@ -603,13 +609,7 @@
       
       <tag>堆排序</tag>
       
-      <tag>选择排序</tag>
-      
       <tag>基数排序</tag>
-      
-      <tag>桶排序</tag>
-      
-      <tag>希尔排序</tag>
       
       <tag>树</tag>
       
@@ -700,11 +700,11 @@
     
     <tags>
       
-      <tag>递归</tag>
+      <tag>链表</tag>
       
       <tag>栈</tag>
       
-      <tag>链表</tag>
+      <tag>递归</tag>
       
       <tag>剑指Offer</tag>
       
@@ -760,9 +760,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>递归</tag>
       
     </tags>
     
@@ -899,9 +899,9 @@
     
     <tags>
       
-      <tag>深度优先搜索</tag>
-      
       <tag>栈</tag>
+      
+      <tag>深度优先搜索</tag>
       
       <tag>图</tag>
       
@@ -984,9 +984,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>递归</tag>
       
       <tag>中序遍历</tag>
       
@@ -1013,13 +1013,13 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>迭代</tag>
       
       <tag>层序遍历</tag>
       
       <tag>递归</tag>
-      
-      <tag>二叉树</tag>
       
     </tags>
     
@@ -1044,11 +1044,11 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>迭代</tag>
       
       <tag>层序遍历</tag>
-      
-      <tag>二叉树</tag>
       
     </tags>
     
@@ -1179,15 +1179,15 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>哈希表</tag>
+      
+      <tag>栈</tag>
       
       <tag>迭代</tag>
       
       <tag>递归</tag>
-      
-      <tag>二叉树</tag>
-      
-      <tag>栈</tag>
       
       <tag>中序遍历</tag>
       
@@ -1214,9 +1214,9 @@
     
     <tags>
       
-      <tag>数组</tag>
-      
       <tag>快速排序</tag>
+      
+      <tag>数组</tag>
       
     </tags>
     
@@ -1399,9 +1399,9 @@
     
     <tags>
       
-      <tag>数组</tag>
-      
       <tag>字符串</tag>
+      
+      <tag>数组</tag>
       
     </tags>
     
@@ -1507,9 +1507,9 @@
     
     <tags>
       
-      <tag>层序遍历</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>层序遍历</tag>
       
       <tag>深度优先搜索</tag>
       
@@ -1671,11 +1671,11 @@
     
     <tags>
       
+      <tag>链表</tag>
+      
       <tag>迭代</tag>
       
       <tag>递归</tag>
-      
-      <tag>链表</tag>
       
     </tags>
     
@@ -1831,6 +1831,25 @@
   
   
   <entry>
+    <title>汇编</title>
+    <link href="/2021/02/24/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96/"/>
+    <url>/2021/02/24/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96/</url>
+    
+    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/pdf/AssemblyLanguage.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="https://blog.zhongshiyu.xyz/pdf/mindmaster/AssemblyLanguage.pdf"  title="在新窗口打开" target="_blank">进入全屏</a>]]></content>
+    
+    
+    <categories>
+      
+      <category>汇编</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>205. 同构字符串</title>
     <link href="/2021/02/19/LeetCode/205.%20%E5%90%8C%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
     <url>/2021/02/19/LeetCode/205.%20%E5%90%8C%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
@@ -1847,9 +1866,9 @@
     
     <tags>
       
-      <tag>哈希表</tag>
-      
       <tag>字符串</tag>
+      
+      <tag>哈希表</tag>
       
     </tags>
     
@@ -2059,9 +2078,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>递归</tag>
       
     </tags>
     
@@ -2169,9 +2188,9 @@
     
     <tags>
       
-      <tag>暴力</tag>
-      
       <tag>字符串</tag>
+      
+      <tag>暴力</tag>
       
       <tag>双指针</tag>
       
@@ -2223,9 +2242,9 @@
     
     <tags>
       
-      <tag>暴力</tag>
-      
       <tag>字符串</tag>
+      
+      <tag>暴力</tag>
       
       <tag>双指针</tag>
       
@@ -2331,9 +2350,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>递归</tag>
       
       <tag>深度优先搜索</tag>
       
@@ -2360,9 +2379,9 @@
     
     <tags>
       
-      <tag>暴力</tag>
-      
       <tag>字符串</tag>
+      
+      <tag>暴力</tag>
       
       <tag>贪心</tag>
       
@@ -2526,9 +2545,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>递归</tag>
       
       <tag>深度优先搜索</tag>
       
@@ -2665,9 +2684,9 @@
     
     <tags>
       
-      <tag>哈希表</tag>
-      
       <tag>链表</tag>
+      
+      <tag>哈希表</tag>
       
       <tag>奇技淫巧</tag>
       
@@ -2769,11 +2788,11 @@
     
     <tags>
       
+      <tag>字符串</tag>
+      
       <tag>栈</tag>
       
       <tag>就地算法</tag>
-      
-      <tag>字符串</tag>
       
     </tags>
     
@@ -2798,9 +2817,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>递归</tag>
       
     </tags>
     
@@ -2927,9 +2946,9 @@
       
       <tag>哈希表</tag>
       
-      <tag>数组</tag>
-      
       <tag>计数排序</tag>
+      
+      <tag>数组</tag>
       
     </tags>
     
@@ -3017,6 +3036,25 @@
   
   
   <entry>
+    <title>软件项目管理</title>
+    <link href="/2020/12/06/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"/>
+    <url>/2020/12/06/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/pdf/SoftwareProjectManagement.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="https://blog.zhongshiyu.xyz/pdf/mindmaster/SoftwareProjectManagement.pdf"  title="在新窗口打开" target="_blank">进入全屏</a>]]></content>
+    
+    
+    <categories>
+      
+      <category>软件项目管理</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Room数据库</title>
     <link href="/2020/12/06/Android/Jetpack/Room%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     <url>/2020/12/06/Android/Jetpack/Room%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
@@ -3060,9 +3098,9 @@
     
     <tags>
       
-      <tag>哈希表</tag>
-      
       <tag>字符串</tag>
+      
+      <tag>哈希表</tag>
       
     </tags>
     
@@ -3112,9 +3150,9 @@
     
     <tags>
       
-      <tag>双指针</tag>
-      
       <tag>链表</tag>
+      
+      <tag>双指针</tag>
       
       <tag>快慢指针</tag>
       
@@ -3166,11 +3204,11 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>迭代</tag>
       
       <tag>层序遍历</tag>
-      
-      <tag>二叉树</tag>
       
     </tags>
     
@@ -3280,11 +3318,11 @@
     
     <tags>
       
+      <tag>链表</tag>
+      
       <tag>迭代</tag>
       
       <tag>递归</tag>
-      
-      <tag>链表</tag>
       
     </tags>
     
@@ -3309,11 +3347,11 @@
     
     <tags>
       
+      <tag>链表</tag>
+      
       <tag>迭代</tag>
       
       <tag>递归</tag>
-      
-      <tag>链表</tag>
       
     </tags>
     
@@ -3382,9 +3420,9 @@
     
     <tags>
       
-      <tag>哈希表</tag>
-      
       <tag>链表</tag>
+      
+      <tag>哈希表</tag>
       
     </tags>
     
@@ -3434,9 +3472,9 @@
     
     <tags>
       
-      <tag>迭代</tag>
-      
       <tag>链表</tag>
+      
+      <tag>迭代</tag>
       
     </tags>
     
@@ -3461,11 +3499,11 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>哈希表</tag>
       
       <tag>迭代</tag>
-      
-      <tag>二叉树</tag>
       
     </tags>
     
@@ -3652,9 +3690,9 @@
       
       <tag>二叉树</tag>
       
-      <tag>中序遍历</tag>
-      
       <tag>二叉搜索树</tag>
+      
+      <tag>中序遍历</tag>
       
     </tags>
     
@@ -3731,13 +3769,13 @@
     
     <tags>
       
-      <tag>迭代</tag>
-      
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
       
       <tag>栈</tag>
+      
+      <tag>迭代</tag>
+      
+      <tag>递归</tag>
       
       <tag>前序遍历</tag>
       
@@ -3901,9 +3939,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>栈</tag>
+      
+      <tag>递归</tag>
       
       <tag>回溯法</tag>
       
@@ -3930,13 +3968,13 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
       
-      <tag>中序遍历</tag>
-      
       <tag>二叉搜索树</tag>
+      
+      <tag>递归</tag>
+      
+      <tag>中序遍历</tag>
       
     </tags>
     
@@ -3990,9 +4028,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>递归</tag>
       
       <tag>深度优先搜索</tag>
       
@@ -4046,9 +4084,9 @@
     
     <tags>
       
-      <tag>哈希表</tag>
-      
       <tag>链表</tag>
+      
+      <tag>哈希表</tag>
       
       <tag>Floyd判圈法</tag>
       
@@ -4075,13 +4113,13 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
       
-      <tag>中序遍历</tag>
-      
       <tag>二叉搜索树</tag>
+      
+      <tag>递归</tag>
+      
+      <tag>中序遍历</tag>
       
     </tags>
     
@@ -4106,11 +4144,11 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>哈希表</tag>
       
       <tag>递归</tag>
-      
-      <tag>二叉树</tag>
       
     </tags>
     
@@ -4164,9 +4202,9 @@
       
       <tag>二叉树</tag>
       
-      <tag>中序遍历</tag>
-      
       <tag>二叉搜索树</tag>
+      
+      <tag>中序遍历</tag>
       
     </tags>
     
@@ -4347,11 +4385,11 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>层序遍历</tag>
       
       <tag>递归</tag>
-      
-      <tag>二叉树</tag>
       
     </tags>
     
@@ -4376,13 +4414,13 @@
     
     <tags>
       
-      <tag>哈希表</tag>
-      
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
       
+      <tag>哈希表</tag>
+      
       <tag>栈</tag>
+      
+      <tag>递归</tag>
       
       <tag>后序遍历</tag>
       
@@ -4440,11 +4478,11 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>哈希表</tag>
       
       <tag>递归</tag>
-      
-      <tag>二叉树</tag>
       
     </tags>
     
@@ -4496,13 +4534,13 @@
     
     <tags>
       
+      <tag>二叉树</tag>
+      
       <tag>迭代</tag>
       
       <tag>层序遍历</tag>
       
       <tag>递归</tag>
-      
-      <tag>二叉树</tag>
       
     </tags>
     
@@ -4629,9 +4667,9 @@
     
     <tags>
       
-      <tag>迭代</tag>
-      
       <tag>链表</tag>
+      
+      <tag>迭代</tag>
       
     </tags>
     
@@ -4708,9 +4746,9 @@
     
     <tags>
       
-      <tag>哈希表</tag>
-      
       <tag>字符串</tag>
+      
+      <tag>哈希表</tag>
       
       <tag>队列</tag>
       
@@ -5001,11 +5039,17 @@
     
     <tags>
       
-      <tag>数组</tag>
+      <tag>选择排序</tag>
       
       <tag>快速排序</tag>
       
+      <tag>希尔排序</tag>
+      
+      <tag>桶排序</tag>
+      
       <tag>计数排序</tag>
+      
+      <tag>数组</tag>
       
       <tag>归并排序</tag>
       
@@ -5013,13 +5057,7 @@
       
       <tag>堆排序</tag>
       
-      <tag>选择排序</tag>
-      
       <tag>基数排序</tag>
-      
-      <tag>桶排序</tag>
-      
-      <tag>希尔排序</tag>
       
     </tags>
     
@@ -5073,9 +5111,9 @@
     
     <tags>
       
-      <tag>递归</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>递归</tag>
       
     </tags>
     
@@ -5214,9 +5252,9 @@
     
     <tags>
       
-      <tag>数组</tag>
-      
       <tag>链表</tag>
+      
+      <tag>数组</tag>
       
     </tags>
     
@@ -5681,25 +5719,6 @@
   
   
   <entry>
-    <title>操作系统</title>
-    <link href="/2020/05/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    <url>/2020/05/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</url>
-    
-    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://blog.zhongshiyu.xyz/pdf/mindmaster/OperatingSystem.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="https://blog.zhongshiyu.xyz/pdf/mindmaster/OperatingSystem.pdf"  title="在新窗口打开" target="_blank">进入全屏</a>]]></content>
-    
-    
-    <categories>
-      
-      <category>操作系统</category>
-      
-    </categories>
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>串</title>
     <link href="/2020/05/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E4%B8%B2/"/>
     <url>/2020/05/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/ADT%EF%BC%9A%E4%B8%B2/</url>
@@ -5723,25 +5742,6 @@
       <tag>BM-BC算法</tag>
       
     </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>汇编</title>
-    <link href="/2020/05/06/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96/"/>
-    <url>/2020/05/06/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96/</url>
-    
-    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/pdf/AssemblyLanguage.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="https://blog.zhongshiyu.xyz/pdf/mindmaster/AssemblyLanguage.pdf"  title="在新窗口打开" target="_blank">进入全屏</a>]]></content>
-    
-    
-    <categories>
-      
-      <category>汇编</category>
-      
-    </categories>
-    
     
   </entry>
   
@@ -5792,25 +5792,6 @@
       <tag>对象创建</tag>
       
     </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>软件项目管理</title>
-    <link href="/2020/05/06/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"/>
-    <url>/2020/05/06/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</url>
-    
-    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/pdf/SoftwareProjectManagement.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="https://blog.zhongshiyu.xyz/pdf/mindmaster/SoftwareProjectManagement.pdf"  title="在新窗口打开" target="_blank">进入全屏</a>]]></content>
-    
-    
-    <categories>
-      
-      <category>软件项目管理</category>
-      
-    </categories>
-    
     
   </entry>
   
@@ -5985,9 +5966,9 @@
       
       <tag>哈希表</tag>
       
-      <tag>计数排序</tag>
-      
       <tag>桶排序</tag>
+      
+      <tag>计数排序</tag>
       
     </tags>
     
@@ -6067,6 +6048,25 @@
       <tag>github</tag>
       
     </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>操作系统</title>
+    <link href="/2020/04/11/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <url>/2020/04/11/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><div class="row">    <embed src="https://blog.zhongshiyu.xyz/pdf/mindmaster/OperatingSystem.pdf" width="100%" height="550" type="application/pdf"></div><hr><a class="btn" href="https://blog.zhongshiyu.xyz/pdf/mindmaster/OperatingSystem.pdf"  title="在新窗口打开" target="_blank">进入全屏</a><h2 id="随记"><a href="#随记" class="headerlink" title="随记"></a>随记</h2><h3 id="系统调用与函数调用"><a href="#系统调用与函数调用" class="headerlink" title="系统调用与函数调用"></a>系统调用与函数调用</h3><ul><li>系统调用：应用程序和内核拥有各自的堆栈，并且需要进行用户态到内核态的转换</li><li>函数调用：在同一个栈空间里面执行</li></ul><h3 id="同步与异步"><a href="#同步与异步" class="headerlink" title="同步与异步"></a>同步与异步</h3><ul><li>同步就是整个处理过程顺序执行，当各个过程都执行完毕，并返回结果。是 一种<strong>线性执行</strong>的方式，执行的流程不能跨越。一般用于<strong>流程性比较强</strong>的程序，比如用户登录，需要对用户验证完成后才能登录系统。</li><li>异步则是只是发送了调用的指令，调用者<strong>无需等待</strong>被调用的方法完全执行完毕；而是继续执行下面的流程。是一种并行处理的方式，不必等待一个程序执行完，可以执行其它的任务，比如页面数据加载过程，不需要等所有数据获取后再显示页面。</li></ul><h3 id="中断与异常"><a href="#中断与异常" class="headerlink" title="中断与异常"></a>中断与异常</h3><ul><li>中断（异步）：来源于外设，来自不同的硬件设备的计时器和网络的中断</li><li>异常（同步）：来源于不良的应用程序，非法指令或者其他坏的处理状态。比如内存出错</li></ul><p>中断和异常都有软件和硬件的处理：</p><ul><li><p>软件：因为中断打断程序的执行，所以中断处理过程中需要有保护程序</p><ul><li>保存当前处理状态</li><li>中断服务程序处理</li><li>清楚中断标记</li><li>恢复之前保存的处理状态</li></ul></li><li><p>硬件：不同外设的中断都可以到<strong>中断表</strong>中去查询对应的<strong>中断例程</strong>的起始地址</p><ul><li><p>设置中断标记（CPU初始化）</p><ul><li><p>将内部、外部事件设置中断标记</p></li><li><p>中断事件的ID</p></li></ul></li></ul></li></ul><h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><ul><li>物理地址空间：硬件支持的内存空间</li><li>逻辑地址空间：一个运行的程序<strong>所拥有</strong>的内存范围</li></ul><p>为了保证地址安全，操作系统使用<strong>基址寄存器</strong>和<strong>界限寄存器</strong>设定逻辑地址空间</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li><a href="https://space.bilibili.com/114366178/channel/detail?cid=172712&amp;ctype=0">bilibili-从0开始数-操作系统原理</a></li><li><a href="https://github.com/cosen1024/Java-Interview/blob/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.md">cosen1024/Java-Interview/操作系统</a></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -6230,9 +6230,9 @@
     
     <tags>
       
-      <tag>层序遍历</tag>
-      
       <tag>二叉树</tag>
+      
+      <tag>层序遍历</tag>
       
       <tag>中序遍历</tag>
       
