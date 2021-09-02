@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,20 +287,29 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">向量</h1>
+
             
+
             <div class="markdown-body">
               <h2 id="向量的定义"><a href="#向量的定义" class="headerlink" title="向量的定义"></a>向量的定义</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20210629230258.png" srcset="/img/loading.gif" lazyload alt="向量的定义"></p>
 <h2 id="向量的构造和析构"><a href="#向量的构造和析构" class="headerlink" title="向量的构造和析构"></a>向量的构造和析构</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/******************************************************************************************</span><br><span class="hljs-comment"> * Data Structures in C++</span><br><span class="hljs-comment"> * ISBN: 7-302-33064-6 &amp; 7-302-33065-3 &amp; 7-302-29652-2 &amp; 7-302-26883-3</span><br><span class="hljs-comment"> * Junhui DENG, deng@tsinghua.edu.cn</span><br><span class="hljs-comment"> * Computer Science &amp; Technology, Tsinghua University</span><br><span class="hljs-comment"> * Copyright (c) 2003-2020. All rights reserved.</span><br><span class="hljs-comment"> ******************************************************************************************/</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> once</span><br><br><span class="hljs-keyword">using</span> Rank = <span class="hljs-keyword">int</span>; <span class="hljs-comment">//秩</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> DEFAULT_CAPACITY  3 <span class="hljs-comment">//默认的初始容量（实际应用中可设置为更大）</span></span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Vector</span> &#123;</span> <span class="hljs-comment">//向量模板类</span><br><span class="hljs-keyword">protected</span>:<br>   Rank _size; <span class="hljs-keyword">int</span> _capacity;  T* _elem; <span class="hljs-comment">//规模、容量、数据区</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">copyFrom</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>* A, Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//复制数组区间A[lo, hi)</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">expand</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//空间不足时扩容</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">shrink</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//装填因子过小时压缩</span><br>   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">bubble</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//扫描交换</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bubbleSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//起泡排序算法</span><br>   <span class="hljs-function">Rank <span class="hljs-title">maxItem</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//选取最大元素</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">selectionSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//选择排序算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge</span> <span class="hljs-params">( Rank lo, Rank mi, Rank hi )</span></span>; <span class="hljs-comment">//归并算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mergeSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//归并排序算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">heapSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//堆排序（稍后结合完全堆讲解）</span><br>   <span class="hljs-function">Rank <span class="hljs-title">partition</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//轴点构造算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quickSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//快速排序算法</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">shellSort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//希尔排序算法</span><br><span class="hljs-keyword">public</span>:<br><span class="hljs-comment">// 构造函数</span><br>   <span class="hljs-built_in">Vector</span> ( <span class="hljs-keyword">int</span> c = DEFAULT_CAPACITY, <span class="hljs-keyword">int</span> s = <span class="hljs-number">0</span>, T v = <span class="hljs-number">0</span> ) <span class="hljs-comment">//容量为c、规模为s、所有元素初始为v</span><br>   &#123; _elem = <span class="hljs-keyword">new</span> T[_capacity = c]; <span class="hljs-keyword">for</span> ( _size = <span class="hljs-number">0</span>; _size &lt; s; _elem[_size++] = v ); &#125; <span class="hljs-comment">//s&lt;=c</span><br>   <span class="hljs-built_in">Vector</span> ( T <span class="hljs-keyword">const</span>* A, Rank n ) &#123; <span class="hljs-built_in">copyFrom</span> ( A, <span class="hljs-number">0</span>, n ); &#125; <span class="hljs-comment">//数组整体复制</span><br>   <span class="hljs-built_in">Vector</span> ( T <span class="hljs-keyword">const</span>* A, Rank lo, Rank hi ) &#123; <span class="hljs-built_in">copyFrom</span> ( A, lo, hi ); &#125; <span class="hljs-comment">//区间</span><br>   <span class="hljs-built_in">Vector</span> ( Vector&lt;T&gt; <span class="hljs-keyword">const</span>&amp; V ) &#123; <span class="hljs-built_in">copyFrom</span> ( V._elem, <span class="hljs-number">0</span>, V._size ); &#125; <span class="hljs-comment">//向量整体复制</span><br>   <span class="hljs-built_in">Vector</span> ( Vector&lt;T&gt; <span class="hljs-keyword">const</span>&amp; V, Rank lo, Rank hi ) &#123; <span class="hljs-built_in">copyFrom</span> ( V._elem, lo, hi ); &#125; <span class="hljs-comment">//区间</span><br><span class="hljs-comment">// 析构函数</span><br>   ~<span class="hljs-built_in">Vector</span>() &#123; <span class="hljs-keyword">delete</span> [] _elem; &#125; <span class="hljs-comment">//释放内部空间</span><br><span class="hljs-comment">// 只读访问接口</span><br>   <span class="hljs-function">Rank <span class="hljs-title">size</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> _size; &#125; <span class="hljs-comment">//规模</span><br>   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">empty</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> !_size; &#125; <span class="hljs-comment">//判空</span><br>   <span class="hljs-function">Rank <span class="hljs-title">find</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e )</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">find</span> ( e, <span class="hljs-number">0</span>, _size ); &#125; <span class="hljs-comment">//无序向量整体查找</span><br>   <span class="hljs-function">Rank <span class="hljs-title">find</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi )</span> <span class="hljs-keyword">const</span></span>; <span class="hljs-comment">//无序向量区间查找</span><br>   <span class="hljs-function">Rank <span class="hljs-title">search</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e )</span> <span class="hljs-keyword">const</span> <span class="hljs-comment">//有序向量整体查找</span></span><br><span class="hljs-function">   </span>&#123; <span class="hljs-keyword">return</span> ( <span class="hljs-number">0</span> &gt;= _size ) ? <span class="hljs-number">-1</span> : <span class="hljs-built_in">search</span> ( e, <span class="hljs-number">0</span>, _size ); &#125;<br>   <span class="hljs-function">Rank <span class="hljs-title">search</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi )</span> <span class="hljs-keyword">const</span></span>; <span class="hljs-comment">//有序向量区间查找</span><br><span class="hljs-comment">// 可写访问接口</span><br>   T&amp; <span class="hljs-keyword">operator</span>[] ( Rank r ); <span class="hljs-comment">//重载下标操作符，可以类似于数组形式引用各元素</span><br>   <span class="hljs-keyword">const</span> T&amp; <span class="hljs-keyword">operator</span>[] ( Rank r ) <span class="hljs-keyword">const</span>; <span class="hljs-comment">//仅限于做右值的重载版本</span><br>   Vector&lt;T&gt; &amp; <span class="hljs-keyword">operator</span>= ( Vector&lt;T&gt; <span class="hljs-keyword">const</span>&amp; ); <span class="hljs-comment">//重载赋值操作符，以便直接克隆向量</span><br>   <span class="hljs-function">T <span class="hljs-title">remove</span> <span class="hljs-params">( Rank r )</span></span>; <span class="hljs-comment">//删除秩为r的元素</span><br>   <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">remove</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//删除秩在区间[lo, hi)之内的元素</span><br>   <span class="hljs-function">Rank <span class="hljs-title">insert</span> <span class="hljs-params">( Rank r, T <span class="hljs-keyword">const</span>&amp; e )</span></span>; <span class="hljs-comment">//插入元素</span><br>   <span class="hljs-function">Rank <span class="hljs-title">insert</span> <span class="hljs-params">( T <span class="hljs-keyword">const</span>&amp; e )</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">insert</span> ( _size, e ); &#125; <span class="hljs-comment">//默认作为末元素插入</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//对[lo, hi)排序</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sort</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">sort</span> ( <span class="hljs-number">0</span>, _size ); &#125; <span class="hljs-comment">//整体排序</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">unsort</span> <span class="hljs-params">( Rank lo, Rank hi )</span></span>; <span class="hljs-comment">//对[lo, hi)置乱</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">unsort</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">unsort</span> ( <span class="hljs-number">0</span>, _size ); &#125; <span class="hljs-comment">//整体置乱</span><br>   <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">deduplicate</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//无序去重</span><br>   <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">uniquify</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//有序去重</span><br><span class="hljs-comment">// 遍历</span><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">traverse</span> <span class="hljs-params">( <span class="hljs-keyword">void</span> (* ) ( T&amp; ) )</span></span>; <span class="hljs-comment">//遍历（使用函数指针，只读或局部性修改）</span><br>   <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> VST&gt; <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">traverse</span> <span class="hljs-params">( VST&amp; )</span></span>; <span class="hljs-comment">//遍历（使用函数对象，可全局性修改）</span><br>&#125;; <span class="hljs-comment">//Vector</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;vector_implementation.h&quot;</span></span><br><br></code></pre></div></td></tr></table></figure>
@@ -392,8 +464,10 @@
 </ol>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -456,7 +530,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -498,9 +571,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -553,9 +629,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -740,5 +832,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

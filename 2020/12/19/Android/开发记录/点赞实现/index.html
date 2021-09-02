@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,26 +287,37 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">点赞实现</h1>
+
             
+
             <div class="markdown-body">
               <p>利用dataBinding实现点赞颜色更改和点赞图片更改</p>
 <figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">variable</span></span><br><span class="hljs-tag">        <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;comment&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.mooc.ppjoke.model.Comment&quot;</span> /&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.mooc.ppjoke.ui.InteractionPresenter&quot;</span> /&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;android.text.TextUtils&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">import</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;android.view.View&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">import</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.mooc.ppjoke.utils.StringConvert&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">import</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">TextView</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;wrap_content&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:gravity</span>=<span class="hljs-string">&quot;center_vertical&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:text</span>=<span class="hljs-string">&quot;@&#123;comment.ugc.likeCount&gt;0?StringConvert.convertFeedUgc(comment.ugc.likeCount):null&#125;&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:textColor</span>=<span class="hljs-string">&quot;@&#123;comment.ugc.hasLiked?@color/color_theme:@color/color_3d3&#125;&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:textSize</span>=<span class="hljs-string">&quot;@dimen/sp_12&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">tools:text</span>=<span class="hljs-string">&quot;1000&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">TextView</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">ImageView</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;wrap_content&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;wrap_content&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_marginLeft</span>=<span class="hljs-string">&quot;@dimen/dp_2&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:onClick</span>=<span class="hljs-string">&quot;@&#123;()-&gt;InteractionPresenter.toggleCommentLike(lifeCycleOwner,comment)&#125;&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:src</span>=<span class="hljs-string">&quot;@&#123;comment.ugc.hasLiked?@drawable/icon_cell_liked:@drawable/icon_cell_like&#125;&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">tools:src</span>=<span class="hljs-string">&quot;@drawable/icon_cell_liked&quot;</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">ImageView</span>&gt;</span><br><br></code></pre></div></td></tr></table></figure>
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -294,7 +368,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -336,9 +409,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -391,9 +467,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -578,5 +670,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

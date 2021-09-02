@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,28 +287,39 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">3. 无重复字符的最长子串</h1>
+
             
+
             <div class="markdown-body">
               <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/">本题链接</a></p>
 <h2 id="哈希表-队列"><a href="#哈希表-队列" class="headerlink" title="哈希表+队列"></a>哈希表+队列</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">lengthOfLongestSubstring</span><span class="hljs-params">(string s)</span> </span>&#123;<br><br>        <span class="hljs-keyword">if</span>(s.<span class="hljs-built_in">size</span>() &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> s.<span class="hljs-built_in">size</span>();<br><br>        unordered_set&lt;<span class="hljs-keyword">char</span>&gt; hash;<br>        queue&lt;<span class="hljs-keyword">char</span>&gt; que;<br><br>        <span class="hljs-keyword">int</span> res = <span class="hljs-number">1</span>;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; s.<span class="hljs-built_in">size</span>();++i)&#123;<br><br>            <span class="hljs-keyword">if</span>(hash.<span class="hljs-built_in">find</span>(s[i]) == hash.<span class="hljs-built_in">end</span>())&#123;<span class="hljs-comment">//如果队列里没有该字符</span><br>                hash.<span class="hljs-built_in">emplace</span>(s[i]);<span class="hljs-comment">//将该字符加入哈希表</span><br>                que.<span class="hljs-built_in">push</span>(s[i]);<span class="hljs-comment">//将该字符加入队列</span><br>            &#125;<span class="hljs-keyword">else</span>&#123;<br><br>                <span class="hljs-keyword">if</span>(que.<span class="hljs-built_in">size</span>() &gt; res) res = que.<span class="hljs-built_in">size</span>();<span class="hljs-comment">//更新长度</span><br>  <br>                <span class="hljs-keyword">while</span>(!que.<span class="hljs-built_in">empty</span>() &amp;&amp; que.<span class="hljs-built_in">front</span>() != s[i])&#123;<span class="hljs-comment">//直到队列中重复字母的前一个字符</span><br>                    hash.<span class="hljs-built_in">erase</span>(que.<span class="hljs-built_in">front</span>());<span class="hljs-comment">//将字符从哈希表中去除</span><br>                    que.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//将该元素出队</span><br>                &#125;<br>                que.<span class="hljs-built_in">push</span>(que.<span class="hljs-built_in">front</span>());que.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//将该元素从队头更换至队尾</span><br>            &#125;<br><br>        &#125;<br><br>        <span class="hljs-keyword">if</span>(que.<span class="hljs-built_in">size</span>() &gt; res) res = que.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
 <h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>保持队列里的连续字串没有重复字母</p>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -259,9 +333,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
-                    
                       <a class="hover-with-bg" href="/tags/%E5%93%88%E5%B8%8C%E8%A1%A8/">哈希表</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
                     
                       <a class="hover-with-bg" href="/tags/%E9%98%9F%E5%88%97/">队列</a>
                     
@@ -300,7 +374,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -342,9 +415,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -397,9 +473,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -584,5 +676,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,20 +287,29 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">剑指 Offer 26. 树的子结构</h1>
+
             
+
             <div class="markdown-body">
               <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/">本题链接</a></p>
 <h2 id="迭代-递归"><a href="#迭代-递归" class="headerlink" title="迭代+递归"></a>迭代+递归</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for a binary tree node.</span><br><span class="hljs-comment"> * struct TreeNode &#123;</span><br><span class="hljs-comment"> *     int val;</span><br><span class="hljs-comment"> *     TreeNode *left;</span><br><span class="hljs-comment"> *     TreeNode *right;</span><br><span class="hljs-comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span><br><span class="hljs-comment"> * &#125;;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isSubStructure</span><span class="hljs-params">(TreeNode* A, TreeNode* B)</span> </span>&#123;<br><br>        <span class="hljs-keyword">if</span>(!A || !B) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><br>        vector&lt;TreeNode*&gt; imp_vec;<span class="hljs-comment">//存放可能的A树子树根节点</span><br>        queue&lt;TreeNode*&gt; node_queue;<span class="hljs-comment">//用于层序遍历</span><br>        TreeNode* cur_node;<span class="hljs-comment">//临时节点</span><br><br>        node_queue.<span class="hljs-built_in">push</span>(A);<span class="hljs-comment">//将A树入队</span><br>        <span class="hljs-keyword">while</span>(!node_queue.<span class="hljs-built_in">empty</span>())&#123;<br><br>            cur_node = node_queue.<span class="hljs-built_in">front</span>();node_queue.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//获取队头的节点</span><br>            <span class="hljs-keyword">if</span>(cur_node-&gt;val == B-&gt;val) imp_vec.<span class="hljs-built_in">push_back</span>(cur_node);<span class="hljs-comment">//找到一个可能的节点</span><br><br>            <span class="hljs-keyword">if</span>(cur_node-&gt;left) node_queue.<span class="hljs-built_in">push</span>(cur_node-&gt;left);<span class="hljs-comment">//放入左孩子</span><br>            <span class="hljs-keyword">if</span>(cur_node-&gt;right) node_queue.<span class="hljs-built_in">push</span>(cur_node-&gt;right);<span class="hljs-comment">//放入右孩子</span><br>        &#125;<br><br>        <span class="hljs-keyword">if</span>(imp_vec.<span class="hljs-built_in">empty</span>()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<span class="hljs-comment">//如果没有可能的节点,直接返回</span><br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> p : imp_vec)&#123;<span class="hljs-comment">//遍历每一个可能的节点</span><br>            TreeNode* B_node = B;<br>            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">dfs</span>(p,B_node)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">//A的子树和B树同时递归</span><br>    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">dfs</span><span class="hljs-params">(TreeNode* A, TreeNode* B)</span></span>&#123;<br><br>        <span class="hljs-keyword">if</span>(!B) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">if</span>(!A) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-keyword">if</span>(A-&gt;val != B-&gt;val) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        <br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">dfs</span>(A-&gt;left,B-&gt;left) &amp;&amp; <span class="hljs-built_in">dfs</span>(A-&gt;right,B-&gt;right);<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
@@ -246,8 +318,10 @@
 <h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><p>在<code>isSubStructure</code>函数中，可以同时对它的左右孩子进行<code>isSubStructure</code>，即在双重递归的思路下，A树中所有的节点都可能成为与B树相对应的那个子结构的根节点。虽然双重递归简洁明了，但是时间复杂度显而易见的高。</p>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -261,11 +335,11 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
-                    
                       <a class="hover-with-bg" href="/tags/%E8%BF%AD%E4%BB%A3/">迭代</a>
                     
                       <a class="hover-with-bg" href="/tags/%E9%80%92%E5%BD%92/">递归</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
                     
                       <a class="hover-with-bg" href="/tags/%E5%8F%8C%E9%87%8D%E9%80%92%E5%BD%92/">双重递归</a>
                     
@@ -306,7 +380,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -348,9 +421,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -403,9 +479,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -590,5 +682,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

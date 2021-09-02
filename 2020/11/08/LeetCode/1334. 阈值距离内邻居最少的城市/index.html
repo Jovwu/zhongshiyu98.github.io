@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,28 +287,39 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">1334. 阈值距离内邻居最少的城市</h1>
+
             
+
             <div class="markdown-body">
               <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/">本题链接</a></p>
 <h2 id="最短路Floyd算法"><a href="#最短路Floyd算法" class="headerlink" title="最短路Floyd算法"></a>最短路Floyd算法</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> src 0 <span class="hljs-comment">//源节点</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> tar 1 <span class="hljs-comment">//指向的节点</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> dist 2 <span class="hljs-comment">//两个节点之间的距离</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">findTheCity</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; edges, <span class="hljs-keyword">int</span> distanceThreshold)</span> </span>&#123;<br><br>        <span class="hljs-comment">//Floyd算法</span><br>        <span class="hljs-comment">//中转节点表path 初始化时将所有节点的中转节点设置为-1,因为数组的下标不可能为-1</span><br>        <span class="hljs-comment">//vector&lt;vector&lt;int&gt;&gt; path(n,vector&lt;int&gt;(n,-1));</span><br>        <span class="hljs-comment">//最短路径表A 初始化时将所有节点之间的距离设置为无穷大</span><br>        vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-built_in">A</span>(n,vector&lt;<span class="hljs-keyword">int</span>&gt;(n,INT_MAX));<br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; info : edges)&#123;<br>            <span class="hljs-comment">//设置连通节点之间的距离 (无向图) 若是有向图只需设置一个</span><br>            A[info[src]][info[tar]] = info[dist];<br>            A[info[tar]][info[src]] = info[dist];<br>        &#125;<br>        <span class="hljs-comment">//将自己到自己的距离设置为0</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; A.<span class="hljs-built_in">size</span>();++i)&#123;<br>            A[i][i] = <span class="hljs-number">0</span>;<br>        &#125;   <br><br><br>        <span class="hljs-comment">//Floyd算法主流程</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> t = <span class="hljs-number">0</span>;t &lt; n;++t)&#123;<span class="hljs-comment">//逐次的将每个节点当成中转点 </span><br>            <span class="hljs-comment">//对A表中的每个点进行遍历</span><br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> row = <span class="hljs-number">0</span>;row &lt; n;++row)&#123;<span class="hljs-comment">//逐行 row行表示点A</span><br>                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> col = <span class="hljs-number">0</span>;col &lt; n;++col)&#123;<span class="hljs-comment">//逐列 col列表示点B</span><br>                    <span class="hljs-keyword">if</span>(A[row][t] == INT_MAX || A[t][col] == INT_MAX) <span class="hljs-keyword">continue</span>;<br>                    <span class="hljs-comment">//如果点A经过中转点到点B的距离比点A直接到点B还小</span><br>                    <span class="hljs-keyword">if</span>(A[row][t] + A[t][col] &lt; A[row][col])&#123;<span class="hljs-comment">//(A[row][t] == INT_MAX || A[t][col] == INT_MAX) || </span><br>                        A[row][col] = A[row][t] + A[t][col];<span class="hljs-comment">//更新最小的距离</span><br>                        <span class="hljs-comment">//path[row][col] = t;//并更新点A到B的中转点</span><br>                    &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <br>        <span class="hljs-comment">//以下为题目要求</span><br><br>        <span class="hljs-comment">//遍历A表 保存所有点A到点B的距离小于等于阈值</span><br>        vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-built_in">res</span>(n,vector&lt;<span class="hljs-keyword">int</span>&gt;());<br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> row = <span class="hljs-number">0</span>;row &lt; n;++row)&#123;<span class="hljs-comment">//逐行 row行表示点A</span><br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> col = <span class="hljs-number">0</span>;col &lt; n;++col)&#123;<span class="hljs-comment">//逐列 col列表示点B</span><br>                <span class="hljs-keyword">if</span>(A[row][col] &lt;= distanceThreshold)&#123;<br>                    res[row].<span class="hljs-built_in">emplace_back</span>(col);<span class="hljs-comment">//加入结果</span><br>                &#125;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-keyword">int</span> ret = <span class="hljs-number">0</span>;<br>        <span class="hljs-comment">//找到最少城市的最小点</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; res.<span class="hljs-built_in">size</span>();++i)&#123;<br>            <span class="hljs-keyword">if</span>(res[i].<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<br>            <span class="hljs-keyword">if</span>(res[i].<span class="hljs-built_in">size</span>() &lt; res[ret].<span class="hljs-built_in">size</span>())&#123;<span class="hljs-comment">//优先考虑城市数量,城市数量小的优先</span><br>                ret = i;<br>            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(res[i].<span class="hljs-built_in">size</span>() == res[ret].<span class="hljs-built_in">size</span>())&#123;<span class="hljs-comment">//城市数量相等时</span><br>                ret = i &gt; ret ? i : ret ;<span class="hljs-comment">//编号最大的优先</span><br>            &#125;<br>        &#125;<br>       <br>        <span class="hljs-keyword">return</span> ret;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
 <h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>使用最短路Floyd算法</p>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -298,7 +372,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -340,9 +413,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -395,9 +471,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -582,5 +674,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

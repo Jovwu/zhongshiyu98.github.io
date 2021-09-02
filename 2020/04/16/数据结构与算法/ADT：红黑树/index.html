@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,20 +287,29 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">红黑树</h1>
+
             
+
             <div class="markdown-body">
               <h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><h3 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h3><p>红黑树是由红、黑两类节点组成的BST，统一增设<strong>外部节点NULL</strong>，使之成为<strong>真二叉树</strong>。其中：</p>
 <ul>
@@ -401,8 +473,10 @@ T_0<a<T_1<b<T_2<c<T_3</script><ol>
 <h4 id="删除算法"><a href="#删除算法" class="headerlink" title="删除算法"></a>删除算法</h4><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">bool</span> RedBlack&lt;T&gt;::<span class="hljs-built_in">remove</span> ( <span class="hljs-keyword">const</span> T&amp; e ) &#123; <span class="hljs-comment">//从红黑树中删除关键码e</span><br>   BinNodePosi&lt;T&gt; &amp; x = <span class="hljs-built_in">search</span> ( e ); <span class="hljs-keyword">if</span> ( !x ) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">//确认目标存在（留意_hot的设置）</span><br>   BinNodePosi&lt;T&gt; r = <span class="hljs-built_in">removeAt</span> ( x, _hot ); <span class="hljs-keyword">if</span> ( ! ( --_size ) ) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">//实施删除</span><br><span class="hljs-comment">// assert: _hot某一孩子刚被删除，且被r所指节点（可能是NULL）接替。以下检查是否失衡，并做必要调整</span><br>   <span class="hljs-keyword">if</span> ( ! _hot ) <span class="hljs-comment">//若刚被删除的是根节点，则将其置黑，并更新黑高度</span><br>      &#123; _root-&gt;color = RB_BLACK; <span class="hljs-built_in">updateHeight</span> ( _root ); <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; &#125;<br><span class="hljs-comment">// assert: 以下，原x（现r）必非根，_hot必非空</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">BlackHeightUpdated</span> ( *_hot ) ) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">//若所有祖先的黑深度依然平衡，则无需调整</span><br>   <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">IsRed</span> ( r ) ) <span class="hljs-comment">//否则，若r为红，则只需令其转黑</span><br>      &#123; r-&gt;color = RB_BLACK; r-&gt;height++; <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; &#125;<br><span class="hljs-comment">// assert: 以下，原x（现r）均为黑色</span><br>   <span class="hljs-comment">//*DSA*/printBinTree(_hot, 0, 0);</span><br>   <span class="hljs-built_in">solveDoubleBlack</span> ( r ); <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">//经双黑调整后返回</span><br>&#125; <span class="hljs-comment">//若目标节点存在且被删除，返回true；否则返回false</span><br></code></pre></div></td></tr></table></figure>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -455,7 +529,6 @@ T_0<a<T_1<b<T_2<c<T_3</script><ol>
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -497,9 +570,12 @@ T_0<a<T_1<b<T_2<c<T_3</script><ol>
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -552,9 +628,25 @@ T_0<a<T_1<b<T_2<c<T_3</script><ol>
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -739,5 +831,5 @@ T_0<a<T_1<b<T_2<c<T_3</script><ol>
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

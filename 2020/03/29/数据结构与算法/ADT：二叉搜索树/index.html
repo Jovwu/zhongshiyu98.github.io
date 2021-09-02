@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,20 +287,29 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">二叉搜索树</h1>
+
             
+
             <div class="markdown-body">
               <h2 id="BST：Binary-Search-Tree"><a href="#BST：Binary-Search-Tree" class="headerlink" title="BST：Binary Search Tree"></a>BST：Binary Search Tree</h2><h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><h4 id="循关键码访问"><a href="#循关键码访问" class="headerlink" title="循关键码访问"></a>循关键码访问</h4><p>在BST中，数据项之间，依照各自的关键码彼此区分。关键码之间支持：</p>
 <ul>
@@ -344,8 +416,10 @@
 <figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; BinNodePosi&lt;T&gt; BinNode&lt;T&gt;::<span class="hljs-built_in">zag</span>() &#123; <span class="hljs-comment">//逆时针旋转</span><br>   BinNodePosi&lt;T&gt; rChild = rc;<br>   rChild-&gt;parent = <span class="hljs-keyword">this</span>-&gt;parent;<br>   <span class="hljs-keyword">if</span> ( rChild-&gt;parent )<br>      ( ( <span class="hljs-keyword">this</span> == rChild-&gt;parent-&gt;lc ) ? rChild-&gt;parent-&gt;lc : rChild-&gt;parent-&gt;rc ) = rChild;<br>   rc = rChild-&gt;lc; <span class="hljs-keyword">if</span> ( rc ) rc-&gt;parent = <span class="hljs-keyword">this</span>;<br>   rChild-&gt;lc = <span class="hljs-keyword">this</span>; <span class="hljs-keyword">this</span>-&gt;parent = rChild;<br><span class="hljs-comment">// update heights</span><br>   height = <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span> ( <span class="hljs-built_in">stature</span> ( lc ), <span class="hljs-built_in">stature</span> ( rc ) );<br>   rChild-&gt;height = <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span> ( <span class="hljs-built_in">stature</span> ( rChild-&gt;lc ), <span class="hljs-built_in">stature</span> ( rChild-&gt;rc ) );<br>   <span class="hljs-keyword">for</span> ( BinNodePosi&lt;T&gt; x = rChild-&gt;parent; x; x = x-&gt;parent )<br>      <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">HeightUpdated</span>( *x ) )<br>         <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">else</span><br>         x-&gt;height = <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span> ( <span class="hljs-built_in">stature</span> ( x-&gt;lc ), <span class="hljs-built_in">stature</span> ( x-&gt;rc ) );<br>   <span class="hljs-keyword">return</span> rChild;<br></code></pre></div></td></tr></table></figure>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -398,7 +472,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -440,9 +513,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -495,9 +571,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -682,5 +774,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

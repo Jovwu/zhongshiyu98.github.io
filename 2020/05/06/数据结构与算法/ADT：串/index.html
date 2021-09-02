@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,20 +287,29 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">串</h1>
+
             
+
             <div class="markdown-body">
               <h2 id="串匹配"><a href="#串匹配" class="headerlink" title="串匹配"></a>串匹配</h2><h3 id="蛮力算法1"><a href="#蛮力算法1" class="headerlink" title="蛮力算法1"></a>蛮力算法1</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/******************************************************************************************</span><br><span class="hljs-comment"> * Text     :  0   1   2   .   .   .   i-j .   .   .   .   i   .   .   n-1</span><br><span class="hljs-comment"> *             ------------------------|-------------------|------------</span><br><span class="hljs-comment"> * Pattern  :                          0   .   .   .   .   j   .   .</span><br><span class="hljs-comment"> *                                     |-------------------|</span><br><span class="hljs-comment"> ******************************************************************************************/</span><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">match</span> <span class="hljs-params">( <span class="hljs-keyword">char</span>* P, <span class="hljs-keyword">char</span>* T )</span> </span>&#123; <span class="hljs-comment">//串匹配算法（Brute-force-1）</span><br>   <span class="hljs-keyword">size_t</span> n = <span class="hljs-built_in">strlen</span> ( T ), i = <span class="hljs-number">0</span>; <span class="hljs-comment">//文本串长度、当前接受比对字符的位置</span><br>   <span class="hljs-keyword">size_t</span> m = <span class="hljs-built_in">strlen</span> ( P ), j = <span class="hljs-number">0</span>; <span class="hljs-comment">//模式串长度、当前接受比对字符的位置</span><br>   <span class="hljs-keyword">while</span> ( j &lt; m &amp;&amp; i &lt; n ) <span class="hljs-comment">//自左向右逐个比对字符</span><br>      <span class="hljs-comment">/*DSA*/</span>&#123;<br>      <span class="hljs-comment">/*DSA*/</span><span class="hljs-built_in">showProgress</span> ( T, P, i - j, j );   <span class="hljs-built_in">getchar</span>();<br>      <span class="hljs-keyword">if</span> ( T[i] == P[j] ) <span class="hljs-comment">//若匹配</span><br>         &#123; i ++;  j ++; &#125; <span class="hljs-comment">//则转到下一对字符</span><br>      <span class="hljs-keyword">else</span> <span class="hljs-comment">//否则</span><br>         &#123; i -= j - <span class="hljs-number">1</span>; j = <span class="hljs-number">0</span>; &#125; <span class="hljs-comment">//文本串回退、模式串复位</span><br>      <span class="hljs-comment">/*DSA*/</span>&#125;<br>   <span class="hljs-keyword">return</span> i - j; <span class="hljs-comment">//如何通过返回值，判断匹配结果？</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
 <h3 id="蛮力算法2"><a href="#蛮力算法2" class="headerlink" title="蛮力算法2"></a>蛮力算法2</h3><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/******************************************************************************************</span><br><span class="hljs-comment"> * Text     :  0   1   2   .   .   .   i   i+1 .   .   .   i+j .   .   n-1</span><br><span class="hljs-comment"> *             ------------------------|-------------------|------------</span><br><span class="hljs-comment"> * Pattern  :                          0   1   .   .   .   j   .   .</span><br><span class="hljs-comment"> *                                     |-------------------|</span><br><span class="hljs-comment"> ******************************************************************************************/</span><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">match</span> <span class="hljs-params">( <span class="hljs-keyword">char</span>* P, <span class="hljs-keyword">char</span>* T )</span> </span>&#123; <span class="hljs-comment">//串匹配算法（Brute-force-2）</span><br>   <span class="hljs-keyword">size_t</span> n = <span class="hljs-built_in">strlen</span> ( T ), i = <span class="hljs-number">0</span>; <span class="hljs-comment">//文本串长度、与模式串首字符的对齐位置</span><br>   <span class="hljs-keyword">size_t</span> m = <span class="hljs-built_in">strlen</span> ( P ), j; <span class="hljs-comment">//模式串长度、当前接受比对字符的位置</span><br>   <span class="hljs-keyword">for</span> ( i = <span class="hljs-number">0</span>; i &lt; n - m + <span class="hljs-number">1</span>; i++ ) &#123; <span class="hljs-comment">//文本串从第i个字符起，与</span><br>      <span class="hljs-keyword">for</span> ( j = <span class="hljs-number">0</span>; j &lt; m; j++ ) <span class="hljs-comment">//模式串中对应的字符逐个比对</span><br>         <span class="hljs-comment">/*DSA*/</span>&#123;<span class="hljs-built_in">showProgress</span> ( T, P, i, j ); <span class="hljs-built_in">getchar</span>();<br>         <span class="hljs-keyword">if</span> ( T[i + j] != P[j] ) <span class="hljs-keyword">break</span>; <span class="hljs-comment">//若失配，模式串整体右移一个字符，再做一轮比对</span><br>         <span class="hljs-comment">/*DSA*/</span>&#125;<br>      <span class="hljs-keyword">if</span> ( j &gt;= m ) <span class="hljs-keyword">break</span>; <span class="hljs-comment">//找到匹配子串</span><br>   &#125;<br>   <span class="hljs-keyword">return</span> i; <span class="hljs-comment">//如何通过返回值，判断匹配结果？</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
@@ -303,8 +375,10 @@
 <h2 id="Karp-Rabin算法"><a href="#Karp-Rabin算法" class="headerlink" title="Karp-Rabin算法"></a>Karp-Rabin算法</h2><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/36d42e5aff10c2dbf4c77469a6dfb5ed-fcc99.png" srcset="/img/loading.gif" lazyload alt=""></p>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -359,7 +433,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -401,9 +474,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -456,9 +532,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -643,5 +735,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

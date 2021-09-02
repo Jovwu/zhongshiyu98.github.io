@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,20 +287,29 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">912. 排序数组</h1>
+
             
+
             <div class="markdown-body">
               <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-an-array/">本题链接</a></p>
 <h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">sortArray</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br>        <br>        <span class="hljs-comment">//归并排序 </span><br>        <span class="hljs-comment">//创建辅助空间</span><br>        <span class="hljs-keyword">int</span>* buf = (<span class="hljs-keyword">int</span>*)<span class="hljs-built_in">malloc</span>((nums.<span class="hljs-built_in">size</span>() / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>) * <span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(<span class="hljs-keyword">int</span>));<br>        <span class="hljs-built_in">merge</span>(nums,<span class="hljs-number">0</span>,nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>,buf);<br>        <span class="hljs-built_in">free</span>(buf);<br>        <span class="hljs-keyword">return</span> nums;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(vector&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums,<span class="hljs-keyword">int</span> lo,<span class="hljs-keyword">int</span> hi,<span class="hljs-keyword">int</span>* buf)</span></span>&#123;<br><br>        <span class="hljs-keyword">if</span>(hi == lo) <span class="hljs-keyword">return</span>;<span class="hljs-comment">//递归基</span><br>        <span class="hljs-keyword">if</span>(lo + <span class="hljs-number">1</span> == hi)<span class="hljs-comment">//特殊情况:两个元素</span><br>        &#123;<br>            <span class="hljs-keyword">if</span>(nums[lo] &gt; nums[hi]) <span class="hljs-built_in">swap</span>(nums[lo],nums[hi]);<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <br>        <span class="hljs-keyword">int</span> mid = (lo + hi) &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-comment">//排序左边</span><br>        <span class="hljs-built_in">merge</span>(nums,lo,mid,buf);<br>        <span class="hljs-comment">//排序右边 </span><br>        <span class="hljs-built_in">merge</span>(nums,mid+<span class="hljs-number">1</span>,hi,buf);<br><br>        <span class="hljs-keyword">int</span> pos = hi-mid<span class="hljs-number">-1</span>;<span class="hljs-comment">//指向缓冲区的指针</span><br>        <span class="hljs-comment">//将右边存入缓冲区</span><br>        <span class="hljs-built_in">memcpy</span>((<span class="hljs-keyword">char</span>*)buf,(<span class="hljs-keyword">char</span>*)&amp;nums[mid+<span class="hljs-number">1</span>],(pos+<span class="hljs-number">1</span>)*<span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(<span class="hljs-keyword">int</span>));<br>        <br>        <span class="hljs-keyword">while</span>(mid &gt;= lo &amp;&amp; pos &gt;= <span class="hljs-number">0</span>)&#123;<br><br>            <span class="hljs-keyword">if</span>(*(buf + pos) &lt; nums[mid]) nums[hi--] = nums[mid--];<br>            <span class="hljs-keyword">else</span> nums[hi--] = *(buf + pos--);<br><br>        &#125;<br>        <span class="hljs-comment">//如果缓冲区还有元素</span><br>        <span class="hljs-keyword">while</span>(pos &gt;= <span class="hljs-number">0</span>) nums[hi--] = *(buf + pos--);<br>        <br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
@@ -261,8 +333,10 @@
 <h3 id="思路-8"><a href="#思路-8" class="headerlink" title="思路"></a>思路</h3><p>当步长集合中，其中的各项并非互素，因此每一轮的排序都有大量的精力浪费于对前一轮排序工作的重复之上。所以，步长集合中，相邻项需要尽可能的互素。</p>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -276,17 +350,11 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">选择排序</a>
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E7%BB%84/">数组</a>
                     
                       <a class="hover-with-bg" href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">快速排序</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">希尔排序</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E6%A1%B6%E6%8E%92%E5%BA%8F/">桶排序</a>
-                    
                       <a class="hover-with-bg" href="/tags/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">计数排序</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E7%BB%84/">数组</a>
                     
                       <a class="hover-with-bg" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">归并排序</a>
                     
@@ -294,7 +362,13 @@
                     
                       <a class="hover-with-bg" href="/tags/%E5%A0%86%E6%8E%92%E5%BA%8F/">堆排序</a>
                     
+                      <a class="hover-with-bg" href="/tags/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">选择排序</a>
+                    
                       <a class="hover-with-bg" href="/tags/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">基数排序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%A1%B6%E6%8E%92%E5%BA%8F/">桶排序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">希尔排序</a>
                     
                   </div>
                 
@@ -331,7 +405,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -373,9 +446,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -428,9 +504,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -615,5 +707,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

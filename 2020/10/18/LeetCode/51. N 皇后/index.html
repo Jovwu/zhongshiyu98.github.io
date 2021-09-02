@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,20 +287,29 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">51. N 皇后</h1>
+
             
+
             <div class="markdown-body">
               <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/n-queens/">本题链接</a></p>
 <h2 id="回溯法-栈"><a href="#回溯法-栈" class="headerlink" title="回溯法+栈"></a>回溯法+栈</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><br>    <span class="hljs-keyword">int</span> rac;<span class="hljs-comment">//n</span><br>    stack&lt;vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt;&gt; cb_stack;<span class="hljs-comment">//栈顶保存着当前合法的棋盘状态. 二维数组状态:0:安全地带 1:攻击范围 2:已有皇后</span><br>    vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; cb_tmp;<span class="hljs-comment">//临时棋盘</span><br>    <span class="hljs-keyword">int</span> dirc[<span class="hljs-number">9</span>] = &#123;<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>&#125;;<span class="hljs-comment">//方向</span><br>    vector&lt;<span class="hljs-keyword">int</span>&gt; queen_pos&#123;vector&lt;<span class="hljs-keyword">int</span>&gt;(<span class="hljs-number">9</span>,<span class="hljs-number">-1</span>)&#125;; <span class="hljs-comment">//第n个皇后所处的第n个位置</span><br>    vector&lt;vector&lt;string&gt;&gt; res;<span class="hljs-comment">//最终结果</span><br><br><span class="hljs-keyword">public</span>:<br>    vector&lt;vector&lt;string&gt;&gt; <span class="hljs-built_in">solveNQueens</span>(<span class="hljs-keyword">int</span> n) &#123;<br><br>        <span class="hljs-comment">//初始化:空间换时间</span><br>        rac = n;<br>        vector&lt;<span class="hljs-keyword">int</span>&gt; tmp_vec = vector&lt;<span class="hljs-keyword">int</span>&gt;(n,<span class="hljs-number">0</span>);<br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt;n;++i)&#123;<br>            cb_tmp.<span class="hljs-built_in">push_back</span>(tmp_vec);<br>        &#125;<br>        cb_stack.<span class="hljs-built_in">push</span>(cb_tmp);<br>        <span class="hljs-keyword">int</span> loop_col = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">int</span> loop_row = <span class="hljs-number">0</span>;<br><br>        <span class="hljs-comment">//逐行逐列遍历</span><br>        <span class="hljs-keyword">for</span>(;loop_row &lt; n;)&#123;<br><br>            <span class="hljs-keyword">int</span> cur_queen_pos = loop_row;<br><br>            <span class="hljs-keyword">for</span>(;loop_col &lt; n;++loop_col)&#123;<br>                <span class="hljs-keyword">if</span>(<span class="hljs-built_in">setAttack</span>(&#123;loop_row,loop_col&#125;))&#123;<span class="hljs-comment">//如果皇后能待在该处,则移动到下一行</span><br>                    loop_col = <span class="hljs-number">0</span>;<br>                    ++loop_row;<br>                    <span class="hljs-keyword">break</span>;<br>                &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//如果不行就遍历列,直到一个合适的位置</span><br>            &#125;<br><br>            <span class="hljs-comment">//如果当前遍历完,该行皇后还是找不到合适的位置,那么就更改上一行皇后,或是已经满足一种情况</span><br>            <span class="hljs-keyword">if</span>(queen_pos[cur_queen_pos] == <span class="hljs-number">-1</span> || cb_stack.<span class="hljs-built_in">size</span>() == n + <span class="hljs-number">1</span>)&#123;<br><br>                <span class="hljs-keyword">if</span>(queen_pos[cur_queen_pos] != <span class="hljs-number">-1</span>) <span class="hljs-built_in">saveRes</span>();<span class="hljs-comment">//保存棋盘到结果里</span><br>                <span class="hljs-keyword">if</span>(cur_queen_pos == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;<span class="hljs-comment">//如果第一位皇后遍历结束</span><br>                <span class="hljs-comment">//将上一个皇后的最后状态取出</span><br>                loop_col = queen_pos[--loop_row] + <span class="hljs-number">1</span>;<br>                <span class="hljs-comment">//将上一个皇后的状态设置为-1</span><br>                queen_pos[loop_row] = <span class="hljs-number">-1</span>;<br>                <span class="hljs-comment">//将上一个皇后的合法棋盘撤销</span><br>                cb_stack.<span class="hljs-built_in">pop</span>();<br>            &#125;<br><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br><br>    <span class="hljs-comment">//设置皇后攻击状态 失败情况:攻击到其他皇后</span><br>    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">setAttack</span><span class="hljs-params">(pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; queen)</span></span>&#123;<br><br>        <span class="hljs-comment">//如果该皇后处于其他皇后的攻击范围</span><br>        <span class="hljs-keyword">if</span>(((vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt;)cb_stack.<span class="hljs-built_in">top</span>())[queen.first][queen.second] == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><br>        cb_tmp = cb_stack.<span class="hljs-built_in">top</span>();<span class="hljs-comment">//备份一份当前的合法棋盘</span><br>        pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; point_tmp;<span class="hljs-comment">//创建一个点备份</span><br>        cb_tmp[queen.first][queen.second] = <span class="hljs-number">2</span>;<span class="hljs-comment">//设置皇后自身</span><br>        <span class="hljs-comment">//设置皇后的八个方向</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> dir = <span class="hljs-number">0</span>;dir &lt; <span class="hljs-number">8</span>;++dir)&#123;<br>            point_tmp = queen;<br>            <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>                point_tmp.first+=dirc[dir];<span class="hljs-comment">//根据方向位移点</span><br>                point_tmp.second+=dirc[dir+<span class="hljs-number">1</span>];<br>                <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">isLegal</span>(point_tmp)) <span class="hljs-keyword">break</span>;<span class="hljs-comment">//如果不合法,退出</span><br>                <span class="hljs-keyword">if</span>(cb_tmp[point_tmp.first][point_tmp.second] == <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<span class="hljs-comment">//如果攻击到其他皇后</span><br>                cb_tmp[point_tmp.first][point_tmp.second] = <span class="hljs-number">1</span>;<br>            &#125;<br>        &#125;<br>       cb_stack.<span class="hljs-built_in">push</span>(cb_tmp);<span class="hljs-comment">//保存当前的合法棋盘</span><br>       queen_pos[queen.first] = queen.second;<span class="hljs-comment">//保存皇后的位置</span><br>       <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br><br>    &#125;<br>    <span class="hljs-comment">//判断点是否合法</span><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">isLegal</span><span class="hljs-params">(pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; p)</span></span>&#123;<br><br>        <span class="hljs-keyword">if</span>(<span class="hljs-number">0</span> &lt;= p.first &amp;&amp; p.first &lt; rac)&#123;<br>            <span class="hljs-keyword">if</span>(<span class="hljs-number">0</span> &lt;= p.second &amp;&amp; p.second &lt; rac)&#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-comment">//保存结果</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">saveRes</span><span class="hljs-params">()</span></span>&#123;<br><br>        vector&lt;string&gt; tmp_res;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; vec:(vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt;)cb_stack.<span class="hljs-built_in">top</span>())&#123;<br>            string s;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; rac;++i)&#123;<br>                <span class="hljs-keyword">if</span>(vec[i] == <span class="hljs-number">2</span>) s.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&#x27;Q&#x27;</span>);<br>                <span class="hljs-keyword">else</span> s.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&#x27;.&#x27;</span>);<br>            &#125;<br>            tmp_res.<span class="hljs-built_in">push_back</span>(s);<br>        &#125;<br>        res.<span class="hljs-built_in">push_back</span>(tmp_res);<br>    &#125;<br><br>&#125;;<br></code></pre></div></td></tr></table></figure>
@@ -251,8 +323,10 @@
 </ul>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -266,9 +340,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%A0%88/">栈</a>
-                    
                       <a class="hover-with-bg" href="/tags/%E9%80%92%E5%BD%92/">递归</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%A0%88/">栈</a>
                     
                       <a class="hover-with-bg" href="/tags/%E5%9B%9E%E6%BA%AF%E6%B3%95/">回溯法</a>
                     
@@ -307,7 +381,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -349,9 +422,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -404,9 +480,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -591,5 +683,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>

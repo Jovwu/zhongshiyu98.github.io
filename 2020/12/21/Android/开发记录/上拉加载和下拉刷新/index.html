@@ -64,8 +64,51 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
+
+<!-- pjax -->
+<script>
+  // pjax
+  var pjax = new Pjax({
+  selectors: [
+    "title", //加载标题
+    "main", //加载主体框架部分
+    "header", //加载头部（文章页头图等）
+  ]
+ })
+//  懒加载修复
+ document.addEventListener('pjax:complete', function (){
+      $.getScript("/js/lazyload.js");
+});
+
+document.addEventListener('pjax:complete', function (){
+  $.getScript("/js/main.js");
+  $.getScript("/js/debouncer.js");
+});
+
+// 窗口监听load(加载、刷新)事件，执行函数
+window.addEventListener('load',function(){
+ $.getScript("/js/main.js");
+});
+
+  //加载FancyBox
+  function LoadFancyBox(){
+$('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+     function () {
+       var element = document.createElement('a');
+       $(element).attr('data-fancybox', 'images');
+       $(element).attr('href', $(this).attr('src'));
+       $(this).wrap(element);
+     }
+   );
+  };
+
+  
+</script>
 
 
 
@@ -85,6 +128,26 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <!-- 
+        <div class="cus_nav cus_aplayer" id="nav-cus_aplayer">
+          <div id="cus_aplayer">
+    <div id="aplayer-uxAIfEUs" class="aplayer aplayer-tag-marker meting-tag-marker" 
+    
+    data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" 
+
+    data-fixed = "true" data-mini = "false"  data-listfolded = "true" 
+
+    data-mode="circulation" data-autoplay="false" 
+    data-mutex="true" data-listmaxheight="120px" 
+    data-preload="auto" data-theme="#3F51B5"></div>
+</div>
+  
+        </div>
+       -->
+
+      
       <ul class="navbar-nav ml-auto text-center">
         
           
@@ -224,20 +287,29 @@
     </div>
   </header>
 
+  
+
   <main>
     
       
 
 <div class="container-fluid nopadding-x">
+  
   <div class="row nomargin-x">
+    
     <div class="d-none d-lg-block col-lg-2"></div>
+    
     <div class="col-lg-8 nopadding-x-md">
+      
       <div class="container nopadding-x-md" id="board-ctn">
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
+            
             <!-- SEO header -->
             <h1 style="display: none">上拉加载和下拉刷新</h1>
+
             
+
             <div class="markdown-body">
               <h2 id="SmartRefreshLayout结合RecyclerView"><a href="#SmartRefreshLayout结合RecyclerView" class="headerlink" title="SmartRefreshLayout结合RecyclerView"></a>SmartRefreshLayout结合RecyclerView</h2><h3 id="1-创建错误布局（空数据布局）"><a href="#1-创建错误布局（空数据布局）" class="headerlink" title="1.创建错误布局（空数据布局）"></a>1.创建错误布局（空数据布局）</h3><p><img src="https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/20201220162105.png" srcset="/img/loading.gif" lazyload alt="空数据布局"></p>
 <h4 id="EmptyView-java"><a href="#EmptyView-java" class="headerlink" title="EmptyView.java"></a>EmptyView.java</h4><figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs JAVA"><br><span class="hljs-comment">//import ...</span><br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EmptyView</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">LinearLayout</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> ImageView icon;<br>    <span class="hljs-keyword">private</span> TextView title;<br>    <span class="hljs-keyword">private</span> Button action;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">EmptyView</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> Context context)</span> </span>&#123;<br>        <span class="hljs-keyword">this</span>(context, <span class="hljs-keyword">null</span>);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">EmptyView</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> Context context, <span class="hljs-meta">@Nullable</span> AttributeSet attrs)</span> </span>&#123;<br>        <span class="hljs-keyword">this</span>(context, attrs, <span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">EmptyView</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> Context context, <span class="hljs-meta">@Nullable</span> AttributeSet attrs, <span class="hljs-keyword">int</span> defStyleAttr)</span> </span>&#123;<br>        <span class="hljs-keyword">this</span>(context, attrs, defStyleAttr, <span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">EmptyView</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> Context context, <span class="hljs-meta">@Nullable</span> AttributeSet attrs, <span class="hljs-keyword">int</span> defStyleAttr, <span class="hljs-keyword">int</span> style)</span> </span>&#123;<br>        <span class="hljs-keyword">super</span>(context, attrs, defStyleAttr, style);<br>        setOrientation(VERTICAL);<br>        setGravity(Gravity.CENTER);<br>        <span class="hljs-comment">//加载布局文件</span><br>        LayoutInflater.from(context).inflate(R.layout.layout_empty_view, <span class="hljs-keyword">this</span>, <span class="hljs-keyword">true</span>);<br><br>        icon = findViewById(R.id.empty_icon);<br>        title = findViewById(R.id.empty_text);<br>        action = findViewById(R.id.empty_action);<br>    &#125;<br><br>    <span class="hljs-comment">//设置图片</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setEmptyIcon</span><span class="hljs-params">(<span class="hljs-meta">@DrawableRes</span> <span class="hljs-keyword">int</span> iconRes)</span> </span>&#123;<br>        icon.setImageResource(iconRes);<br>    &#125;<br><br>    <span class="hljs-comment">//设置标题</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setTitle</span><span class="hljs-params">(String text)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (TextUtils.isEmpty(text)) &#123;<br>            <span class="hljs-comment">//如果文本为空，设置text隐藏</span><br>            title.setVisibility(GONE);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            title.setText(text);<br>            title.setVisibility(VISIBLE);<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-comment">//设置按钮</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setButton</span><span class="hljs-params">(String text, View.OnClickListener listener)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (TextUtils.isEmpty(text)) &#123;<br>            action.setVisibility(GONE);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            action.setText(text);<br>            action.setVisibility(VISIBLE);<br>            action.setOnClickListener(listener);<br>        &#125;<br><br>    &#125;<br>&#125;<br><br></code></pre></div></td></tr></table></figure>
@@ -283,8 +355,10 @@
 </blockquote>
 
             </div>
+
             <hr>
             <div>
+
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
@@ -337,7 +411,6 @@
                 </div>
               
             </div>
-
             
               <!-- Comments -->
               <article class="comments" id="comments" lazyload>
@@ -379,9 +452,12 @@
       </div>
     </div>
     
+    
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>&nbsp;目录
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
@@ -434,9 +510,25 @@
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
+  
+
+
+
+<footer class="text-center mt-5 py-3">
+
+  <!-- 引入pjax -->
+  <script src="./node_modules/pjax/pjax.js"></script>
+
   <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo Power By</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+     <div class="aplayer no-destroy" 
+data-id="6950782778" data-server="netease" data-type="playlist" 
+data-fixed = "true" data-mini = "true"  data-listfolded = "true" 
+data-volume = "0.2" data-lrctype = "2"
+data-mode="circulation" data-autoplay="false" 
+data-mutex="true" data-listmaxheight="340px" 
+data-preload="auto" data-theme="#3b4759">
+</div>
+
   </div>
   
 
@@ -621,5 +713,5 @@
 <script  src="/js/boot.js" ></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
 </html>
