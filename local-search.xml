@@ -1080,35 +1080,6 @@
   
   
   <entry>
-    <title>103. 二叉树的锯齿形层序遍历</title>
-    <link href="/2021/05/02/LeetCode/103.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%94%AF%E9%BD%BF%E5%BD%A2%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/"/>
-    <url>/2021/05/02/LeetCode/103.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%94%AF%E9%BD%BF%E5%BD%A2%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p><a href="https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/">本题链接</a></p><h2 id="迭代-层序遍历"><a href="#迭代-层序遍历" class="headerlink" title="迭代+层序遍历"></a>迭代+层序遍历</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for a binary tree node.</span><br><span class="hljs-comment"> * struct TreeNode &#123;</span><br><span class="hljs-comment"> *     int val;</span><br><span class="hljs-comment"> *     TreeNode *left;</span><br><span class="hljs-comment"> *     TreeNode *right;</span><br><span class="hljs-comment"> *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) &#123;&#125;</span><br><span class="hljs-comment"> * &#125;;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-built_in">zigzagLevelOrder</span>(TreeNode* root) &#123;<br><br>        <span class="hljs-keyword">if</span>(!root) <span class="hljs-keyword">return</span> &#123;&#125;;<br><br>        vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; res;<br>        queue&lt;TreeNode*&gt; node_queue;<br>        <span class="hljs-keyword">bool</span> dirc = <span class="hljs-literal">true</span>;<br>        TreeNode* node;<br><br>        node_queue.<span class="hljs-built_in">push</span>(root);<br>        <span class="hljs-keyword">while</span>(!node_queue.<span class="hljs-built_in">empty</span>())&#123;<br><br>            <span class="hljs-keyword">int</span> size = node_queue.<span class="hljs-built_in">size</span>();<br>            <span class="hljs-function">vector&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">tmp</span><span class="hljs-params">(size,<span class="hljs-number">0</span>)</span></span>;<br><br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; size;++i)&#123;<br><br>                node = node_queue.<span class="hljs-built_in">front</span>();node_queue.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//获得节点</span><br>                <br>                <span class="hljs-keyword">if</span>(node-&gt;left) node_queue.<span class="hljs-built_in">push</span>(node-&gt;left);<span class="hljs-comment">//存入左孩子</span><br>                <span class="hljs-keyword">if</span>(node-&gt;right) node_queue.<span class="hljs-built_in">push</span>(node-&gt;right);<span class="hljs-comment">//存入右孩子</span><br><br>                <span class="hljs-keyword">if</span>(dirc) tmp[i] = node-&gt;val;<span class="hljs-comment">//正向</span><br>                <span class="hljs-keyword">else</span> tmp[size<span class="hljs-number">-1</span>-i] = node-&gt;val;<span class="hljs-comment">//反向</span><br><br>            &#125;<br><br>            dirc = !dirc;<span class="hljs-comment">//方向反转</span><br>            res.<span class="hljs-built_in">push_back</span>(tmp);<span class="hljs-comment">//保存结果</span><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>跟普通的层序遍历一样，就是每次存入一个结果时需要反转方向。用层数的奇偶也能表示是否反转。以上的代码可以继续优化，没必要在每个节点都判断一次反转方向，因为反转方向的单位是每层的元素。</p><p><code>while</code>更改：（使用代码冗余来换取速度）</p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><br><span class="hljs-keyword">while</span>(!node_queue.<span class="hljs-built_in">empty</span>())&#123;<br><br>    <span class="hljs-keyword">int</span> size = node_queue.<span class="hljs-built_in">size</span>();<br>    <span class="hljs-function">vector&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">tmp</span><span class="hljs-params">(size,<span class="hljs-number">0</span>)</span></span>;<br><br>    <span class="hljs-keyword">if</span>(dirc)&#123;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; size;++i)&#123;<br><br>            node = node_queue.<span class="hljs-built_in">front</span>();node_queue.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//获得节点</span><br>        <br>            <span class="hljs-keyword">if</span>(node-&gt;left) node_queue.<span class="hljs-built_in">push</span>(node-&gt;left);<span class="hljs-comment">//存入左孩子</span><br>            <span class="hljs-keyword">if</span>(node-&gt;right) node_queue.<span class="hljs-built_in">push</span>(node-&gt;right);<span class="hljs-comment">//存入右孩子</span><br><br>            tmp[i] = node-&gt;val;<span class="hljs-comment">//正向</span><br><br>        &#125;<br>        <br>    &#125;<span class="hljs-keyword">else</span>&#123;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; size;++i)&#123;<br><br>            node = node_queue.<span class="hljs-built_in">front</span>();node_queue.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//获得节点</span><br>        <br>            <span class="hljs-keyword">if</span>(node-&gt;left) node_queue.<span class="hljs-built_in">push</span>(node-&gt;left);<span class="hljs-comment">//存入左孩子</span><br>            <span class="hljs-keyword">if</span>(node-&gt;right) node_queue.<span class="hljs-built_in">push</span>(node-&gt;right);<span class="hljs-comment">//存入右孩子</span><br><br>            tmp[size<span class="hljs-number">-1</span>-i] = node-&gt;val;<span class="hljs-comment">//反向</span><br><br>        &#125;<br>    &#125;<br>    dirc = !dirc;<span class="hljs-comment">//方向反转</span><br>    res.<span class="hljs-built_in">push_back</span>(tmp);<span class="hljs-comment">//保存结果</span><br>&#125;<br></code></pre></div></td></tr></table></figure>]]></content>
-    
-    
-    <categories>
-      
-      <category>LeetCode</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>迭代</tag>
-      
-      <tag>层序遍历</tag>
-      
-      <tag>二叉树</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>102. 二叉树的层序遍历</title>
     <link href="/2021/05/02/LeetCode/102.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/"/>
     <url>/2021/05/02/LeetCode/102.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
@@ -1130,6 +1101,35 @@
       <tag>层序遍历</tag>
       
       <tag>递归</tag>
+      
+      <tag>二叉树</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>103. 二叉树的锯齿形层序遍历</title>
+    <link href="/2021/05/02/LeetCode/103.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%94%AF%E9%BD%BF%E5%BD%A2%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/"/>
+    <url>/2021/05/02/LeetCode/103.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%94%AF%E9%BD%BF%E5%BD%A2%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p><a href="https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/">本题链接</a></p><h2 id="迭代-层序遍历"><a href="#迭代-层序遍历" class="headerlink" title="迭代+层序遍历"></a>迭代+层序遍历</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for a binary tree node.</span><br><span class="hljs-comment"> * struct TreeNode &#123;</span><br><span class="hljs-comment"> *     int val;</span><br><span class="hljs-comment"> *     TreeNode *left;</span><br><span class="hljs-comment"> *     TreeNode *right;</span><br><span class="hljs-comment"> *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) &#123;&#125;</span><br><span class="hljs-comment"> * &#125;;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-built_in">zigzagLevelOrder</span>(TreeNode* root) &#123;<br><br>        <span class="hljs-keyword">if</span>(!root) <span class="hljs-keyword">return</span> &#123;&#125;;<br><br>        vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; res;<br>        queue&lt;TreeNode*&gt; node_queue;<br>        <span class="hljs-keyword">bool</span> dirc = <span class="hljs-literal">true</span>;<br>        TreeNode* node;<br><br>        node_queue.<span class="hljs-built_in">push</span>(root);<br>        <span class="hljs-keyword">while</span>(!node_queue.<span class="hljs-built_in">empty</span>())&#123;<br><br>            <span class="hljs-keyword">int</span> size = node_queue.<span class="hljs-built_in">size</span>();<br>            <span class="hljs-function">vector&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">tmp</span><span class="hljs-params">(size,<span class="hljs-number">0</span>)</span></span>;<br><br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; size;++i)&#123;<br><br>                node = node_queue.<span class="hljs-built_in">front</span>();node_queue.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//获得节点</span><br>                <br>                <span class="hljs-keyword">if</span>(node-&gt;left) node_queue.<span class="hljs-built_in">push</span>(node-&gt;left);<span class="hljs-comment">//存入左孩子</span><br>                <span class="hljs-keyword">if</span>(node-&gt;right) node_queue.<span class="hljs-built_in">push</span>(node-&gt;right);<span class="hljs-comment">//存入右孩子</span><br><br>                <span class="hljs-keyword">if</span>(dirc) tmp[i] = node-&gt;val;<span class="hljs-comment">//正向</span><br>                <span class="hljs-keyword">else</span> tmp[size<span class="hljs-number">-1</span>-i] = node-&gt;val;<span class="hljs-comment">//反向</span><br><br>            &#125;<br><br>            dirc = !dirc;<span class="hljs-comment">//方向反转</span><br>            res.<span class="hljs-built_in">push_back</span>(tmp);<span class="hljs-comment">//保存结果</span><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>跟普通的层序遍历一样，就是每次存入一个结果时需要反转方向。用层数的奇偶也能表示是否反转。以上的代码可以继续优化，没必要在每个节点都判断一次反转方向，因为反转方向的单位是每层的元素。</p><p><code>while</code>更改：（使用代码冗余来换取速度）</p><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><br><span class="hljs-keyword">while</span>(!node_queue.<span class="hljs-built_in">empty</span>())&#123;<br><br>    <span class="hljs-keyword">int</span> size = node_queue.<span class="hljs-built_in">size</span>();<br>    <span class="hljs-function">vector&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">tmp</span><span class="hljs-params">(size,<span class="hljs-number">0</span>)</span></span>;<br><br>    <span class="hljs-keyword">if</span>(dirc)&#123;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; size;++i)&#123;<br><br>            node = node_queue.<span class="hljs-built_in">front</span>();node_queue.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//获得节点</span><br>        <br>            <span class="hljs-keyword">if</span>(node-&gt;left) node_queue.<span class="hljs-built_in">push</span>(node-&gt;left);<span class="hljs-comment">//存入左孩子</span><br>            <span class="hljs-keyword">if</span>(node-&gt;right) node_queue.<span class="hljs-built_in">push</span>(node-&gt;right);<span class="hljs-comment">//存入右孩子</span><br><br>            tmp[i] = node-&gt;val;<span class="hljs-comment">//正向</span><br><br>        &#125;<br>        <br>    &#125;<span class="hljs-keyword">else</span>&#123;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; size;++i)&#123;<br><br>            node = node_queue.<span class="hljs-built_in">front</span>();node_queue.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//获得节点</span><br>        <br>            <span class="hljs-keyword">if</span>(node-&gt;left) node_queue.<span class="hljs-built_in">push</span>(node-&gt;left);<span class="hljs-comment">//存入左孩子</span><br>            <span class="hljs-keyword">if</span>(node-&gt;right) node_queue.<span class="hljs-built_in">push</span>(node-&gt;right);<span class="hljs-comment">//存入右孩子</span><br><br>            tmp[size<span class="hljs-number">-1</span>-i] = node-&gt;val;<span class="hljs-comment">//反向</span><br><br>        &#125;<br>    &#125;<br>    dirc = !dirc;<span class="hljs-comment">//方向反转</span><br>    res.<span class="hljs-built_in">push_back</span>(tmp);<span class="hljs-comment">//保存结果</span><br>&#125;<br></code></pre></div></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>迭代</tag>
+      
+      <tag>层序遍历</tag>
       
       <tag>二叉树</tag>
       
@@ -1324,9 +1324,9 @@
     
     <tags>
       
-      <tag>腾讯云</tag>
-      
       <tag>godaddy</tag>
+      
+      <tag>腾讯云</tag>
       
       <tag>vps</tag>
       
@@ -1899,9 +1899,9 @@
     
     <tags>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
       <tag>染色法</tag>
       
@@ -2215,9 +2215,9 @@
       
       <tag>深度优先搜索</tag>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
       <tag>拓扑排序</tag>
       
@@ -3744,9 +3744,9 @@
     
     <tags>
       
-      <tag>最短路Floyd算法</tag>
-      
       <tag>图</tag>
+      
+      <tag>最短路Floyd算法</tag>
       
     </tags>
     
@@ -4532,9 +4532,9 @@
       
       <tag>深度优先搜索</tag>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
       <tag>拓扑排序</tag>
       
@@ -4906,9 +4906,9 @@
       
       <tag>递归</tag>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
     </tags>
     
@@ -4958,9 +4958,9 @@
     
     <tags>
       
-      <tag>图床</tag>
-      
       <tag>腾讯云</tag>
+      
+      <tag>图床</tag>
       
     </tags>
     
@@ -6284,9 +6284,9 @@
       
       <tag>深度优先搜索</tag>
       
-      <tag>图</tag>
-      
       <tag>广度优先搜索</tag>
+      
+      <tag>图</tag>
       
       <tag>拓扑排序</tag>
       
