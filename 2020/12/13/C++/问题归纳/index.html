@@ -114,7 +114,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 
 
 <body>
-  <header style="height: 30vh;">
+  <header style="height: 60vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -220,19 +220,20 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
                 class="iconfont icon-search"></i>&nbsp;</a>
           </li>
         
-        
+        <!-- 黑暗模式开关 -->
+        <!-- 
           <li class="nav-item" id="color-toggle-btn">
             <a class="nav-link" target="_self">&nbsp;<i
                 class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
-        
+         -->
       </ul>
     </div>
   </div>
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+         style="background: url('https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/img/blog/post_banner.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -259,7 +260,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.5k 字
+      1.6k 字
     </span>
   
 
@@ -269,7 +270,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      17
        分钟
     </span>
   
@@ -311,7 +312,8 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
             
 
             <div class="markdown-body">
-              <h2 id="引用的生命周期？"><a href="#引用的生命周期？" class="headerlink" title="引用的生命周期？"></a>引用的生命周期？</h2><h2 id="友元函数是类成员函数吗？"><a href="#友元函数是类成员函数吗？" class="headerlink" title="友元函数是类成员函数吗？"></a>友元函数是类成员函数吗？</h2><p>不是，友元函数的原型有在类的定义中出现过，但是友元函数并不是成员函数。</p>
+              <h2 id="引用的生命周期？"><a href="#引用的生命周期？" class="headerlink" title="引用的生命周期？"></a>引用的生命周期？</h2><p>与局部变量类似</p>
+<h2 id="友元函数是类成员函数吗？"><a href="#友元函数是类成员函数吗？" class="headerlink" title="友元函数是类成员函数吗？"></a>友元函数是类成员函数吗？</h2><p>不是，友元函数的原型有在类的定义中出现过，但是友元函数并不是成员函数。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-friend-functions.html">C++ 友元函数</a></p>
 <h2 id="如何判断操作符重载放在类里还是类外？"><a href="#如何判断操作符重载放在类里还是类外？" class="headerlink" title="如何判断操作符重载放在类里还是类外？"></a>如何判断操作符重载放在类里还是类外？</h2><p>赋值（=）、下标（[]）、调用（()）和成员访问箭头（-&gt;）运算符必须是成员（函数）。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29344757/article/details/78820189">为什么有的操作符重载函数只能是成员函数?</a></p>
@@ -323,12 +325,18 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 <p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wuyepeng/p/9863763.html">使用初始化列表的好处</a></p>
 <h2 id="为什么要虚的析构函数？"><a href="#为什么要虚的析构函数？" class="headerlink" title="为什么要虚的析构函数？"></a>为什么要虚的析构函数？</h2><p>这样做是为了当<strong>用一个基类的指针删除一个派生类的对象时，派生类的析构函数会被调用</strong>。当然，<strong>并不是要把所有类的析构函数都写成虚函数</strong>。因为当类里面有虚函数的时候，编译器会给类添加一个虚函数表，里面来存放虚函数指针，这样就会增加类的存储空间。所以，只有<strong>当一个类被用来作为基类的时候，才把析构函数写成虚函数</strong>。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangjingyangguang/article/details/21549991">为什么要用虚析构函数</a></p>
-<h2 id="什么叫做对象切割？"><a href="#什么叫做对象切割？" class="headerlink" title="什么叫做对象切割？"></a>什么叫做对象切割？</h2><h2 id="什么叫做编译转换？"><a href="#什么叫做编译转换？" class="headerlink" title="什么叫做编译转换？"></a>什么叫做编译转换？</h2><h2 id="返回值的生命周期"><a href="#返回值的生命周期" class="headerlink" title="返回值的生命周期"></a>返回值的生命周期</h2><h2 id="操作符重载作为成员函数和非成员函数时的优缺点"><a href="#操作符重载作为成员函数和非成员函数时的优缺点" class="headerlink" title="操作符重载作为成员函数和非成员函数时的优缺点"></a>操作符重载作为成员函数和非成员函数时的优缺点</h2><h2 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h2><h2 id="为什么要用基类指针指向派生类？"><a href="#为什么要用基类指针指向派生类？" class="headerlink" title="为什么要用基类指针指向派生类？"></a>为什么要用基类指针指向派生类？</h2><p>在基类与派生类之间，有一个<strong>规定</strong>：派生类对象的地址可以赋给指向基类对象的指针变量（简称<strong>基类指针</strong>），即基类指针也可以指向派生类对象。为什么有这一规定呢？因为它可以实现<strong>多态性</strong>，即向不同的对象发送同一个消息，不同的对象在接受时会产生不同的行为。</p>
+<h2 id="什么叫做对象切割？"><a href="#什么叫做对象切割？" class="headerlink" title="什么叫做对象切割？"></a>什么叫做对象切割？</h2><p>出现在多态情况下，使用基类类型指向派生类实例，即向上转型</p>
+<h2 id="什么叫做编译转换？"><a href="#什么叫做编译转换？" class="headerlink" title="什么叫做编译转换？"></a>什么叫做编译转换？</h2><h2 id="返回值的生命周期？"><a href="#返回值的生命周期？" class="headerlink" title="返回值的生命周期？"></a>返回值的生命周期？</h2><h2 id="操作符重载作为成员函数和非成员函数时的优缺点"><a href="#操作符重载作为成员函数和非成员函数时的优缺点" class="headerlink" title="操作符重载作为成员函数和非成员函数时的优缺点"></a>操作符重载作为成员函数和非成员函数时的优缺点</h2><h2 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h2><h2 id="为什么要用基类指针指向派生类？"><a href="#为什么要用基类指针指向派生类？" class="headerlink" title="为什么要用基类指针指向派生类？"></a>为什么要用基类指针指向派生类？</h2><p>在基类与派生类之间，有一个<strong>规定</strong>：派生类对象的地址可以赋给指向基类对象的指针变量（简称<strong>基类指针</strong>），即基类指针也可以指向派生类对象。为什么有这一规定呢？因为它可以实现<strong>多态性</strong>，即向不同的对象发送同一个消息，不同的对象在接受时会产生不同的行为。</p>
 <p>基类指针可以指向基类对象；派生类指针可以指向派生类对象；基类指针可以指向派生类对象（无需强制转换），但只能引用基类中有的成员； 派生类指针指向基类对象，会引发语法错误。但派生类指针通过强制转换可指向基类对象。可是该动作很危险：若引用对象中不村在的派生类成员，会得到错误的结果。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hk121/article/details/81165391">为什么要用基类指针指向派生类对象？</a></p>
 <h2 id="动态联编和静态联编"><a href="#动态联编和静态联编" class="headerlink" title="动态联编和静态联编"></a>动态联编和静态联编</h2><h2 id="向上转型和向下转型"><a href="#向上转型和向下转型" class="headerlink" title="向上转型和向下转型"></a>向上转型和向下转型</h2><h2 id="释放一个空指针会有什么问题"><a href="#释放一个空指针会有什么问题" class="headerlink" title="释放一个空指针会有什么问题"></a>释放一个空指针会有什么问题</h2><h2 id="c-类的内存模型"><a href="#c-类的内存模型" class="headerlink" title="c++类的内存模型"></a>c++类的内存模型</h2><h2 id="内存分配中的cookie"><a href="#内存分配中的cookie" class="headerlink" title="内存分配中的cookie"></a>内存分配中的cookie</h2><p>在malloc为用户分配内存的时候，除了分配用户本身的内存，还会在内存前后加上两个cookie，来记录分配了多少内存，这样在调用free函数的时候才能准确的回收内存。因此每次调用malloc函数都会产生cookie消耗。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/338043328">C++内存管理（malloc和free中的cookie）</a></p>
-<h2 id="Debug模式下多出来的内存空间干嘛用？Debugger-Header、no-man-land？"><a href="#Debug模式下多出来的内存空间干嘛用？Debugger-Header、no-man-land？" class="headerlink" title="Debug模式下多出来的内存空间干嘛用？Debugger Header、no man land？"></a>Debug模式下多出来的内存空间干嘛用？Debugger Header、no man land？</h2><h2 id="静态数据什么时候会被创建"><a href="#静态数据什么时候会被创建" class="headerlink" title="静态数据什么时候会被创建"></a>静态数据什么时候会被创建</h2><h2 id="纯虚函数的定义"><a href="#纯虚函数的定义" class="headerlink" title="纯虚函数的定义"></a>纯虚函数的定义</h2><h2 id="C-子类拥有和父类的同名非虚函数会发生什么情况？"><a href="#C-子类拥有和父类的同名非虚函数会发生什么情况？" class="headerlink" title="C++子类拥有和父类的同名非虚函数会发生什么情况？"></a>C++子类拥有和父类的同名非虚函数会发生什么情况？</h2><h2 id="C-函数签名"><a href="#C-函数签名" class="headerlink" title="C++函数签名"></a>C++函数签名</h2><h2 id="栈对象如何向上转型"><a href="#栈对象如何向上转型" class="headerlink" title="栈对象如何向上转型"></a>栈对象如何向上转型</h2><h2 id="C-中的原子对象"><a href="#C-中的原子对象" class="headerlink" title="C++中的原子对象"></a>C++中的原子对象</h2><h2 id="C-中的reorder"><a href="#C-中的reorder" class="headerlink" title="C++中的reorder"></a>C++中的reorder</h2><h2 id="C-的异常和底层机制"><a href="#C-的异常和底层机制" class="headerlink" title="C++的异常和底层机制"></a>C++的异常和底层机制</h2><h2 id="C-abort"><a href="#C-abort" class="headerlink" title="C++abort()"></a>C++abort()</h2><h2 id="C-List为什么会有maxsize"><a href="#C-List为什么会有maxsize" class="headerlink" title="C++List为什么会有maxsize?"></a>C++List为什么会有maxsize?</h2><h2 id="C-泛化指针"><a href="#C-泛化指针" class="headerlink" title="C++泛化指针"></a>C++泛化指针</h2><h2 id="C-的malloc详解"><a href="#C-的malloc详解" class="headerlink" title="C++的malloc详解"></a>C++的malloc详解</h2><h2 id="C-序列化"><a href="#C-序列化" class="headerlink" title="C++序列化"></a>C++序列化</h2><h2 id="C-访问级别底层原理？"><a href="#C-访问级别底层原理？" class="headerlink" title="C++访问级别底层原理？"></a>C++访问级别底层原理？</h2><h2 id="C-override"><a href="#C-override" class="headerlink" title="C++override?"></a>C++override?</h2><h2 id="C-如何充分利用CPU时间片？"><a href="#C-如何充分利用CPU时间片？" class="headerlink" title="C++如何充分利用CPU时间片？"></a>C++如何充分利用CPU时间片？</h2><h2 id="C-类中的typedef以及它的空间占用和底层实现？"><a href="#C-类中的typedef以及它的空间占用和底层实现？" class="headerlink" title="C++类中的typedef以及它的空间占用和底层实现？"></a>C++类中的typedef以及它的空间占用和底层实现？</h2><h2 id="C-引用折叠？"><a href="#C-引用折叠？" class="headerlink" title="C++引用折叠？"></a>C++引用折叠？</h2><h2 id="C-嵌入式指针？"><a href="#C-嵌入式指针？" class="headerlink" title="C++嵌入式指针？"></a>C++嵌入式指针？</h2><h2 id="C-类的静态函数能直接被调用吗？"><a href="#C-类的静态函数能直接被调用吗？" class="headerlink" title="C++类的静态函数能直接被调用吗？"></a>C++类的静态函数能直接被调用吗？</h2><p>答：可以。静态成员函数即使在类对象不存在的情况下也能被调用，静态函数只要使用类名加范围解析运算符:: 就可以访问。 静态成员函数只能访问静态成员数据、其他静态成员函数和类外部的其他函数。 静态成员函数有一个类范围，他们不能访问类的this 指针。</p>
+<h2 id="Debug模式下多出来的内存空间干嘛用？Debugger-Header、no-man-land？"><a href="#Debug模式下多出来的内存空间干嘛用？Debugger-Header、no-man-land？" class="headerlink" title="Debug模式下多出来的内存空间干嘛用？Debugger Header、no man land？"></a>Debug模式下多出来的内存空间干嘛用？Debugger Header、no man land？</h2><p>详见《malloc与free》</p>
+<h2 id="静态数据什么时候会被创建"><a href="#静态数据什么时候会被创建" class="headerlink" title="静态数据什么时候会被创建"></a>静态数据什么时候会被创建</h2><h2 id="纯虚函数的定义"><a href="#纯虚函数的定义" class="headerlink" title="纯虚函数的定义"></a>纯虚函数的定义</h2><h2 id="C-子类拥有和父类的同名非虚函数会发生什么情况？"><a href="#C-子类拥有和父类的同名非虚函数会发生什么情况？" class="headerlink" title="C++子类拥有和父类的同名非虚函数会发生什么情况？"></a>C++子类拥有和父类的同名非虚函数会发生什么情况？</h2><h2 id="C-函数签名"><a href="#C-函数签名" class="headerlink" title="C++函数签名"></a>C++函数签名</h2><h2 id="栈对象如何向上转型"><a href="#栈对象如何向上转型" class="headerlink" title="栈对象如何向上转型"></a>栈对象如何向上转型</h2><h2 id="C-中的原子对象"><a href="#C-中的原子对象" class="headerlink" title="C++中的原子对象"></a>C++中的原子对象</h2><h2 id="C-中的reorder"><a href="#C-中的reorder" class="headerlink" title="C++中的reorder"></a>C++中的reorder</h2><h2 id="C-的异常和底层机制"><a href="#C-的异常和底层机制" class="headerlink" title="C++的异常和底层机制"></a>C++的异常和底层机制</h2><h2 id="C-abort"><a href="#C-abort" class="headerlink" title="C++abort()"></a>C++abort()</h2><h2 id="C-List为什么会有maxsize"><a href="#C-List为什么会有maxsize" class="headerlink" title="C++List为什么会有maxsize?"></a>C++List为什么会有maxsize?</h2><h2 id="C-泛化指针"><a href="#C-泛化指针" class="headerlink" title="C++泛化指针"></a>C++泛化指针</h2><h2 id="C-的malloc详解"><a href="#C-的malloc详解" class="headerlink" title="C++的malloc详解"></a>C++的malloc详解</h2><p>详见《malloc与free》</p>
+<h2 id="C-序列化"><a href="#C-序列化" class="headerlink" title="C++序列化"></a>C++序列化</h2><h2 id="C-访问级别底层原理？"><a href="#C-访问级别底层原理？" class="headerlink" title="C++访问级别底层原理？"></a>C++访问级别底层原理？</h2><h2 id="C-override"><a href="#C-override" class="headerlink" title="C++override?"></a>C++override?</h2><p>详见《高级开发》</p>
+<h2 id="C-如何充分利用CPU时间片？"><a href="#C-如何充分利用CPU时间片？" class="headerlink" title="C++如何充分利用CPU时间片？"></a>C++如何充分利用CPU时间片？</h2><h2 id="C-类中的typedef以及它的空间占用和底层实现？"><a href="#C-类中的typedef以及它的空间占用和底层实现？" class="headerlink" title="C++类中的typedef以及它的空间占用和底层实现？"></a>C++类中的typedef以及它的空间占用和底层实现？</h2><p>无空间占用，只在编译阶段对指令取址范围进行处理</p>
+<h2 id="C-引用折叠？"><a href="#C-引用折叠？" class="headerlink" title="C++引用折叠？"></a>C++引用折叠？</h2><h2 id="C-嵌入式指针？"><a href="#C-嵌入式指针？" class="headerlink" title="C++嵌入式指针？"></a>C++嵌入式指针？</h2><p>即使用联合体，详见《小型内存分配器》的第一个例子</p>
+<h2 id="C-类的静态函数能直接被调用吗？"><a href="#C-类的静态函数能直接被调用吗？" class="headerlink" title="C++类的静态函数能直接被调用吗？"></a>C++类的静态函数能直接被调用吗？</h2><p>答：可以。静态成员函数即使在类对象不存在的情况下也能被调用，静态函数只要使用类名加范围解析运算符:: 就可以访问。 静态成员函数只能访问静态成员数据、其他静态成员函数和类外部的其他函数。 静态成员函数有一个类范围，他们不能访问类的this 指针。</p>
 <h2 id="C-typename"><a href="#C-typename" class="headerlink" title="C++typename"></a>C++typename</h2><ul>
 <li>typename在下面情况下禁止使用：<ul>
 <li>模板定义之外，即typename只能用于模板的定义中</li>
@@ -341,13 +349,18 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 <li>其它情况下typename是<strong>可选</strong>的，也就是说对于一个不是依赖名的限定名，该名称是可选的，例如<code>vector&lt;int&gt; vi;</code></li>
 </ul>
 <p>参考：<a target="_blank" rel="noopener" href="https://feihu.me/blog/2014/the-origin-and-usage-of-typename/">知无涯之C++ typename的起源与用法</a></p>
-<h2 id="C-volatile"><a href="#C-volatile" class="headerlink" title="C++volatile?"></a>C++volatile?</h2><p>一般说来，volatile用在如下的几个地方：</p>
+<h2 id="C-volatile"><a href="#C-volatile" class="headerlink" title="C++volatile?"></a>C++volatile?</h2><p>对于施加了volatile的变量：</p>
 <ul>
-<li>中断服务程序中修改的供其它程序检测的变量需要加 volatile；</li>
-<li>多任务环境下各任务间共享的标志应该加 volatile；</li>
-<li>存储器映射的硬件寄存器通常也要加 volatile 说明，因为每次对它的读写都可能由不同意义；</li>
+<li>阻止编译器为了提高速度将该变量缓存到寄存器内而不写回</li>
+<li>阻止编译器调整操作volatile变量的指令顺序</li>
 </ul>
-<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yc_sunniwell/archive/2010/07/14/1777432.html">C/C++中volatile关键字详解</a></p>
+<p>一般说来，volatile用在如下的几个地方：</p>
+<ul>
+<li>中断服务程序中修改的供其它程序检测的变量需要加 volatile</li>
+<li>多任务环境下各任务间共享的标志应该加 volatile</li>
+<li>存储器映射的硬件寄存器通常也要加 volatile 说明，因为每次对它的读写都可能由不同意义</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yc_sunniwell/archive/2010/07/14/1777432.html">C/C++中volatile关键字详解</a>、《程序员的自我修养：链接、装载与库》</p>
 <h2 id="C-创建对象用中括号"><a href="#C-创建对象用中括号" class="headerlink" title="C++创建对象用中括号{}"></a>C++创建对象用中括号{}</h2><h2 id="C-如何刷新缓冲区及其原理"><a href="#C-如何刷新缓冲区及其原理" class="headerlink" title="C++如何刷新缓冲区及其原理"></a>C++如何刷新缓冲区及其原理</h2><h2 id="在C-拷贝构造函数中使用初始化列表"><a href="#在C-拷贝构造函数中使用初始化列表" class="headerlink" title="在C++拷贝构造函数中使用初始化列表"></a>在C++拷贝构造函数中使用初始化列表</h2><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/justin12zhu/article/details/9174491">在C++拷贝构造函数中使用初始化列表</a></p>
 <h2 id="C-释放一个空指针？"><a href="#C-释放一个空指针？" class="headerlink" title="C++释放一个空指针？"></a>C++释放一个空指针？</h2><h2 id="C-中进程的栈空间为多少？"><a href="#C-中进程的栈空间为多少？" class="headerlink" title="C++中进程的栈空间为多少？"></a>C++中进程的栈空间为多少？</h2><h2 id="C-中被调用函数如何被释放？返回值在什么时候被获取？"><a href="#C-中被调用函数如何被释放？返回值在什么时候被获取？" class="headerlink" title="C++中被调用函数如何被释放？返回值在什么时候被获取？"></a>C++中被调用函数如何被释放？返回值在什么时候被获取？</h2><h2 id="断言和异常的区别和使用场景"><a href="#断言和异常的区别和使用场景" class="headerlink" title="断言和异常的区别和使用场景?"></a>断言和异常的区别和使用场景?</h2>
             </div>

@@ -114,7 +114,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 
 
 <body>
-  <header style="height: 30vh;">
+  <header style="height: 60vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -220,19 +220,20 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
                 class="iconfont icon-search"></i>&nbsp;</a>
           </li>
         
-        
+        <!-- 黑暗模式开关 -->
+        <!-- 
           <li class="nav-item" id="color-toggle-btn">
             <a class="nav-link" target="_self">&nbsp;<i
                 class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
-        
+         -->
       </ul>
     </div>
   </div>
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+         style="background: url('https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/img/blog/post_banner.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -259,7 +260,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      555 字
+      1.7k 字
     </span>
   
 
@@ -269,7 +270,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      17
        分钟
     </span>
   
@@ -357,13 +358,84 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 </li>
 </ul>
 <h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><ul>
-<li>物理地址空间：硬件支持的内存空间</li>
-<li>逻辑地址空间：一个运行的程序<strong>所拥有</strong>的内存范围</li>
+<li><p>物理地址空间：硬件支持的内存空间</p>
+<ul>
+<li>如果程序直接操作物理地址空间，那么程序所使用的内存相互之间没有隔离，无论是恶意的程序还是非恶意的臭虫都会都会修改其他程序的内存数据。</li>
+<li>程序编写时，访问数据和指令跳转的指令都是确定的。如果直接使用物理地址空间，那么每次程序重新装载到内存中，也需要实时的更改程序中对应的数据和指令地址。</li>
 </ul>
-<p>为了保证地址安全，操作系统使用<strong>基址寄存器</strong>和<strong>界限寄存器</strong>设定逻辑地址空间</p>
+</li>
+<li><p>逻辑地址空间：一个运行的程序<strong>所拥有</strong>的内存范围。它是人们想象出来的地址空间，其实它并不存在。</p>
+<ul>
+<li><p>每个进程都有自己独立的逻辑地址空间，而且每个进程只能访问自己的地址空间，这样就有效地做到了进程的隔离。</p>
+</li>
+<li><p>为了保证地址安全，操作系统使用<strong>基址寄存器</strong>和<strong>界限寄存器</strong>设定逻辑地址空间</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="分段与分页"><a href="#分段与分页" class="headerlink" title="分段与分页"></a>分段与分页</h3><ul>
+<li>分段：基本思路是把一段与程序所需要的内存空间大小的逻辑地址空间映射到某个物理地址空间<ul>
+<li>分段做到了地址隔离</li>
+<li>分段对于内存使用效率的问题没有解决，原因在于分段对内存区域的映射还是按照程序为单位，如果内存不足，被换入换出到磁盘的都是整个程序。这种方法显得粗糙，粒度大。</li>
+</ul>
+</li>
+<li>分页：基本方法是把地址空间人为地等分为固定大小的页，每一页大小由硬件决定，或硬件支持多种大小的页。<ul>
+<li>根据程序的局部性原理，在分段的基础上对内存映射划分了更小的粒度和映射，提高内存使用率</li>
+<li>把进程的逻辑地址空间按页分割，把常用的数据和代码页装载到内存中，把不常用的代码和数据保存在磁盘里，当需要用到的时候再把它从磁盘取出来即可。所以对于某个进程的某个时刻，它经常或正在被使用的数据所在的那一页在内存或缓存中；不经常被使用的数据的页可能会在磁盘内。</li>
+</ul>
+</li>
+</ul>
+<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><ul>
+<li>当线程数量小于等于处理器数量时，线程的并发是真正的并发，即并行。但对于线程数量大于处理器数量的情况，线程的并发会受到一些阻碍，因此此时至少有一个处理器会运行多个线程。在单处理器对应多线程的情况下，并发是一种模拟出来的状态。</li>
+</ul>
+<h2 id="进程-线程"><a href="#进程-线程" class="headerlink" title="进程/线程"></a>进程/线程</h2><p>在LINUX上，所有的执行实体（进程或线程）都被称为任务。</p>
+<h4 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h4><ul>
+<li>线程拥有自己的寄存器和栈空间</li>
+</ul>
+<h4 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h4><ul>
+<li>运行：此时正在执行</li>
+<li>就绪：此时可以立刻运行，但是CPU已经被占用</li>
+<li>等待：此时正在等待某一事件</li>
+</ul>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><ul>
+<li>IO密集型：频繁等待的线程</li>
+<li>CPU密集型：很少等待的线程（把时间片用完）的线程</li>
+</ul>
+<p>IO密集型线程总是比CPU密集型线程容易得到优先级的提升</p>
+<h4 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h4><p>优先级改变有以下几种方式：</p>
+<ul>
+<li>用户指定优先级</li>
+<li>根据进入等待状态的频繁程度提升或降低优先级</li>
+<li>长时间得不到执行而被提升优先级</li>
+</ul>
+<h4 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h4><p>计算机处理数据，需要先将数据从内存中取出，再放到寄存器处理，处理完后再写入内存。</p>
+<p>整个过程会被汇编为多条指令，而在汇编中只有单指令是原子操作。所以当多个线程处理同个临界区时，某个线程可能会在执行某条指令后被调度系统打断，然后计算机开始执行其他线程，而其他线程可能会在执行指令的过程中覆盖掉前一个线程的数据。</p>
+<p>线程同步手段：</p>
+<ul>
+<li>信号量：在整个系统中可以被任意线程获取并释放<ul>
+<li>二元信号量<ul>
+<li>它适合只能被唯一一个线程独占访问的资源</li>
+</ul>
+</li>
+<li>多元信号量<ul>
+<li>一个初始值为N的信号量允许N个线程并发访问</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>互斥量：哪个线程获取了互斥量，哪个线程就要负责释放这个锁</li>
+<li>临界区：作用范围只限于本进程</li>
+<li>读写锁：当读操作比写操作频繁时<ul>
+<li>读写锁又分为共享式和独占式</li>
+</ul>
+</li>
+<li>条件变量：使用条件变量可以让许多线程一起等待某个事件的发生。当事件发生时，所有的线程可以一起恢复执行</li>
+</ul>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>《操作系统》</li>
 <li><a target="_blank" rel="noopener" href="https://space.bilibili.com/114366178/channel/detail?cid=172712&amp;ctype=0">bilibili-从0开始数-操作系统原理</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/cosen1024/Java-Interview/blob/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.md">cosen1024/Java-Interview/操作系统</a></li>
+<li>《程序员的自我修养：链接、装载与库》</li>
 </ul>
 
             </div>

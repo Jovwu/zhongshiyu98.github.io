@@ -114,7 +114,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 
 
 <body>
-  <header style="height: 30vh;">
+  <header style="height: 60vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -220,19 +220,20 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
                 class="iconfont icon-search"></i>&nbsp;</a>
           </li>
         
-        
+        <!-- 黑暗模式开关 -->
+        <!-- 
           <li class="nav-item" id="color-toggle-btn">
             <a class="nav-link" target="_self">&nbsp;<i
                 class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
-        
+         -->
       </ul>
     </div>
   </div>
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('https://images-1257780535.cos.ap-shanghai.myqcloud.com/blogs/6ef39284af5752bfd935f18f56c1bbfb-666d4.png') no-repeat center center;
+         style="background: url('https://cdn.jsdelivr.net/gh/zhongshiyu98/cdnrepo/img/blog/post_banner.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -259,7 +260,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      205 字
+      318 字
     </span>
   
 
@@ -269,7 +270,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      4
        分钟
     </span>
   
@@ -314,6 +315,8 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
               <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/">本题链接</a></p>
 <h2 id="哈希表-队列"><a href="#哈希表-队列" class="headerlink" title="哈希表+队列"></a>哈希表+队列</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">lengthOfLongestSubstring</span><span class="hljs-params">(string s)</span> </span>&#123;<br><br>        <span class="hljs-keyword">if</span>(s.<span class="hljs-built_in">size</span>() &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> s.<span class="hljs-built_in">size</span>();<br><br>        unordered_set&lt;<span class="hljs-keyword">char</span>&gt; hash;<br>        queue&lt;<span class="hljs-keyword">char</span>&gt; que;<br><br>        <span class="hljs-keyword">int</span> res = <span class="hljs-number">1</span>;<br><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; s.<span class="hljs-built_in">size</span>();++i)&#123;<br><br>            <span class="hljs-keyword">if</span>(hash.<span class="hljs-built_in">find</span>(s[i]) == hash.<span class="hljs-built_in">end</span>())&#123;<span class="hljs-comment">//如果队列里没有该字符</span><br>                hash.<span class="hljs-built_in">emplace</span>(s[i]);<span class="hljs-comment">//将该字符加入哈希表</span><br>                que.<span class="hljs-built_in">push</span>(s[i]);<span class="hljs-comment">//将该字符加入队列</span><br>            &#125;<span class="hljs-keyword">else</span>&#123;<br><br>                <span class="hljs-keyword">if</span>(que.<span class="hljs-built_in">size</span>() &gt; res) res = que.<span class="hljs-built_in">size</span>();<span class="hljs-comment">//更新长度</span><br>  <br>                <span class="hljs-keyword">while</span>(!que.<span class="hljs-built_in">empty</span>() &amp;&amp; que.<span class="hljs-built_in">front</span>() != s[i])&#123;<span class="hljs-comment">//直到队列中重复字母的前一个字符</span><br>                    hash.<span class="hljs-built_in">erase</span>(que.<span class="hljs-built_in">front</span>());<span class="hljs-comment">//将字符从哈希表中去除</span><br>                    que.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//将该元素出队</span><br>                &#125;<br>                que.<span class="hljs-built_in">push</span>(que.<span class="hljs-built_in">front</span>());que.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//将该元素从队头更换至队尾</span><br>            &#125;<br><br>        &#125;<br><br>        <span class="hljs-keyword">if</span>(que.<span class="hljs-built_in">size</span>() &gt; res) res = que.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
 <h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>保持队列里的连续字串没有重复字母</p>
+<h2 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h2><figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">lengthOfLongestSubstring</span><span class="hljs-params">(string s)</span> </span>&#123;<br><br>        unordered_set&lt;<span class="hljs-keyword">char</span>&gt; hash;<br>        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">int</span> end = <span class="hljs-number">-1</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; s.<span class="hljs-built_in">size</span>();++i)&#123;<br><br>            <span class="hljs-comment">//去掉重复的字符</span><br>            <span class="hljs-keyword">if</span>(i != <span class="hljs-number">0</span>) hash.<span class="hljs-built_in">erase</span>(s[i - <span class="hljs-number">1</span>]);  <br><br>            <span class="hljs-keyword">while</span>(end + <span class="hljs-number">1</span> &lt; s.<span class="hljs-built_in">size</span>() &amp;&amp; !hash.<span class="hljs-built_in">count</span>(s[end + <span class="hljs-number">1</span>]))&#123;<br>                <span class="hljs-comment">//移动最右侧的指针</span><br>                hash.<span class="hljs-built_in">insert</span>(s[end + <span class="hljs-number">1</span>]);<br>                ++end;<br>            &#125;<br><br>            res = <span class="hljs-built_in">max</span>(res,end - i + <span class="hljs-number">1</span>);<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><p>使用滑动窗口，让窗口内的字符串保持没有重复字符。</p>
 
             </div>
 
@@ -338,6 +341,8 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
                       <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
                     
                       <a class="hover-with-bg" href="/tags/%E9%98%9F%E5%88%97/">队列</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/">滑动窗口</a>
                     
                   </div>
                 
