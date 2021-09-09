@@ -18,7 +18,7 @@
   <meta name="author" content="zhong shiyu">
   <meta name="keywords" content="">
   
-  <title>操作系统 - rushcpp的笔记博客</title>
+  <title>操作系统 - rushcpp-cache</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -118,7 +118,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>rushcpp的笔记博客</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>rushcpp-cache</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -260,7 +260,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.7k 字
+      2k 字
     </span>
   
 
@@ -270,7 +270,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      19
        分钟
     </span>
   
@@ -390,7 +390,10 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 </ul>
 <h2 id="进程-线程"><a href="#进程-线程" class="headerlink" title="进程/线程"></a>进程/线程</h2><p>在LINUX上，所有的执行实体（进程或线程）都被称为任务。</p>
 <h4 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h4><ul>
-<li>线程拥有自己的寄存器和栈空间</li>
+<li><p>操作系统分配资源是以进程为单位，线程只能用所属进程的资源，即线程依赖于进程。</p>
+</li>
+<li><p>线程拥有自己的寄存器和栈空间</p>
+</li>
 </ul>
 <h4 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h4><ul>
 <li>运行：此时正在执行</li>
@@ -402,6 +405,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 <li>CPU密集型：很少等待的线程（把时间片用完）的线程</li>
 </ul>
 <p>IO密集型线程总是比CPU密集型线程容易得到优先级的提升</p>
+<p><strong>CPU密集型代码(各种循环处理、计算等等)：使用多进程。IO密集型代码(文件处理、网络爬虫等)：使用多线程</strong></p>
 <h4 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h4><p>优先级改变有以下几种方式：</p>
 <ul>
 <li>用户指定优先级</li>
@@ -431,11 +435,17 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 </li>
 <li>条件变量：使用条件变量可以让许多线程一起等待某个事件的发生。当事件发生时，所有的线程可以一起恢复执行</li>
 </ul>
+<h4 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h4><p>协程又被称为用户态线程，它是由线程创建的执行体，使用的是用户态的资源，所以操作系统对协程一无所知。</p>
+<p>在创建协程时，需要指定执行入口，底层都会分配执行栈和控制信息；让出执行权时，需要保存执行现场。</p>
+<p>协程思想在于：控制流的<strong>主动让出</strong>和<strong>恢复</strong>。</p>
+<p>协程在IO多路复用中的应用十分广泛。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>《操作系统》</li>
 <li><a target="_blank" rel="noopener" href="https://space.bilibili.com/114366178/channel/detail?cid=172712&amp;ctype=0">bilibili-从0开始数-操作系统原理</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/cosen1024/Java-Interview/blob/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.md">cosen1024/Java-Interview/操作系统</a></li>
 <li>《程序员的自我修养：链接、装载与库》</li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1b5411b7SD?from=search&amp;seid=5551959423038178486&amp;spm_id_from=333.337.0.0">【协程第一话】协程到底是怎样的存在？</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/306127044/answer/555327651">进入内核态究竟是什么意思？ - 灵剑的回答 - 知乎 </a></li>
 </ul>
 
             </div>

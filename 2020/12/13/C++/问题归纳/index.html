@@ -18,7 +18,7 @@
   <meta name="author" content="zhong shiyu">
   <meta name="keywords" content="">
   
-  <title>问题归纳 - rushcpp的笔记博客</title>
+  <title>问题归纳 - rushcpp-cache</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -118,7 +118,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>rushcpp的笔记博客</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>rushcpp-cache</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -260,7 +260,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.6k 字
+      4k 字
     </span>
   
 
@@ -270,7 +270,7 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      42
        分钟
     </span>
   
@@ -326,14 +326,32 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 <h2 id="为什么要虚的析构函数？"><a href="#为什么要虚的析构函数？" class="headerlink" title="为什么要虚的析构函数？"></a>为什么要虚的析构函数？</h2><p>这样做是为了当<strong>用一个基类的指针删除一个派生类的对象时，派生类的析构函数会被调用</strong>。当然，<strong>并不是要把所有类的析构函数都写成虚函数</strong>。因为当类里面有虚函数的时候，编译器会给类添加一个虚函数表，里面来存放虚函数指针，这样就会增加类的存储空间。所以，只有<strong>当一个类被用来作为基类的时候，才把析构函数写成虚函数</strong>。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangjingyangguang/article/details/21549991">为什么要用虚析构函数</a></p>
 <h2 id="什么叫做对象切割？"><a href="#什么叫做对象切割？" class="headerlink" title="什么叫做对象切割？"></a>什么叫做对象切割？</h2><p>出现在多态情况下，使用基类类型指向派生类实例，即向上转型</p>
-<h2 id="什么叫做编译转换？"><a href="#什么叫做编译转换？" class="headerlink" title="什么叫做编译转换？"></a>什么叫做编译转换？</h2><h2 id="返回值的生命周期？"><a href="#返回值的生命周期？" class="headerlink" title="返回值的生命周期？"></a>返回值的生命周期？</h2><h2 id="操作符重载作为成员函数和非成员函数时的优缺点"><a href="#操作符重载作为成员函数和非成员函数时的优缺点" class="headerlink" title="操作符重载作为成员函数和非成员函数时的优缺点"></a>操作符重载作为成员函数和非成员函数时的优缺点</h2><h2 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h2><h2 id="为什么要用基类指针指向派生类？"><a href="#为什么要用基类指针指向派生类？" class="headerlink" title="为什么要用基类指针指向派生类？"></a>为什么要用基类指针指向派生类？</h2><p>在基类与派生类之间，有一个<strong>规定</strong>：派生类对象的地址可以赋给指向基类对象的指针变量（简称<strong>基类指针</strong>），即基类指针也可以指向派生类对象。为什么有这一规定呢？因为它可以实现<strong>多态性</strong>，即向不同的对象发送同一个消息，不同的对象在接受时会产生不同的行为。</p>
+<h2 id="什么叫做编译转换？"><a href="#什么叫做编译转换？" class="headerlink" title="什么叫做编译转换？"></a>什么叫做编译转换？</h2><h2 id="std-move？"><a href="#std-move？" class="headerlink" title="std::move？"></a>std::move？</h2><ul>
+<li><strong>事实上std::move移动不了什么，唯一的功能是把左值强制转化为右值</strong>，让右值引用可以指向左值。其实现等同于一个类型转换：<code>static_cast&lt;T&amp;&amp;&gt;(lvalue)</code>。 所以，<strong>单纯的std::move(xxx)不会有性能提升</strong></li>
+<li><strong>被声明出来的左、右值引用都是左值</strong>。 因为被声明出的左右值引用是有地址的，也位于等号左边。</li>
+<li><strong>右值引用既可以是左值也可以是右值，如果有名称则为左值，否则是右值</strong></li>
+<li><strong>从性能上讲，左右值引用没有区别，传参使用左右值引用都可以避免拷贝。</strong></li>
+<li><strong>右值引用可以直接指向右值，也可以通过std::move指向左值；而左值引用只能指向左值(const左值引用也能指向右值)。</strong></li>
+<li><strong>作为函数形参时，右值引用更灵活。虽然const左值引用也可以做到左右值都接受，但它无法修改，有一定局限性。</strong></li>
+<li>编译器会<strong>默认</strong>在用户自定义的<code>class</code>和<code>struct</code>中生成移动语义函数，但前提是用户没有主动定义该类的<code>拷贝构造</code>等函数</li>
+<li><strong>可移动对象在&lt;需要拷贝且被拷贝者之后不再被需要&gt;的场景，建议使用</strong><code>std::move</code><strong>触发移动语义，提升性能</strong></li>
+<li><strong>std::move本身只做类型转换，对性能无影响。</strong> <strong>我们可以在自己的类中实现移动语义，避免深拷贝，充分利用右值引用和std::move的语言特性</strong></li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/335994370">一文读懂C++右值引用和std::move</a></p>
+<h2 id="返回值的生命周期？"><a href="#返回值的生命周期？" class="headerlink" title="返回值的生命周期？"></a>返回值的生命周期？</h2><h2 id="操作符重载作为成员函数和非成员函数时的优缺点"><a href="#操作符重载作为成员函数和非成员函数时的优缺点" class="headerlink" title="操作符重载作为成员函数和非成员函数时的优缺点"></a>操作符重载作为成员函数和非成员函数时的优缺点</h2><h2 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h2><h2 id="C-RAII？"><a href="#C-RAII？" class="headerlink" title="C++RAII？"></a>C++RAII？</h2><p>RAII（<strong>R</strong>esource <strong>A</strong>cquisition <strong>I</strong>s <strong>I</strong>nitialization）是由c++之父Bjarne Stroustrup提出的，中文翻译为资源获取即初始化，他说：使用局部对象来管理资源的技术称为资源获取即初始化；这里的资源主要是指操作系统中有限的东西如内存、网络套接字等等，局部对象是指存储在栈的对象，它的生命周期是由操作系统来管理的，无需人工介入；</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34660259">c++经验之谈一：RAII原理介绍</a></p>
+<h2 id="为什么要用基类指针指向派生类？"><a href="#为什么要用基类指针指向派生类？" class="headerlink" title="为什么要用基类指针指向派生类？"></a>为什么要用基类指针指向派生类？</h2><p>在基类与派生类之间，有一个<strong>规定</strong>：派生类对象的地址可以赋给指向基类对象的指针变量（简称<strong>基类指针</strong>），即基类指针也可以指向派生类对象。为什么有这一规定呢？因为它可以实现<strong>多态性</strong>，即向不同的对象发送同一个消息，不同的对象在接受时会产生不同的行为。</p>
 <p>基类指针可以指向基类对象；派生类指针可以指向派生类对象；基类指针可以指向派生类对象（无需强制转换），但只能引用基类中有的成员； 派生类指针指向基类对象，会引发语法错误。但派生类指针通过强制转换可指向基类对象。可是该动作很危险：若引用对象中不村在的派生类成员，会得到错误的结果。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hk121/article/details/81165391">为什么要用基类指针指向派生类对象？</a></p>
 <h2 id="动态联编和静态联编"><a href="#动态联编和静态联编" class="headerlink" title="动态联编和静态联编"></a>动态联编和静态联编</h2><h2 id="向上转型和向下转型"><a href="#向上转型和向下转型" class="headerlink" title="向上转型和向下转型"></a>向上转型和向下转型</h2><h2 id="释放一个空指针会有什么问题"><a href="#释放一个空指针会有什么问题" class="headerlink" title="释放一个空指针会有什么问题"></a>释放一个空指针会有什么问题</h2><h2 id="c-类的内存模型"><a href="#c-类的内存模型" class="headerlink" title="c++类的内存模型"></a>c++类的内存模型</h2><h2 id="内存分配中的cookie"><a href="#内存分配中的cookie" class="headerlink" title="内存分配中的cookie"></a>内存分配中的cookie</h2><p>在malloc为用户分配内存的时候，除了分配用户本身的内存，还会在内存前后加上两个cookie，来记录分配了多少内存，这样在调用free函数的时候才能准确的回收内存。因此每次调用malloc函数都会产生cookie消耗。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/338043328">C++内存管理（malloc和free中的cookie）</a></p>
 <h2 id="Debug模式下多出来的内存空间干嘛用？Debugger-Header、no-man-land？"><a href="#Debug模式下多出来的内存空间干嘛用？Debugger-Header、no-man-land？" class="headerlink" title="Debug模式下多出来的内存空间干嘛用？Debugger Header、no man land？"></a>Debug模式下多出来的内存空间干嘛用？Debugger Header、no man land？</h2><p>详见《malloc与free》</p>
-<h2 id="静态数据什么时候会被创建"><a href="#静态数据什么时候会被创建" class="headerlink" title="静态数据什么时候会被创建"></a>静态数据什么时候会被创建</h2><h2 id="纯虚函数的定义"><a href="#纯虚函数的定义" class="headerlink" title="纯虚函数的定义"></a>纯虚函数的定义</h2><h2 id="C-子类拥有和父类的同名非虚函数会发生什么情况？"><a href="#C-子类拥有和父类的同名非虚函数会发生什么情况？" class="headerlink" title="C++子类拥有和父类的同名非虚函数会发生什么情况？"></a>C++子类拥有和父类的同名非虚函数会发生什么情况？</h2><h2 id="C-函数签名"><a href="#C-函数签名" class="headerlink" title="C++函数签名"></a>C++函数签名</h2><h2 id="栈对象如何向上转型"><a href="#栈对象如何向上转型" class="headerlink" title="栈对象如何向上转型"></a>栈对象如何向上转型</h2><h2 id="C-中的原子对象"><a href="#C-中的原子对象" class="headerlink" title="C++中的原子对象"></a>C++中的原子对象</h2><h2 id="C-中的reorder"><a href="#C-中的reorder" class="headerlink" title="C++中的reorder"></a>C++中的reorder</h2><h2 id="C-的异常和底层机制"><a href="#C-的异常和底层机制" class="headerlink" title="C++的异常和底层机制"></a>C++的异常和底层机制</h2><h2 id="C-abort"><a href="#C-abort" class="headerlink" title="C++abort()"></a>C++abort()</h2><h2 id="C-List为什么会有maxsize"><a href="#C-List为什么会有maxsize" class="headerlink" title="C++List为什么会有maxsize?"></a>C++List为什么会有maxsize?</h2><h2 id="C-泛化指针"><a href="#C-泛化指针" class="headerlink" title="C++泛化指针"></a>C++泛化指针</h2><h2 id="C-的malloc详解"><a href="#C-的malloc详解" class="headerlink" title="C++的malloc详解"></a>C++的malloc详解</h2><p>详见《malloc与free》</p>
-<h2 id="C-序列化"><a href="#C-序列化" class="headerlink" title="C++序列化"></a>C++序列化</h2><h2 id="C-访问级别底层原理？"><a href="#C-访问级别底层原理？" class="headerlink" title="C++访问级别底层原理？"></a>C++访问级别底层原理？</h2><h2 id="C-override"><a href="#C-override" class="headerlink" title="C++override?"></a>C++override?</h2><p>详见《高级开发》</p>
+<h2 id="静态数据什么时候会被创建"><a href="#静态数据什么时候会被创建" class="headerlink" title="静态数据什么时候会被创建"></a>静态数据什么时候会被创建</h2><h2 id="纯虚函数的定义"><a href="#纯虚函数的定义" class="headerlink" title="纯虚函数的定义"></a>纯虚函数的定义</h2><h2 id="C-子类拥有和父类的同名非虚函数会发生什么情况？"><a href="#C-子类拥有和父类的同名非虚函数会发生什么情况？" class="headerlink" title="C++子类拥有和父类的同名非虚函数会发生什么情况？"></a>C++子类拥有和父类的同名非虚函数会发生什么情况？</h2><h2 id="C-函数签名？"><a href="#C-函数签名？" class="headerlink" title="C++函数签名？"></a>C++函数签名？</h2><ul>
+<li>C++中的函数签名(function signature)：包含了一个函数的信息，包括函数名、参数类型、参数个数、顺序以及它所在的类和命名空间。普通函数签名并不包含函数返回值部分，如果两个函数仅仅只有函数返回值不同，那么系统是无法区分这两个函数的，此时编译器会提示语法错误。函数签名用于识别不同的函数，函数的名字只是函数签名的一部分。在编译器及链接器处理符号时，使用某种名称修饰的方法，使得每个函数签名对应一个修饰后名称(decorated name)。编译器在将C++源代码编译成目标文件时，会将函数和变量的名字进行修饰，形成符号名，也就是说，C++的源代码编译后的目标文件中所使用的符号名是相应的函数和变量的修饰后名称。C++编译器和链接器都使用符号来识别和处理函数和变量，所以对于不同函数签名的函数，即使函数名相同，编译器和链接器都认为它们是不同的函数。</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/fengbingchun/article/details/79133749">C++中的函数签名</a></p>
+<h2 id="栈对象如何向上转型"><a href="#栈对象如何向上转型" class="headerlink" title="栈对象如何向上转型"></a>栈对象如何向上转型</h2><h2 id="C-中的原子对象"><a href="#C-中的原子对象" class="headerlink" title="C++中的原子对象"></a>C++中的原子对象</h2><h2 id="C-中的reorder"><a href="#C-中的reorder" class="headerlink" title="C++中的reorder"></a>C++中的reorder</h2><h2 id="C-的异常和底层机制"><a href="#C-的异常和底层机制" class="headerlink" title="C++的异常和底层机制"></a>C++的异常和底层机制</h2><h2 id="C-abort"><a href="#C-abort" class="headerlink" title="C++abort()"></a>C++abort()</h2><h2 id="C-List为什么会有maxsize"><a href="#C-List为什么会有maxsize" class="headerlink" title="C++List为什么会有maxsize?"></a>C++List为什么会有maxsize?</h2><h2 id="C-泛化指针"><a href="#C-泛化指针" class="headerlink" title="C++泛化指针"></a>C++泛化指针</h2><h2 id="C-的malloc详解"><a href="#C-的malloc详解" class="headerlink" title="C++的malloc详解"></a>C++的malloc详解</h2><p>详见《malloc与free》</p>
+<h2 id="C-序列化"><a href="#C-序列化" class="headerlink" title="C++序列化"></a>C++序列化</h2><h2 id="C-访问级别底层原理？"><a href="#C-访问级别底层原理？" class="headerlink" title="C++访问级别底层原理？"></a>C++访问级别底层原理？</h2><h2 id="C-智能指针？"><a href="#C-智能指针？" class="headerlink" title="C++智能指针？"></a>C++智能指针？</h2><h2 id="C-override"><a href="#C-override" class="headerlink" title="C++override?"></a>C++override?</h2><p>详见《高级开发》</p>
 <h2 id="C-如何充分利用CPU时间片？"><a href="#C-如何充分利用CPU时间片？" class="headerlink" title="C++如何充分利用CPU时间片？"></a>C++如何充分利用CPU时间片？</h2><h2 id="C-类中的typedef以及它的空间占用和底层实现？"><a href="#C-类中的typedef以及它的空间占用和底层实现？" class="headerlink" title="C++类中的typedef以及它的空间占用和底层实现？"></a>C++类中的typedef以及它的空间占用和底层实现？</h2><p>无空间占用，只在编译阶段对指令取址范围进行处理</p>
 <h2 id="C-引用折叠？"><a href="#C-引用折叠？" class="headerlink" title="C++引用折叠？"></a>C++引用折叠？</h2><h2 id="C-嵌入式指针？"><a href="#C-嵌入式指针？" class="headerlink" title="C++嵌入式指针？"></a>C++嵌入式指针？</h2><p>即使用联合体，详见《小型内存分配器》的第一个例子</p>
 <h2 id="C-类的静态函数能直接被调用吗？"><a href="#C-类的静态函数能直接被调用吗？" class="headerlink" title="C++类的静态函数能直接被调用吗？"></a>C++类的静态函数能直接被调用吗？</h2><p>答：可以。静态成员函数即使在类对象不存在的情况下也能被调用，静态函数只要使用类名加范围解析运算符:: 就可以访问。 静态成员函数只能访问静态成员数据、其他静态成员函数和类外部的其他函数。 静态成员函数有一个类范围，他们不能访问类的this 指针。</p>
@@ -361,8 +379,54 @@ $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
 <li>存储器映射的硬件寄存器通常也要加 volatile 说明，因为每次对它的读写都可能由不同意义</li>
 </ul>
 <p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yc_sunniwell/archive/2010/07/14/1777432.html">C/C++中volatile关键字详解</a>、《程序员的自我修养：链接、装载与库》</p>
-<h2 id="C-创建对象用中括号"><a href="#C-创建对象用中括号" class="headerlink" title="C++创建对象用中括号{}"></a>C++创建对象用中括号{}</h2><h2 id="C-如何刷新缓冲区及其原理"><a href="#C-如何刷新缓冲区及其原理" class="headerlink" title="C++如何刷新缓冲区及其原理"></a>C++如何刷新缓冲区及其原理</h2><h2 id="在C-拷贝构造函数中使用初始化列表"><a href="#在C-拷贝构造函数中使用初始化列表" class="headerlink" title="在C++拷贝构造函数中使用初始化列表"></a>在C++拷贝构造函数中使用初始化列表</h2><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/justin12zhu/article/details/9174491">在C++拷贝构造函数中使用初始化列表</a></p>
-<h2 id="C-释放一个空指针？"><a href="#C-释放一个空指针？" class="headerlink" title="C++释放一个空指针？"></a>C++释放一个空指针？</h2><h2 id="C-中进程的栈空间为多少？"><a href="#C-中进程的栈空间为多少？" class="headerlink" title="C++中进程的栈空间为多少？"></a>C++中进程的栈空间为多少？</h2><h2 id="C-中被调用函数如何被释放？返回值在什么时候被获取？"><a href="#C-中被调用函数如何被释放？返回值在什么时候被获取？" class="headerlink" title="C++中被调用函数如何被释放？返回值在什么时候被获取？"></a>C++中被调用函数如何被释放？返回值在什么时候被获取？</h2><h2 id="断言和异常的区别和使用场景"><a href="#断言和异常的区别和使用场景" class="headerlink" title="断言和异常的区别和使用场景?"></a>断言和异常的区别和使用场景?</h2>
+<h2 id="C-创建对象用中括号"><a href="#C-创建对象用中括号" class="headerlink" title="C++创建对象用中括号{}"></a>C++创建对象用中括号{}</h2><p>新特性语法糖</p>
+<h2 id="C-如何刷新缓冲区及其原理"><a href="#C-如何刷新缓冲区及其原理" class="headerlink" title="C++如何刷新缓冲区及其原理"></a>C++如何刷新缓冲区及其原理</h2><h2 id="在C-拷贝构造函数中使用初始化列表"><a href="#在C-拷贝构造函数中使用初始化列表" class="headerlink" title="在C++拷贝构造函数中使用初始化列表"></a>在C++拷贝构造函数中使用初始化列表</h2><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/justin12zhu/article/details/9174491">在C++拷贝构造函数中使用初始化列表</a></p>
+<h2 id="C-释放一个空指针？"><a href="#C-释放一个空指针？" class="headerlink" title="C++释放一个空指针？"></a>C++释放一个空指针？</h2><h2 id="C-中进程的栈和堆的空间为多少？"><a href="#C-中进程的栈和堆的空间为多少？" class="headerlink" title="C++中进程的栈和堆的空间为多少？"></a>C++中进程的栈和堆的空间为多少？</h2><ul>
+<li><strong>栈：</strong>在Windows下,栈是向低地址扩展的数据结构，是一块连续的内存的区域。这句话的意思是栈顶的地址和栈的最大容量是系统预先规定好的，在WINDOWS下，栈的大小是2M（也有的说是1M，总之是一个编译时就确定的常数），如果申请的空间超过栈的剩余空间时，将提示overflow。因此，能从栈获得的空间较小。</li>
+<li><strong>堆：</strong>堆是向高地址扩展的数据结构，是不连续的内存区域。这是由于系统是用链表来存储的空闲内存地址的，自然是不连续的，而链表的遍历方向是由低地址向高地址。堆的大小受限于计算机系统中有效的虚拟内存。由此可见，堆获得的空间比较灵活，也比较大。</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/capecape/article/details/78038997">C++堆空间和栈空间的区别</a></p>
+<h2 id="C-中被调用函数如何被释放？返回值在什么时候被获取？"><a href="#C-中被调用函数如何被释放？返回值在什么时候被获取？" class="headerlink" title="C++中被调用函数如何被释放？返回值在什么时候被获取？"></a>C++中被调用函数如何被释放？返回值在什么时候被获取？</h2><h2 id="C-强制类型转换？"><a href="#C-强制类型转换？" class="headerlink" title="C++强制类型转换？"></a>C++强制类型转换？</h2><ul>
+<li>const_cast<ul>
+<li>常量指针被转化成非常量的指针，并且仍然指向原来的对象；</li>
+<li>常量引用被转换成非常量的引用，并且仍然指向原来的对象；</li>
+<li>const_cast一般用于修改指针。如const char *p形式。</li>
+</ul>
+</li>
+<li>static_cast<ul>
+<li>static_cast 作用和C语言风格强制转换的效果基本一样，由于没有运行时类型检查来保证转换的安全性，所以这类型的强制转换和C语言风格的强制转换都有安全隐患。</li>
+<li>用于类层次结构中基类（父类）和派生类（子类）之间指针或引用的转换。注意：进行上行转换（把派生类的指针或引用转换成基类表示）是安全的；进行下行转换（把基类指针或引用转换成派生类表示）时，由于没有动态类型检查，所以是不安全的。</li>
+<li>用于基本数据类型之间的转换，如把int转换成char，把int转换成enum。这种转换的安全性需要开发者来维护。</li>
+<li>static_cast不能转换掉原有类型的const、volatile、或者 __unaligned属性。(前两种可以使用const_cast 来去除)</li>
+<li>在c++ primer 中说道：c++ 的任何的隐式转换都是使用 <em>static_cast</em> 来实现。</li>
+</ul>
+</li>
+<li>dynamic_cast<ul>
+<li><em>dynamic_cast</em>强制转换,应该是这四种中最特殊的一个,因为他涉及到面向对象的多态性和程序运行时的状态,也与编译器的属性设置有关.所以不能完全使用C语言的强制转换替代,它也是最常有用的,最不可缺少的一种强制转换.</li>
+<li>对于从子类到基类的指针转换 ,dynamic_cast 成功转换,没有什么运行异常,且达到预期结果<br>而从基类到子类的转换 , dynamic_cast 在转换时也没有报错,但是输出给 base2sub 是一个 nullptr ,说明dynami_cast 在程序运行时对类型转换对“运行期类型信息”（Runtime type information，RTTI）进行了检查.<br>这个检查主要来自虚函数(virtual function) 在C++的面对对象思想中，虚函数起到了很关键的作用，当一个类中拥有至少一个虚函数，那么编译器就会构建出一个虚函数表(virtual method table)来指示这些函数的地址，假如继承该类的子类定义并实现了一个同名并具有同样函数签名（function siguature）的方法重写了基类中的方法，那么虚函数表会将该函数指向新的地址。此时多态性就体现出来了：当我们将基类的指针或引用指向子类的对象的时候，调用方法时，就会顺着虚函数表找到对应子类的方法而非基类的方法。</li>
+</ul>
+</li>
+<li>reinterpret_cast<ul>
+<li>reinterpret_cast是强制类型转换符用来处理无关类型转换的，通常为操作数的位模式提供较低层次的重新解释！但是他仅仅是重新解释了给出的对象的比特模型，并没有进行二进制的转换！<br>他是用在任意的指针之间的转换，引用之间的转换，指针和足够大的int型之间的转换，整数到指针的转换</li>
+</ul>
+</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/ydar95/article/details/69822540">c++ 四种强制类型转换介绍</a></p>
+<h2 id="断言和异常的区别和使用场景"><a href="#断言和异常的区别和使用场景" class="headerlink" title="断言和异常的区别和使用场景?"></a>断言和异常的区别和使用场景?</h2><h2 id="C-模板类型推导？"><a href="#C-模板类型推导？" class="headerlink" title="C++模板类型推导？"></a>C++模板类型推导？</h2><ul>
+<li>在模板类型推导时，引用类型实参会被当成非引用类型的，即忽略引用性。</li>
+<li>为通用引用类型形参推导类型时，左值实参会被特殊对待。</li>
+<li>为值传递类型形参推导类型时，const 和 volatile 实参会被当成 non-const 和 non-volatile。</li>
+<li>在模板类型推导时，数组或函数实参会退化为指针，除非它们被用于初始化引用。</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="http://blog.leanote.com/post/gaunthan/C-%E6%A8%A1%E6%9D%BF%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC">C++ 模板类型推导</a></p>
+<h2 id="C-引用折叠与万能引用？"><a href="#C-引用折叠与万能引用？" class="headerlink" title="C++引用折叠与万能引用？"></a>C++引用折叠与万能引用？</h2><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs text">所有的引用折叠最终都代表一个引用，要么是左值引用，要么是右值引用。<br><br>规则就是：<br><br>如果任一引用为左值引用，则结果为左值引用。否则（即两个都是右值引用），结果为右值引用。<br>《Effective Modern C++》<br></code></pre></div></td></tr></table></figure>
+<ul>
+<li>模板函数参数为 T&amp;&amp; param,也就是说，不管T是什么类型，T&amp;&amp;的最终结果必然是一个引用类型。如果T是int, 那么T&amp;&amp; 就是 int &amp;&amp;；如果T为 int &amp;，那么 T &amp;&amp;(int&amp; &amp;&amp;) 就是&amp;，如果T为&amp;&amp;,那么T &amp;&amp;(&amp;&amp; &amp;&amp;) 就是&amp;&amp;。很明显，接受左值的话，T只能推导为int &amp;。</li>
+<li><strong>万能引用就是利用模板推导和引用折叠的相关规则，生成不同的实例化模板来接收传进来的参数。</strong></li>
+<li><em>任何的函数内部，对形参的直接使用，都是按照左值进行的</em></li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/50816420">引用折叠和完美转发</a></p>
+
             </div>
 
             <hr>
